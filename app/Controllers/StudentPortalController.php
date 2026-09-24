@@ -100,9 +100,13 @@ final class StudentPortalController extends Controller
         $s = $this->sessionForStudent(Request::int('sid'), $u);
         Attempts::finalizeExpired((int) $s['id']);
         $exam = Attempts::exam((int) $s['exam_id']);
-        $rows = $this->decorate([array_merge($s, ['attempts' => $this->db->all('SELECT * FROM {attempts} WHERE session_id = ? AND user_id = ? ORDER BY attempt_no', [(int) $s['id'], (int) $u['id']])])]);
-        $s2 = $rows[0];
         $subject = $exam['subject_id'] ? $this->db->one('SELECT * FROM {subjects} WHERE id = ?', [(int) $exam['subject_id']]) : null;
+        $rows = $this->decorate([array_merge($s, [
+            'structure' => $exam['structure'], 'exam_title' => $exam['title'], 'exam_duration' => $exam['duration'],
+            'subject_name' => $subject['name'] ?? null, 'subject_color' => $subject['color'] ?? null,
+            'attempts' => $this->db->all('SELECT * FROM {attempts} WHERE session_id = ? AND user_id = ? ORDER BY attempt_no', [(int) $s['id'], (int) $u['id']]),
+        ])]);
+        $s2 = $rows[0];
         $this->render('student/lobby', [
             'title' => $s['name'],
             's' => $s2,
@@ -160,6 +164,11 @@ final class StudentPortalController extends Controller
                 $this->redirect('exam/room', ['aid' => $a['id']]);
                 return;
             }
+        }
+        if ($a['status'] === 'voided') {
+            $this->flash('info', 'Bài làm này đã được giám thị hủy. Nếu còn lượt, em có thể vào thi lại.');
+            $this->redirect('student/lobby', ['sid' => $a['session_id']]);
+            return;
         }
         $s = $this->db->one('SELECT * FROM {exam_sessions} WHERE id = ?', [(int) $a['session_id']]);
         $exam = Attempts::exam((int) $a['exam_id']);
@@ -234,6 +243,8 @@ final class StudentPortalController extends Controller
                 'pdf' => $variant['pdf_file_id'] ? ($asStudent ? url('exam/pdf', ['aid' => $a['id']]) : url('files/pdf', ['variant_id' => $variant['id']])) : null,
                 'solution' => $variant['solution_file_id'] && (!$asStudent || $o['show_solution_pdf']) ? ($asStudent ? url('exam/pdf', ['aid' => $a['id'], 'kind' => 'solution']) : url('files/pdf', ['variant_id' => $variant['id'], 'kind' => 'solution'])) : null,
                 'protected' => $asStudent,
+                'pdfKey' => $asStudent && $o['protect_pdf'] ? Attempts::pdfKey($a) : null,
+                'watermark' => $asStudent && $o['watermark'] ? ($u['full_name'] . ' • ' . ($u['code'] ?: $u['username'])) : '',
                 'header' => [
                     'exam' => $s['name'], 'subject' => $subject, 'date' => fmt_dt($a['started_at'], 'd/m/Y'), 'name' => $u['full_name'],
                     'birthday' => fmt_date($u['birthday']), 'className' => $class, 'code' => $u['code'] ?: $u['username'], 'variant' => $variant['code'], 'room' => $s['room'] ?: '',

@@ -10,7 +10,14 @@ use App\Core\Session;
 
 final class AuthController extends Controller
 {
-    protected array $public = ['login'];
+    protected array $public = ['login', 'csrf'];
+
+    /** Cấp mã CSRF mới (dùng khi phiên đăng nhập hết hạn giữa giờ thi để đăng nhập lại tại chỗ). */
+    public function csrf(): void
+    {
+        \App\Core\Response::noCache();
+        $this->ok(['csrf' => Csrf::token(), 'user' => Auth::id()]);
+    }
 
     public function login(): void
     {

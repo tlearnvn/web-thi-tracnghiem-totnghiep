@@ -451,7 +451,7 @@ final class Attempts
     /** Mở khóa thiết bị: lần truy cập tiếp theo (máy mới) sẽ được nhận bài. */
     public static function unlockDevice(array $a): void
     {
-        App::db()->update('attempts', ['device_token' => null, 'updated_at' => time()], 'id = ?', [(int) $a['id']]);
+        App::db()->update('attempts', ['device_token' => null, 'device_prev' => $a['device_token'] ?: ($a['device_prev'] ?? null), 'updated_at' => time()], 'id = ?', [(int) $a['id']]);
         self::event((int) $a['id'], 'unlock');
     }
 
@@ -481,6 +481,12 @@ final class Attempts
             'updated_at' => $now,
         ], 'id = ?', [(int) $a['id']]);
         self::event((int) $a['id'], 'reopen', ['extra' => $extraMinutes]);
+    }
+
+    /** Khóa làm rối tệp PDF gửi cho một bài làm (mỗi bài một khóa riêng). */
+    public static function pdfKey(array $a): string
+    {
+        return base64_encode(hash_hmac('sha256', 'pdf|' . $a['id'] . '|' . $a['variant_id'], App::secret(), true));
     }
 
     public static function event(int $attemptId, string $type, $data = null): void

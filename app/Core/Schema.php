@@ -13,7 +13,7 @@ namespace App\Core;
 final class Schema
 {
     /** Tăng số này và thêm hàm vào migrations() khi thay đổi cấu trúc. */
-    public const VERSION = 1;
+    public const VERSION = 2;
 
     public static function tables(): array
     {
@@ -214,6 +214,7 @@ final class Schema
                 'seq' => 'int|d:0',
                 'answered' => 'int|d:0',
                 'device_token' => 'str:64|null',
+                'device_prev' => 'str:64|null',
                 'device_info' => 'str:255|null',
                 'ip' => 'str:45|null',
                 'violations' => 'int|d:0',
@@ -299,7 +300,8 @@ final class Schema
     private static function migrations(): array
     {
         return [
-            // 2 => static function (Database $db): void { self::addColumn($db, 'users', 'avatar', 'str:255|null'); },
+            // Mã thiết bị bị thu hồi khi giám thị "mở khóa thiết bị" (máy cũ không được giành lại bài)
+            2 => static function (Database $db): void { self::addColumn($db, 'attempts', 'device_prev', 'str:64|null'); },
         ];
     }
 

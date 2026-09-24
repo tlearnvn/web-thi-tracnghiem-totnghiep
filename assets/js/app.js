@@ -70,6 +70,11 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   };
+  /** Bỏ dấu tiếng Việt (tìm kiếm không phân biệt dấu). */
+  TN.unaccent = function (s) {
+    s = String(s === null || s === undefined ? '' : s);
+    return (s.normalize ? s.normalize('NFD') : s).replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+  };
   TN.url = function (route, params) {
     var q = [];
     if (route) q.push('r=' + encodeURIComponent(route));

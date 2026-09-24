@@ -69,8 +69,34 @@
 .qchip.ok { background: var(--success); border-color: var(--success); color: #fff; }
 .qchip.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
 
+.xr-nav .seg-sm { flex: none; padding: 2px; }
+.xr-nav .seg-sm button { padding: 4px 9px; font-size: 12px; }
+.xr-nav .seg-sm b { font-weight: 800; }
+.xr-nav .seg-sm .ic { width: 13px; height: 13px; }
+.qchips.f-todo .qchip.done:not(.partial), .qchips.f-flag .qchip:not(.flag) { display: none; }
+.qchip.cur { outline: 2px solid var(--primary); outline-offset: 1px; }
+.sheet-end { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 16px 18px; border-radius: 14px; border: 1.5px dashed var(--sheet-line-soft, #f5c2d6); background: var(--surface); margin-top: 6px; }
+.sheet.is-locked .bub, .sheet.is-locked .p3-val, .sheet.is-locked textarea { pointer-events: none; opacity: .75; }
+.xr-overlay[hidden] { display: none; }
+.xr-overlay-card .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+.xr-overlay-card .note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+.xr-overlay-card .timer-big { font: 800 44px/1.1 var(--mono); letter-spacing: .02em; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.submit-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.submit-sum div { text-align: center; padding: 12px 8px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); }
+.submit-sum b { display: block; font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.submit-sum span { font-size: 12px; color: var(--muted); }
+.submit-sum .warn { background: var(--warning-soft); border-color: var(--warning); }
+.submit-sum .warn b { color: var(--warning-text); }
+.submit-list { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0 12px; }
+.submit-list .qchip { min-width: 42px; }
+.xr-banner[hidden] { display: none; }
+.xr-banner .ic { flex: none; }
+.xr-banner.warning { background: var(--warning); color: #1f1300; }
+.xr-banner.danger { background: var(--danger); color: #fff; }
+.xr-banner.success { background: var(--success); color: #fff; }
+
 /* Thông báo nổi trong phòng thi */
-.xr-banner { position: absolute; left: 50%; top: 72px; transform: translateX(-50%); z-index: 30; display: flex; gap: 12px; align-items: center; padding: 12px 18px; border-radius: 14px; box-shadow: var(--shadow-lg); font-weight: 600; max-width: calc(100vw - 32px); animation: slide-down .25s var(--ease); }
+.xr-banner { position: fixed; left: 50%; top: 72px; transform: translateX(-50%); z-index: 30; display: flex; gap: 12px; align-items: center; padding: 12px 18px; border-radius: 14px; box-shadow: var(--shadow-lg); font-weight: 600; max-width: calc(100vw - 32px); animation: slide-down .25s var(--ease); }
 .xr-banner.offline { background: #7f1d1d; color: #fff; }
 .xr-banner.info { background: var(--text); color: var(--surface); }
 .xr-overlay { position: fixed; inset: 0; z-index: 900; display: grid; place-items: center; padding: 20px; background: rgba(15, 23, 42, .78); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); animation: fade-in .2s; }

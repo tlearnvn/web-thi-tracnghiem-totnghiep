@@ -68,8 +68,14 @@ final class ExamRoomController extends Controller
             }
             return $t;
         };
+        // Máy CŨ (còn giữ mã đã bị thu hồi khi giám thị "mở khóa thiết bị") không được tự giành lại bài
+        $prev = (string) ($a['device_prev'] ?? '');
+        $isOld = $prev !== '' && (($sent !== '' && hash_equals($prev, $sent)) || ($cookie !== '' && hash_equals($prev, $cookie)));
         if ($stored === '') {
-            return $issue((int) $a['seq'] > 0 || (int) $a['answered'] > 0 ? 'reclaim' : '');
+            if (!$isOld || !$o['device_lock']) {
+                return $issue((int) $a['seq'] > 0 || (int) $a['answered'] > 0 ? 'reclaim' : '');
+            }
+            throw new HttpException(423, 'Giám thị đã chuyển bài thi của em sang máy khác. Nếu em vẫn muốn làm bài trên máy này, hãy báo giám thị mở khóa lại.', ['code' => 'device_locked']);
         }
         if (($sent !== '' && hash_equals($stored, $sent)) || ($cookie !== '' && hash_equals($stored, $cookie))) {
             if ($cookie === '' || !hash_equals($stored, $cookie)) {
@@ -80,19 +86,14 @@ final class ExamRoomController extends Controller
         if (!$o['device_lock']) {
             return $issue('');
         }
-        if ($o['auto_reclaim'] && (string) $a['ip'] === client_ip() && (string) $a['device_info'] === describe_ua(user_agent())) {
+        if ($o['auto_reclaim'] && !$isOld && (string) $a['ip'] === client_ip() && (string) $a['device_info'] === describe_ua(user_agent())) {
             return $issue('reclaim');
         }
-        $last = (int) $this->db->value("SELECT MAX(created_at) FROM {attempt_events} WHERE attempt_id = ? AND type = 'device_blocked'", [(int) $a['id']]);
+        $last = $isOld ? time() : (int) $this->db->value("SELECT MAX(created_at) FROM {attempt_events} WHERE attempt_id = ? AND type = 'device_blocked'", [(int) $a['id']]);
         if ($last < time() - 60) {
             Attempts::event((int) $a['id'], 'device_blocked', ['device' => describe_ua(user_agent())]);
         }
         throw new HttpException(423, 'Bài thi của em đang được làm trên một máy khác. Nếu em vừa chuyển máy (máy hỏng, mất điện…), hãy báo giám thị bấm "Mở khóa thiết bị" rồi bấm Thử lại.', ['code' => 'device_locked']);
-    }
-
-    private function pdfKey(array $a): string
-    {
-        return base64_encode(hash_hmac('sha256', 'pdf|' . $a['id'] . '|' . $a['variant_id'], App::secret(), true));
     }
 
     /** Phần trạng thái dùng chung cho mọi phản hồi của API phòng thi. */
@@ -214,7 +215,7 @@ final class ExamRoomController extends Controller
             'flags' => json_dec($a['flags'], []),
             'started_at' => (int) $a['started_at'],
             'device_token' => $token,
-            'pdf' => $variant && $variant['pdf_file_id'] ? ['url' => url('exam/pdf', ['aid' => $a['id']]), 'key' => $o['protect_pdf'] ? $this->pdfKey($a) : null] : null,
+            'pdf' => $variant && $variant['pdf_file_id'] ? ['url' => url('exam/pdf', ['aid' => $a['id']]), 'key' => $o['protect_pdf'] ? Attempts::pdfKey($a) : null] : null,
             'config' => [
                 'autosave_ms' => max(500, (int) \App\Core\Settings::get('exam_autosave_ms', 1200)),
                 'heartbeat' => max(8, (int) \App\Core\Settings::get('exam_heartbeat_seconds', 20)),
@@ -393,6 +394,6 @@ final class ExamRoomController extends Controller
             http_response_code(304);
             return;
         }
-        FileStore::stream($fid, $o['protect_pdf'] ? base64_decode($this->pdfKey($a)) : null);
+        FileStore::stream($fid, $o['protect_pdf'] ? base64_decode(Attempts::pdfKey($a)) : null);
     }
 }
