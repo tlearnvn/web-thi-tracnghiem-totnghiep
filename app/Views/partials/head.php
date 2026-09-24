@@ -18,4 +18,5 @@ $pageTitle = (isset($title) && $title !== '' ? $title . ' · ' : '') . setting('
 :root{--primary:<?= e($shades['base']) ?>;--primary-hover:<?= e($shades['hover']) ?>;--primary-dark:<?= e($shades['dark']) ?>;--primary-rgb:<?= e($shades['rgb']) ?>}
 :root:not([data-theme="dark"]){--primary-soft:<?= e($shades['soft']) ?>;--primary-soft2:<?= e($shades['soft2']) ?>}
 </style>
+<?= \App\Core\View::stack('styles') ?>
 <script>(function(){try{var t=localStorage.getItem('tn-theme');if(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)t='dark';if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>

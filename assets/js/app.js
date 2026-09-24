@@ -291,12 +291,34 @@
       tick(); setInterval(tick, 1000);
     }
 
-    // Menu thả xuống
+    // Menu thả xuống (menu trong bảng cuộn dùng vị trí cố định để không bị cắt)
+    function closeMenus(except) {
+      d.querySelectorAll('.dropdown.open').forEach(function (dd) { if (dd !== except) dd.classList.remove('open'); });
+    }
     d.addEventListener('click', function (e) {
       var t = e.target.closest('[data-dropdown]');
-      d.querySelectorAll('.dropdown.open').forEach(function (dd) { if (!t || dd !== t.closest('.dropdown')) dd.classList.remove('open'); });
-      if (t) { e.preventDefault(); t.closest('.dropdown').classList.toggle('open'); }
+      if (!t && e.target.closest('.dropdown-menu') && !e.target.closest('a,button')) return;
+      closeMenus(t ? t.closest('.dropdown') : null);
+      if (!t) return;
+      e.preventDefault();
+      var dd = t.closest('.dropdown');
+      var open = !dd.classList.contains('open');
+      dd.classList.toggle('open', open);
+      var menu = dd.querySelector('.dropdown-menu');
+      if (open && menu && (dd.closest('.table-wrap') || dd.hasAttribute('data-fixed'))) {
+        menu.style.position = 'fixed'; menu.style.right = 'auto';
+        var r = t.getBoundingClientRect(), mh = menu.offsetHeight, mw = menu.offsetWidth;
+        var top = r.bottom + 6;
+        if (top + mh > w.innerHeight - 8) top = Math.max(8, r.top - mh - 6);
+        var left = Math.max(8, Math.min(r.right - mw, w.innerWidth - mw - 8));
+        menu.style.top = top + 'px'; menu.style.left = left + 'px';
+      }
     });
+    w.addEventListener('scroll', function (e) {
+      if (e.target && e.target.closest && e.target.closest('.dropdown-menu')) return;
+      d.querySelectorAll('.dropdown.open .dropdown-menu').forEach(function (m) { if (m.style.position === 'fixed') m.closest('.dropdown').classList.remove('open'); });
+    }, true);
+    d.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(null); });
 
     // Tab
     d.querySelectorAll('[data-tabs]').forEach(function (box) {

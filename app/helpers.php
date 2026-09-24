@@ -448,3 +448,48 @@ function array_is_list_compat(array $a): bool
     }
     return true;
 }
+
+/** Nạp thư viện biểu đồ cho trang hiện tại (chỉ một lần). */
+function use_charts(): void
+{
+    static $done = false;
+    if ($done) {
+        return;
+    }
+    $done = true;
+    \App\Core\View::push('scripts', '<script src="' . asset('vendor/chartjs/chart.umd.min.js') . '"></script><script src="' . asset('js/charts.js') . '"></script>');
+}
+
+/** Nạp KaTeX để hiển thị công thức toán trong lời giải. */
+function use_katex(): void
+{
+    static $done = false;
+    if ($done) {
+        return;
+    }
+    $done = true;
+    \App\Core\View::push('scripts', '<link rel="stylesheet" href="' . asset('vendor/katex/katex.min.css') . '"><script src="' . asset('vendor/katex/katex.min.js') . '"></script><script src="' . asset('vendor/katex/auto-render.min.js') . '"></script>');
+}
+
+/** Lớp CSS màu điểm theo thang. */
+function score_class($score, float $max = 10.0): string
+{
+    if ($score === null || $score === '') {
+        return '';
+    }
+    $v = $max > 0 ? (float) $score * 10 / $max : (float) $score;
+    return $v >= 8 ? 'score-hi' : ($v >= 6.5 ? 'score-mid' : ($v >= 5 ? 'score-lo' : 'score-fail'));
+}
+
+/** Lời chào theo giờ Việt Nam. */
+function greeting(): string
+{
+    $h = (int) date('G');
+    return $h < 11 ? 'Chào buổi sáng' : ($h < 13 ? 'Chào buổi trưa' : ($h < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'));
+}
+
+function weekday_vi(?int $ts = null): string
+{
+    $d = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+    return $d[(int) date('w', $ts ?? time())];
+}

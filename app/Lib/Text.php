@@ -100,17 +100,15 @@ final class Text
         return strtolower(trim((string) preg_replace('/\s+/', ' ', self::unaccent($q))));
     }
 
-    /** Chuẩn hóa họ tên: bỏ khoảng trắng thừa, viết hoa chữ đầu nếu cả chuỗi đang in hoa/thường. */
+    /** Chuẩn hóa họ tên: bỏ khoảng trắng thừa, viết hoa chữ cái đầu mỗi từ. */
     public static function normalizeName(string $name): string
     {
         $name = self::nfc(trim((string) preg_replace('/\s+/u', ' ', $name)));
         if ($name === '') {
             return '';
         }
-        if ($name === mb_strtoupper($name) || $name === mb_strtolower($name)) {
-            $name = mb_convert_case(mb_strtolower($name), MB_CASE_TITLE, 'UTF-8');
-        }
-        return $name;
+        // Viết hoa chữ cái đầu mỗi từ theo quy ước họ tên tiếng Việt: "lê văn cường" -> "Lê Văn Cường"
+        return mb_convert_case(mb_strtolower($name, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
     }
 
     public static function givenName(string $fullName): string

@@ -87,9 +87,13 @@ final class Auth
         return $r !== null && $r['kind'] !== 'student';
     }
 
+    /** bcrypt cost 10: đủ an toàn, không làm chậm máy chủ khi cả trăm học sinh đăng nhập cùng lúc
+     *  (PHP 8.4 đổi mặc định lên 12 – chậm gấp 4 lần). */
+    public const HASH_OPTS = ['cost' => 10];
+
     public static function hash(string $password): string
     {
-        return password_hash($password, PASSWORD_DEFAULT);
+        return password_hash($password, PASSWORD_BCRYPT, self::HASH_OPTS);
     }
 
     public static function passwordVersion(string $hash): string
@@ -149,7 +153,7 @@ final class Auth
         }
         $db->insert('login_attempts', ['username' => $username, 'ip' => $ip, 'success' => 1, 'created_at' => $now]);
 
-        if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
+        if (password_needs_rehash($user['password_hash'], PASSWORD_BCRYPT, self::HASH_OPTS)) {
             $user['password_hash'] = self::hash($password);
             $db->update('users', ['password_hash' => $user['password_hash']], 'id = ?', [$user['id']]);
         }

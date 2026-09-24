@@ -153,6 +153,12 @@ final class Seeder
         $pdfId = is_file($pdfPath) ? FileStore::putUploaded($pdfPath, 'de-mau-toan-0101.pdf', 'application/pdf', 'exam_pdf', $teacherId) : null;
         $solPath = BASE_PATH . '/docs/samples/loi-giai-toan-0101.pdf';
         $solId = is_file($solPath) ? FileStore::putUploaded($solPath, 'loi-giai-toan-0101.pdf', 'application/pdf', 'solution_pdf', $teacherId) : null;
+        foreach (array_filter([$pdfId, $solId]) as $fid) {
+            $pages = \App\Controllers\FilesController::countPdfPages((int) $fid);
+            if ($pages) {
+                $db->update('files', ['meta' => json_enc(['pages' => $pages])], 'id = ?', [(int) $fid]);
+            }
+        }
         $variantId = $db->insert('exam_variants', [
             'exam_id' => $examId, 'code' => '0101', 'pdf_file_id' => $pdfId, 'solution_file_id' => $solId,
             'note' => 'Mã đề mẫu', 'sort_order' => 1, 'created_at' => $now, 'updated_at' => $now,

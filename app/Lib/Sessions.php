@@ -86,6 +86,15 @@ final class Sessions
             $o[$k] = (int) !empty($o[$k]);
         }
         $o['min_submit_minutes'] = max(0, min(600, (int) $o['min_submit_minutes']));
+        $enum = [
+            'show_score' => self::SCORE_POLICIES, 'allow_review' => self::REVIEW_POLICIES, 'violation_action' => self::VIOLATION_ACTIONS,
+            'time_policy' => self::TIME_POLICIES, 'result_policy' => ['best' => 1, 'latest' => 1, 'first' => 1],
+        ];
+        foreach ($enum as $k => $allowed) {
+            if (!isset($allowed[(string) $o[$k]])) {
+                $o[$k] = $d[$k];
+            }
+        }
         return $o;
     }
 
