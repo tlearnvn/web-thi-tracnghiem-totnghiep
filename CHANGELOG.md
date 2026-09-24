@@ -10,6 +10,14 @@ Số phiên bản có dạng `MAJOR.MINOR.PATCH` và nằm trong tệp [`VERSION
 
 ---
 
+## 1.0.7 – 24/09/2026
+
+### Tài liệu
+- Hướng dẫn sử dụng: thêm mục riêng cho **Phần II – đúng/sai** và **Phần III – trả lời ngắn** trên phiếu: cách chọn / tô, gõ đáp số trực tiếp, bảng ví dụ cách tô, các cảnh báo sai quy cách và cách sửa, cách tính điểm, rà soát trước khi nộp, cách đọc trang xem lại, giáo viên nhập đáp án Phần II / III (hủy ý, điểm riêng, nhiều đáp án), giao diện điện thoại – kèm 9 ảnh minh họa mới.
+
+### Sửa lỗi giao diện
+- Trang xem lại bài: câu Phần III tô sai quy cách không còn hiện **lặp hai lần** cùng một cảnh báo (lý do chỉ ghi ở dòng *Đáp án*).
+
 ## 1.0.6 – 24/09/2026
 
 ### Sửa lỗi

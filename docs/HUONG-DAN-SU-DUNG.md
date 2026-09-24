@@ -13,6 +13,9 @@
 6. [Tạo ca thi](#6-tạo-ca-thi)
 7. [Giám sát trong giờ thi & xử lý sự cố](#7-giám-sát-trong-giờ-thi--xử-lý-sự-cố)
 8. [Dành cho học sinh: làm bài thi](#8-dành-cho-học-sinh-làm-bài-thi)
+   - [Phần II – Trắc nghiệm đúng / sai](#83-phần-ii--trắc-nghiệm-đúng--sai)
+   - [Phần III – Trắc nghiệm trả lời ngắn](#84-phần-iii--trắc-nghiệm-trả-lời-ngắn)
+   - [Trước khi nộp: rà soát Phần II & III](#85-trước-khi-nộp-rà-soát-phần-ii--iii)
 9. [Kết quả, chấm tự luận, in phiếu, xuất Excel](#9-kết-quả-chấm-tự-luận-in-phiếu-xuất-excel)
 10. [Thống kê & phân tích câu hỏi](#10-thống-kê--phân-tích-câu-hỏi)
 11. [Cài đặt hệ thống, thông báo](#11-cài-đặt-hệ-thống-thông-báo)
@@ -142,6 +145,17 @@ Tùy chọn chung: **làm tròn** (0,01 / 0,05 / 0,1 / 0,25 / 0,5 / 1), **không
 
 **Cách 1 – Soạn trực tiếp**: bấm **Đề & đáp án** ở mã đề → màn hình 2 cột (đề PDF | phiếu) → bấm ô tròn để chọn đáp án đúng. Biểu tượng ✏️ ở mỗi câu để nhập **lời giải chi tiết, điểm riêng, mức độ, chủ đề, câu gốc** hoặc **hủy câu**. Nút **Nhập nhanh** cho phép gõ `ABCDBACDABCD` cho cả Phần I. Phím tắt `Ctrl + S` để lưu.
 
+Với **Phần II** và **Phần III** trên màn hình soạn đáp án:
+
+| Phần | Cách nhập đáp án trên phiếu | Trong ô ✏️ của từng câu |
+|---|---|---|
+| **II** – đúng/sai | Bấm ô **Đúng** / **Sai** cho đủ 4 ý a–d (thiếu ý nào thì câu đó coi như chưa có đáp án) | Ô *Đáp án* gõ 4 ký tự `DSDD`; dấu `*` ở vị trí nào là **hủy ý** đó (vd `DS*D` – ý c tính đúng cho mọi em); *điểm riêng* của câu (bảng 0,1/0,25/0,5/1 được nhân theo tỉ lệ); hủy cả câu; mức độ, chủ đề, lời giải |
+| **III** – trả lời ngắn | Gõ đáp số vào ô của câu (`-1,5`, `0.17` tự đổi thành `0,17`); nhiều đáp án chấp nhận: `1,5\|1,50` | Điểm riêng, **hủy câu**, mức độ, chủ đề, lời giải |
+
+![Soạn đáp án Phần II](images/32-phan-2-nhap-dap-an.jpg)
+
+![Soạn đáp án Phần III](images/33-phan-3-nhap-dap-an.jpg)
+
 **Cách 2 – Excel** ([mẫu](samples/mau-dap-an-toan.xlsx)). Hệ thống tự nhận dạng 3 kiểu bảng:
 
 | Kiểu | Hình dạng | Ví dụ |
@@ -245,8 +259,8 @@ flowchart TD
 | Thao tác | Cách làm |
 |---|---|
 | Chọn đáp án Phần I | Bấm ô tròn A/B/C/D (bấm lại để bỏ). Bàn phím: `A` `B` `C` `D` hoặc `1`–`4`, `↑` `↓` chuyển câu |
-| Phần II | Mỗi ý a), b), c), d) chọn **Đúng** hoặc **Sai** |
-| Phần III | Tô từ trái sang phải: dấu `−` chỉ ở cột đầu, dấu phẩy ở cột 2 hoặc 3; hoặc **bấm vào dãy ô kết quả để gõ** (ví dụ `-1,5`). Tô sai quy cách sẽ có cảnh báo đỏ |
+| Phần II | Mỗi ý a), b), c), d) chọn **Đúng** hoặc **Sai** – chi tiết ở [mục 8.3](#83-phần-ii--trắc-nghiệm-đúng--sai) |
+| Phần III | Tô từ trái sang phải: dấu `−` chỉ ở cột đầu, dấu phẩy ở cột 2 hoặc 3; hoặc **bấm vào dãy ô kết quả để gõ** (ví dụ `-1,5`). Tô sai quy cách sẽ có cảnh báo đỏ – chi tiết ở [mục 8.4](#84-phần-iii--trắc-nghiệm-trả-lời-ngắn) |
 | Đánh dấu xem lại | Biểu tượng 🚩 hoặc phím `F`; lọc *Chưa làm* / 🚩 ở đầu phiếu |
 | Đổi độ rộng 2 cột | Kéo thanh chia giữa (phím `←` `→`), bấm đúp để về mặc định, nút `«` `»` để thu gọn |
 | Phóng to đề | `Ctrl` + lăn chuột trên đề, hoặc chọn tỉ lệ; nút 🌙 đọc nền tối |
@@ -259,7 +273,93 @@ Trên **điện thoại / máy tính bảng**, đề và phiếu chuyển thành
 
 ![Điện thoại](images/07-phong-thi-dien-thoai.jpg)
 
-### 8.3. Khi có sự cố – em cần nhớ
+### 8.3. Phần II – Trắc nghiệm đúng / sai
+
+![Phần II khi làm bài: câu 1 đủ 4 ý, câu 2 mới chọn 2 ý, câu 3 có đánh dấu, câu 4 chưa làm](images/26-phan-2-lam-bai.jpg)
+
+Mỗi câu gồm **4 ý a), b), c), d)**; mỗi ý có 2 ô **Đúng** và **Sai** – bố cục giống phiếu trả lời của Bộ.
+
+| Tính năng | Cách dùng / ý nghĩa |
+|---|---|
+| Chọn đáp án | Bấm ô *Đúng* hoặc *Sai* ở từng ý. Bấm ô còn lại để đổi; bấm lại ô đang chọn để **bỏ chọn**. Làm ý nào trước cũng được |
+| Lưu tự động | Mỗi lần bấm đều được lưu (góc trên hiện *Đã lưu*) |
+| Câu chưa đủ 4 ý | Có **dấu chấm cam** sau số câu (*Câu 2 ·* trong ảnh); ô **II.2** trên thanh số câu chuyển **màu cam** và được đếm vào bộ lọc *Chưa làm* |
+| Đánh dấu xem lại | Biểu tượng cờ ở góc câu (hoặc phím `F` khi đang chọn câu) – khung câu viền cam (*Câu 3* trong ảnh) |
+| Bộ đếm của phần | Góc phải tiêu đề: số câu đã làm / tổng số câu (vd `3/4`) |
+
+![Thanh số câu phía trên phiếu](images/28-thanh-so-cau.jpg)
+
+*Thanh số câu phía trên phiếu: xanh = đã làm, **cam** = câu đúng/sai chưa đủ 4 ý, gạch cam dưới ô = có đánh dấu, trắng = chưa làm. Bấm vào một ô để nhảy tới câu đó; nút* Chưa làm *và* 🚩 *để lọc.*
+
+**Cách tính điểm theo quy định 2025** – dựa trên **số ý đúng** trong mỗi câu:
+
+| Số ý đúng trong câu | 0 | 1 | 2 | 3 | 4 |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Điểm | 0 | 0,1 | 0,25 | 0,5 | **1** |
+
+> **Ví dụ:** đáp án `ĐSĐĐ`; em chọn a) Đúng, b) Đúng, c) Đúng, d) bỏ trống → đúng ý a và c (2 ý) → **0,25 điểm**. Ý bỏ trống không bao giờ được tính đúng, vì vậy hãy chọn **đủ cả 4 ý**.
+
+Giáo viên có thể đổi cách tính Phần II (*theo từng ý* hoặc *chỉ cho điểm khi đúng cả 4 ý*), đặt điểm riêng cho một câu, hoặc **hủy một ý** – ý đó được tính đúng cho mọi thí sinh (xem [mục 4](#4-môn-thi--định-dạng-đề) và [mục 5.2](#52-nhập-đáp-án)).
+
+### 8.4. Phần III – Trắc nghiệm trả lời ngắn
+
+![Phần III khi làm bài: tô 4, −1,5, 0,17; câu 3 tô sai quy cách; câu 4 đang gõ trực tiếp](images/27-phan-3-lam-bai.jpg)
+
+Mỗi câu có **dãy 4 ô kết quả** (hiện đáp số đang tô) và **lưới ô tròn 4 cột** giống phiếu của Bộ:
+
+| Hàng ô tròn | Tô ở cột | Ý nghĩa |
+|---|---|---|
+| `−` | chỉ cột 1 | dấu âm |
+| `,` | cột 2 hoặc cột 3 | dấu phẩy thập phân |
+| `0` … `9` | cả 4 cột | chữ số |
+
+**Hai cách ghi đáp số:**
+
+1. **Tô ô tròn** – mỗi cột một ký tự, **tô từ trái sang phải**, các cột thừa bên phải để trống. Bấm lại ô đang tô để bỏ. Tô dấu phẩy ở cột khác thì dấu phẩy cũ tự bỏ (mỗi đáp số chỉ có một dấu phẩy).
+2. **Gõ trực tiếp** – bấm vào dãy ô kết quả (hoặc dùng `Tab` tới câu rồi gõ số) → hiện ô nhập (*Câu 4* trong ảnh) → gõ `-1,5`; gõ dấu chấm `.` cũng được, hệ thống tự đổi thành dấu phẩy → các ô tròn **tự tô theo**. Nhấn `Enter`, `Tab` hoặc bấm ra ngoài để xong. Ô nhập chỉ nhận chữ số, dấu `−`, dấu phẩy, tối đa 4 ký tự.
+
+**Ví dụ cách tô** (mỗi ô là một cột):
+
+| Đáp số | Cột 1 | Cột 2 | Cột 3 | Cột 4 |
+|---|:---:|:---:|:---:|:---:|
+| `4` | 4 | | | |
+| `12` | 1 | 2 | | |
+| `-2` | − | 2 | | |
+| `0,17` | 0 | , | 1 | 7 |
+| `-1,5` | − | 1 | , | 5 |
+| `2025` | 2 | 0 | 2 | 5 |
+| `0,5` (không tô `,5`) | 0 | , | 5 | |
+
+**Cảnh báo tô sai quy cách** – chữ đỏ hiện ngay dưới câu, dãy ô kết quả viền đỏ (*Câu 3* trong ảnh). Câu tô sai quy cách **không được tính điểm**, nên cần sửa trước khi nộp:
+
+| Thông báo | Nguyên nhân – cách sửa |
+|---|---|
+| Bỏ trống ô ở giữa – phải tô từ trái sang phải | Có cột trống xen giữa (vd tô `1`, bỏ trống, tô `5`) → dồn các ký tự sang trái |
+| Dấu "−" chỉ ở cột đầu tiên | Dấu âm đặt sau chữ số (khi gõ) → ghi dấu âm ở đầu |
+| Chỉ được tô một dấu phẩy | Có 2 dấu phẩy (khi gõ) → giữ một |
+| Dấu phẩy chỉ ở cột 2 hoặc 3 | Ví dụ gõ `,5` → ghi `0,5` |
+| Thiếu chữ số sau dấu phẩy | Ví dụ `5,` → bỏ dấu phẩy hoặc ghi thêm chữ số |
+| Chưa có chữ số | Mới tô dấu `−` hoặc dấu phẩy |
+
+**Cách tính điểm:** đúng đáp số mới có điểm – **Toán 0,5 điểm/câu**; Vật lí, Hóa học, Sinh học, Địa lí **0,25 điểm/câu**. Mặc định so sánh **theo giá trị số** nên `0,5` = `0,50` và `-2` = `-2,0`. Giáo viên có thể chuyển sang so sánh *đúng từng ký tự*, chấp nhận nhiều đáp án (`1,5|1,50`) hoặc hủy câu.
+
+Trên **điện thoại / máy tính bảng**, mỗi hàng hiện 1–2 câu cho dễ bấm; bấm vào dãy ô kết quả sẽ hiện **bàn phím số** để gõ đáp số:
+
+![Phần II và Phần III trên điện thoại](images/34-phan-2-3-dien-thoai.jpg)
+
+### 8.5. Trước khi nộp: rà soát Phần II & III
+
+![Hộp xác nhận nộp bài liệt kê câu chưa đủ 4 ý và câu tô sai quy cách](images/29-nop-bai-canh-bao.jpg)
+
+Bấm **Nộp bài**, hệ thống liệt kê riêng từng nhóm để em kiểm tra lần cuối:
+- **Câu chưa làm**;
+- **Câu đúng/sai chưa chọn đủ 4 ý** (Phần II);
+- **Câu trả lời ngắn tô chưa đúng quy cách** (Phần III – *sẽ không được tính điểm*);
+- **Câu đã đánh dấu** xem lại.
+
+Bấm vào số câu trong danh sách để quay lại sửa (*Làm tiếp*). Nếu ca thi bật *Xác nhận khi nộp bài* (mặc định), nút **Nộp bài** chỉ bấm được sau 3 giây đếm ngược để tránh bấm nhầm.
+
+### 8.6. Khi có sự cố – em cần nhớ
 - **Mất mạng**: cứ làm tiếp, bài lưu trên máy và tự gửi khi có mạng.
 - **Máy treo, mất điện**: báo giám thị, đăng nhập lại (ở máy khác nếu cần) → vào lại bài thi → bài vẫn còn.
 - **Hiện hộp đăng nhập lại**: nhập mật khẩu là làm tiếp – bài làm vẫn còn nguyên, nhưng **đồng hồ vẫn chạy** trong lúc đăng nhập nên hãy nhập nhanh.
@@ -268,12 +368,20 @@ Trên **điện thoại / máy tính bảng**, đề và phiếu chuyển thành
 
 ![Mất mạng](images/12b-mat-mang.jpg)
 
-### 8.4. Sau khi nộp
+### 8.7. Sau khi nộp
 - Trang **Kết quả**: điểm, xếp loại, điểm từng phần, số câu đúng (nếu ca thi cho xem).
 - **Xem lại bài**: đề bên trái, phiếu bên phải tô **xanh** (đúng) / **đỏ** (sai), viền xanh là đáp án đúng, bấm 💡 để xem **lời giải chi tiết**.
 - **Luyện tập**: làm lại nhiều lần, hệ thống lưu điểm cao nhất; **Kết quả & lịch sử** lưu toàn bộ bài đã làm.
 
 ![Xem lại bài](images/10-xem-lai.jpg)
+
+**Xem lại Phần II** – từng ý được chấm riêng: chữ a), b), c), d) **xanh** là ý đúng, **đỏ** là ý sai hoặc bỏ trống; ô có **viền xanh** là đáp án; ô em chọn tô **xanh** (đúng) hoặc **đỏ** (sai). Góc mỗi câu ghi *số ý đúng · điểm* (vd `2/4 ý · 0,25đ`), góc phần ghi tổng điểm Phần II.
+
+![Xem lại Phần II](images/30-phan-2-xem-lai.jpg)
+
+**Xem lại Phần III** – khung câu **xanh** (đúng) / **đỏ** (sai), các ô em tô cũng đổi màu theo; dưới mỗi câu ghi **Đáp án** (nhiều đáp án chấp nhận thì hiện *… hoặc …*), kèm lý do nếu tô sai quy cách hoặc *Chưa trả lời*.
+
+![Xem lại Phần III](images/31-phan-3-xem-lai.jpg)
 
 ---
 
