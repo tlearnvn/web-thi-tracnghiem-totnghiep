@@ -1,0 +1,73 @@
+# =====================================================================
+#  Hệ thống thi trắc nghiệm trực tuyến – cấu hình Apache / LiteSpeed
+# =====================================================================
+Options -Indexes
+DirectoryIndex index.php
+
+# ---- Chặn truy cập các file nhạy cảm (CSDL, cấu hình, mã nguồn phụ) ----
+<FilesMatch "(^\.|\.(sqlite|sqlite3|db|db-wal|db-shm|sqlite-wal|sqlite-shm|log|ini|sh|md|lock|bak|sql|dist)$|^(composer\.(json|lock)|package(-lock)?\.json|VERSION|CHANGELOG)$)">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Thư mục app/, storage/, tools/ đã có .htaccess riêng chặn truy cập.
+<IfModule mod_alias.c>
+  RedirectMatch 404 /\.(git|githooks|github)(/|$)
+</IfModule>
+
+# ---- Cấu hình PHP khi chạy mod_php (PHP 7 / PHP 8) ----
+<IfModule mod_php.c>
+  php_value max_execution_time 300
+  php_value max_input_time 300
+  php_value memory_limit 256M
+  php_value upload_max_filesize 64M
+  php_value post_max_size 64M
+  php_value max_input_vars 5000
+  php_value session.gc_maxlifetime 43200
+  php_flag display_errors off
+</IfModule>
+<IfModule mod_php7.c>
+  php_value max_execution_time 300
+  php_value max_input_time 300
+  php_value memory_limit 256M
+  php_value upload_max_filesize 64M
+  php_value post_max_size 64M
+  php_value max_input_vars 5000
+  php_value session.gc_maxlifetime 43200
+  php_flag display_errors off
+</IfModule>
+
+# ---- Kiểu MIME cho thư viện hiển thị PDF ----
+<IfModule mod_mime.c>
+  AddType application/wasm .wasm
+  AddType text/javascript .mjs
+  AddType font/woff2 .woff2
+  AddType application/octet-stream .pfb .icc
+</IfModule>
+
+# ---- Nén & cache tài nguyên tĩnh ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType text/javascript "access plus 30 days"
+  ExpiresByType application/javascript "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType application/wasm "access plus 1 year"
+</IfModule>
+
+# ---- Header bảo mật ----
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "same-origin"
+</IfModule>

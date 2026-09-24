@@ -1,0 +1,23 @@
+#!/bin/sh
+# ---------------------------------------------------------------------------
+# Tự động tăng số phiên bản (PATCH) mỗi khi commit có thay đổi mã nguồn.
+#   Kích hoạt một lần sau khi clone:   git config core.hooksPath .githooks
+#   Bỏ qua cho một commit:             SKIP_BUMP=1 git commit ...
+#   Tăng MINOR/MAJOR thủ công:         sh tools/bump-version.sh minor && git add VERSION
+# ---------------------------------------------------------------------------
+[ "$SKIP_BUMP" = "1" ] && exit 0
+ROOT=$(git rev-parse --show-toplevel) || exit 0
+cd "$ROOT" || exit 0
+
+# VERSION đã được sửa tay trong commit này -> giữ nguyên
+if git diff --cached --name-only | grep -qx 'VERSION'; then
+  exit 0
+fi
+
+# Chỉ tăng khi có thay đổi mã nguồn chạy trên máy chủ / trình duyệt
+if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '\.(php|js|css|html?|sql|svg)$|(^|/)\.htaccess$|^\.user\.ini$|^web\.config$'; then
+  NEW=$(sh tools/bump-version.sh patch) || exit 0
+  git add VERSION
+  echo "[pre-commit] Phiên bản mới: $NEW"
+fi
+exit 0

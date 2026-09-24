@@ -1,0 +1,12 @@
+# Dữ liệu cài đặt (không đưa lên git)
+/storage/*
+!/storage/.htaccess
+!/storage/index.html
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+/node_modules/
+.DS_Store
+Thumbs.db
+/.idea/
+/.vscode/
