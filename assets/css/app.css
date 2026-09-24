@@ -254,7 +254,7 @@ pre { background: var(--surface-3); padding: 12px 14px; border-radius: var(--r-s
 .grid-sidebar { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
 .grid-sidebar-l { grid-template-columns: 300px minmax(0, 1fr); align-items: start; }
 @media (max-width: 1200px) { .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid-sidebar { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 900px) { .grid-3 { grid-template-columns: minmax(0, 1fr); } .grid-sidebar-l { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 900px) { .grid-3, .grid-2-1 { grid-template-columns: minmax(0, 1fr); } .grid-sidebar-l { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 720px) { .grid-2, .grid-4 { grid-template-columns: minmax(0, 1fr); } }
 
 .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -324,6 +324,7 @@ pre { background: var(--surface-3); padding: 12px 14px; border-radius: var(--r-s
 .form-grid .span-all { grid-column: 1 / -1; }
 @media (max-width: 760px) { .form-grid, .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: minmax(0, 1fr); } .form-grid .span-2 { grid-column: auto; } }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+:not(.form-grid):not(.stack):not(.row):not(.grid) > .field + .field, .field + .switch-row, .switch-row + .field { margin-top: 16px; }
 .field > label, .label { font-weight: 600; font-size: 13.5px; color: var(--text-2); display: flex; align-items: center; gap: 6px; }
 .field .req { color: var(--danger); }
 .help { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
@@ -666,6 +667,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .rule-list b { display: block; }
 .rule-list small { color: var(--muted); font-size: 13px; }
 .part-bars { display: grid; gap: 14px; }
+.part-bars.cols-2 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); column-gap: 28px; }
 .part-bar .pb-top { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; margin-bottom: 6px; }
 .part-bar .pb-top b { font-variant-numeric: tabular-nums; }
 .part-bar .pb-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
@@ -688,6 +690,36 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .done-hero { text-align: center; padding: 34px 24px; }
 .done-hero .big-ic { width: 84px; height: 84px; margin: 0 auto 16px; border-radius: 28px; display: grid; place-items: center; background: var(--success-soft); color: var(--success-text); animation: pop .4s var(--ease); }
 .done-hero .big-ic .ic { width: 40px; height: 40px; }
+
+/* ---------- Cài đặt ---------- */
+.media-box { display: flex; gap: 14px; align-items: flex-start; padding: 12px; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface-2); }
+.media-prev { width: 76px; height: 76px; flex: none; border-radius: 16px; background: repeating-conic-gradient(var(--surface-3) 0 25%, var(--surface) 0 50%) 50% / 14px 14px; display: grid; place-items: center; border: 1px solid var(--border); overflow: hidden; }
+.media-prev img { max-width: 64px; max-height: 64px; object-fit: contain; }
+
+/* ---------- Chấm bài ---------- */
+.es-grade { padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--r); background: var(--surface-2); }
+.es-answer { font: 15.5px/1.7 "Times New Roman", "Liberation Serif", Georgia, serif; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; max-height: 420px; overflow: auto; color: var(--text); }
+.table-sm td, .table-sm th { padding: 8px 12px; }
+
+/* ---------- Phân tích câu hỏi ---------- */
+.grid-2-1 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+@media (max-width: 900px) { .grid-2-1 { grid-template-columns: minmax(0, 1fr); } }
+.dist { display: flex; height: 22px; border-radius: 7px; overflow: hidden; background: var(--surface-3); font-size: 10.5px; font-weight: 700; }
+.dist span { display: flex; align-items: center; justify-content: center; min-width: 0; overflow: hidden; white-space: nowrap; color: #fff; background: #94a3b8; border-right: 1px solid var(--surface); padding: 0 3px; }
+.dist span:last-child { border-right: 0; }
+.dist span.k { background: var(--success); }
+.dist span.b { background: var(--surface-3); color: var(--muted); }
+.subdist { display: flex; align-items: flex-end; gap: 6px; height: 36px; }
+.subdist span { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; width: 18px; height: 100%; }
+.subdist span i { display: block; width: 14px; border-radius: 3px 3px 0 0; }
+.subdist span b { font-size: 10px; color: var(--muted); line-height: 1.2; }
+.subdist em { font-style: normal; margin-left: 6px; align-self: center; }
+.rank-list { list-style: none; margin: 0; padding: 0; counter-reset: rk; }
+.rank-list li { counter-increment: rk; display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border); }
+.rank-list li:last-child { border-bottom: 0; }
+.rank-list li::before { content: counter(rk); width: 24px; height: 24px; border-radius: 50%; background: var(--surface-3); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--muted); flex: none; }
+.rank-list li:nth-child(-n+3)::before { background: var(--warning-soft); color: var(--warning-text); }
+.rank-list li a { font-weight: 600; flex: 1; min-width: 0; }
 
 /* ---------- Biểu đồ ---------- */
 .chart-box { position: relative; height: 300px; }

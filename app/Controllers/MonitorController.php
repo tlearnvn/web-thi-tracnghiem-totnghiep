@@ -349,6 +349,11 @@ final class MonitorController extends Controller
         if ($skipped) {
             $msg .= ' Bỏ qua ' . count($skipped) . ' bài không phù hợp: ' . implode(', ', array_slice($skipped, 0, 5)) . (count($skipped) > 5 ? '…' : '');
         }
+        if (!Request::wantsJson()) {
+            $this->flash($done ? 'success' : 'warning', $msg);
+            $this->back('monitor', ['id' => $s['id']]);
+            return;
+        }
         $this->ok(['message' => $msg, 'done' => $done]);
     }
 

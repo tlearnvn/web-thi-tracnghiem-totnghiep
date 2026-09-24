@@ -74,7 +74,7 @@ final class Router
         $user = Auth::user();
 
         // Chế độ bảo trì: chỉ quản trị viên được vào
-        if ((int) Settings::get('maintenance', 0) === 1 && !Auth::isAdmin() && !in_array($module, ['auth', 'media'], true)) {
+        if ((int) Settings::get('maintenance', 0) === 1 && !Auth::isAdmin() && !in_array($module, ['auth', 'media'], true) && $module . '/' . $method !== 'backup/restoreStep') {
             if (Request::wantsJson()) {
                 throw new HttpException(503, (string) Settings::get('maintenance_message'));
             }

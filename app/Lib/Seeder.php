@@ -98,7 +98,8 @@ final class Seeder
             'username' => 'gv.toan', 'password' => '123456', 'role' => 'teacher', 'full_name' => 'Nguyễn Thị Minh Hoa',
             'code' => 'GV001', 'email' => 'hoa.nguyen@example.edu.vn', 'subject_id' => $subjectId, 'gender' => 'Nữ', 'created_by' => $adminId,
         ]);
-        self::createUser($db, [
+        $demoUsers = [$teacherId];
+        $demoUsers[] = self::createUser($db, [
             'username' => 'giamthi', 'password' => '123456', 'role' => 'proctor', 'full_name' => 'Trần Văn Bình',
             'code' => 'GV002', 'gender' => 'Nam', 'created_by' => $adminId,
         ]);
@@ -124,7 +125,7 @@ final class Seeder
             $cn = $i < 10 ? '12A1' : '12A2';
             $k++;
             $code = sprintf('0100%04d', $k);
-            self::createUser($db, [
+            $demoUsers[] = self::createUser($db, [
                 'username' => 'hs' . strtolower($cn) . sprintf('%02d', ($i % 10) + 1),
                 'password' => '123456',
                 'role' => 'student',
@@ -208,11 +209,21 @@ final class Seeder
         $proctorId = (int) $db->value('SELECT id FROM {users} WHERE username = ?', ['giamthi']);
         $db->insert('session_staff', ['session_id' => $sessionId, 'user_id' => $proctorId, 'role' => 'proctor']);
 
-        $db->insert('announcements', [
+        $annId = $db->insert('announcements', [
             'title' => 'Lịch thi thử tốt nghiệp lần 1',
             'body' => "Các em học sinh khối 12 tham gia thi thử môn Toán trên hệ thống.\nHãy đăng nhập đúng tài khoản được cấp, kiểm tra kết nối mạng trước giờ thi.",
             'audience' => 'all', 'class_id' => null, 'is_pinned' => 1, 'starts_at' => null, 'ends_at' => null,
             'created_by' => $adminId, 'created_at' => $now, 'updated_at' => $now,
+        ]);
+
+        // Ghi nhớ dữ liệu mẫu để quản trị viên xóa gọn bằng một nút (Thông tin hệ thống → Xóa dữ liệu mẫu)
+        Settings::set('demo_data', [
+            'users' => $demoUsers,
+            'classes' => array_values($classes),
+            'exams' => [$examId, $engExam],
+            'sessions' => [$sessionId, $practiceId],
+            'announcements' => [$annId],
+            'files' => array_values(array_filter([$pdfId, $solId])),
         ]);
 
         return [

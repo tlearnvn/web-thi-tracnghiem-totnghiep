@@ -254,6 +254,10 @@
 .sheet-review .p3-q.bad { border-color: rgba(220, 38, 38, .45); }
 .sheet-review .p3-q.ok { border-color: rgba(22, 163, 74, .5); }
 
+/* Xem lại: cột bên phải rộng hơn cho điểm + nút lời giải */
+.sheet-review .p1-grid { grid-template-columns: repeat(auto-fill, minmax(226px, 1fr)); }
+.sheet-review .p1-row { grid-template-columns: 26px repeat(4, 1fr) 74px; }
+
 /* Chế độ nhập đáp án */
 .sheet-key .has-exp .sh-more { color: var(--warning); opacity: 1; }
 .sheet-key .is-void { opacity: .55; }

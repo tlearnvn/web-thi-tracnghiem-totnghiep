@@ -45,8 +45,37 @@ final class Logger
         'backup.download' => 'Tải bản sao lưu',
         'backup.restore' => 'Phục hồi dữ liệu',
         'announcement.save' => 'Lưu thông báo',
+        'announcement.create' => 'Tạo thông báo',
+        'announcement.update' => 'Sửa thông báo',
         'announcement.delete' => 'Xóa thông báo',
+        'session.rescore' => 'Chấm lại ca thi',
+        'results.export' => 'Xuất Excel kết quả',
+        'monitor.add_time' => 'Cộng / bớt giờ',
+        'monitor.pause' => 'Tạm dừng bài làm',
+        'monitor.resume' => 'Cho tiếp tục làm bài',
+        'monitor.unlock_violation' => 'Mở khóa vi phạm',
+        'monitor.unlock_device' => 'Mở khóa thiết bị',
+        'monitor.force_submit' => 'Giám thị thu bài',
+        'monitor.reopen' => 'Mở lại bài làm',
+        'monitor.void' => 'Hủy bài cho thi lại',
+        'monitor.delete' => 'Xóa bài làm',
+        'monitor.message' => 'Nhắn tin học sinh',
+        'settings.logo' => 'Đổi logo',
+        'settings.favicon' => 'Đổi biểu tượng trang',
+        'settings.logo_remove' => 'Bỏ logo riêng',
+        'settings.favicon_remove' => 'Bỏ biểu tượng riêng',
+        'backup.sqlite' => 'Tải tệp CSDL SQLite',
+        'backup.restore_start' => 'Bắt đầu phục hồi dữ liệu',
+        'system.cleanup' => 'Dọn dẹp hệ thống',
+        'system.remove_demo' => 'Xóa dữ liệu mẫu',
+        'system.optimize' => 'Tối ưu CSDL',
+        'logs.clear_errors' => 'Xóa nhật ký lỗi',
     ];
+
+    public static function label(string $action): string
+    {
+        return self::ACTIONS[$action] ?? $action;
+    }
 
     public static function audit(string $action, ?string $targetType = null, ?int $targetId = null, $details = null): void
     {

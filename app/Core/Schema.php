@@ -13,7 +13,7 @@ namespace App\Core;
 final class Schema
 {
     /** Tăng số này và thêm hàm vào migrations() khi thay đổi cấu trúc. */
-    public const VERSION = 2;
+    public const VERSION = 3;
 
     public static function tables(): array
     {
@@ -285,6 +285,15 @@ final class Schema
                 'created_at' => 'ts|d:0',
                 '@index' => [['created_at']],
             ],
+            // Vùng đệm khi tải tệp sao lưu lên để phục hồi (không nằm trong bản sao lưu)
+            'restore_chunks' => [
+                'id' => 'id',
+                'token' => 'str:64',
+                'seq' => 'int',
+                'data' => 'blob|null',
+                'created_at' => 'ts|d:0',
+                '@unique' => [['token', 'seq']],
+            ],
             'login_attempts' => [
                 'id' => 'id',
                 'username' => 'str:64|null',
@@ -302,6 +311,7 @@ final class Schema
         return [
             // Mã thiết bị bị thu hồi khi giám thị "mở khóa thiết bị" (máy cũ không được giành lại bài)
             2 => static function (Database $db): void { self::addColumn($db, 'attempts', 'device_prev', 'str:64|null'); },
+            // 3: bảng restore_chunks (được tạo tự động ở bước "tạo các bảng còn thiếu")
         ];
     }
 
