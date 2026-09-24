@@ -10,3 +10,8 @@
 Thumbs.db
 /.idea/
 /.vscode/
+# Công cụ tạo PDF hướng dẫn (tools/pdf-guide)
+/tools/pdf-guide/node_modules/
+/tools/pdf-guide/.cache/
+/tools/pdf-guide/package-lock.json
+/tools/pdf-guide/build/

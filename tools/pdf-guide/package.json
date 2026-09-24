@@ -1,0 +1,16 @@
+{
+  "name": "tn-pdf-guide",
+  "private": true,
+  "description": "Tạo bản PDF của hướng dẫn sử dụng từ README.md + docs/HUONG-DAN-SU-DUNG.md (không cần cho việc chạy website)",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "marked": "14.1.4",
+    "mermaid": "11.17.2",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "4.10.38",
+    "playwright": "1.56.1"
+  }
+}

@@ -14,7 +14,7 @@ Viết bằng PHP thuần, chạy được trên shared hosting, lưu toàn bộ
 ![Timezone](https://img.shields.io/badge/gi%E1%BB%9D-UTC%2B7-f59e0b)
 ![License](https://img.shields.io/badge/gi%E1%BA%A5y%20ph%C3%A9p-MIT-blue)
 
-[Tính năng](#-tính-năng) · [Ảnh minh họa](#-ảnh-minh-họa) · [Cài đặt](#-cài-đặt) · [Sơ đồ hệ thống](#-kiến-trúc--sơ-đồ) · [Xử lý sự cố](#-xử-lý-sự-cố-trong-giờ-thi) · [📘 Hướng dẫn sử dụng](docs/HUONG-DAN-SU-DUNG.md)
+[Tính năng](#-tính-năng) · [Ảnh minh họa](#-ảnh-minh-họa) · [Cài đặt](#-cài-đặt) · [Sơ đồ hệ thống](#-kiến-trúc--sơ-đồ) · [Xử lý sự cố](#-xử-lý-sự-cố-trong-giờ-thi) · [📘 Hướng dẫn sử dụng](docs/HUONG-DAN-SU-DUNG.md) ([PDF](docs/HUONG-DAN-SU-DUNG.pdf))
 
 <img src="docs/images/06-phong-thi.jpg" alt="Phòng thi: đề PDF bên trái, phiếu trả lời bên phải" width="100%">
 
@@ -337,7 +337,7 @@ Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đ
 │   └── vendor/          # PDF.js, Chart.js, KaTeX, phông Be Vietnam Pro (tự lưu trữ, không CDN)
 ├── docs/                # Hướng dẫn sử dụng, ảnh minh họa, tệp mẫu (Excel, JSON, PDF) – không phục vụ qua web
 ├── storage/             # config.php + tệp SQLite (bị chặn truy cập từ web)
-└── tools/               # bump-version.sh
+└── tools/               # bump-version.sh, pdf-guide/ (tạo bản PDF của hướng dẫn)
 ```
 
 ## 🧑‍💻 Phát triển
@@ -348,6 +348,7 @@ sh tools/bump-version.sh minor && git add VERSION   # tăng MINOR/MAJOR thủ c�
 ```
 
 - Không dùng framework, Composer hay bước build: sửa tệp PHP/CSS/JS là chạy ngay.
+- Bản PDF của hướng dẫn (`docs/HUONG-DAN-SU-DUNG.pdf`) được tạo từ `README.md` + `docs/HUONG-DAN-SU-DUNG.md`: `cd tools/pdf-guide && npm install && npm run build` (cần Node.js 18+ và Chromium của Playwright; không cần cho việc chạy website).
 - Cấu trúc CSDL khai báo một lần trong `app/Core/Schema.php`, tự sinh DDL cho cả SQLite và MySQL; khi thêm cột, tăng `Schema::VERSION` và thêm hàm nâng cấp – hệ thống **tự nâng cấp** ở lần truy cập kế tiếp.
 - Mọi chuỗi giao diện bằng tiếng Việt; giờ hiển thị luôn là **UTC+7** (`Asia/Ho_Chi_Minh`).
 
@@ -357,6 +358,6 @@ Phát hành theo giấy phép [MIT](LICENSE). Thư viện kèm theo: [PDF.js](ht
 
 <div align="center">
 
-**📘 Xem [Hướng dẫn sử dụng chi tiết](docs/HUONG-DAN-SU-DUNG.md)** · Lịch sử thay đổi: [CHANGELOG](CHANGELOG.md)
+**📘 Xem [Hướng dẫn sử dụng chi tiết](docs/HUONG-DAN-SU-DUNG.md)** (bản in: [PDF](docs/HUONG-DAN-SU-DUNG.pdf)) · Lịch sử thay đổi: [CHANGELOG](CHANGELOG.md)
 
 </div>

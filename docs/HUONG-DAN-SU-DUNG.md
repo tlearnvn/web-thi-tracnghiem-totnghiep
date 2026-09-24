@@ -2,6 +2,7 @@
 
 > Tài liệu dành cho **quản trị viên, giáo viên, giám thị và học sinh**. Mọi thời gian trong hệ thống là **giờ Việt Nam (UTC+7)**.
 > Quay lại [README](../README.md) để xem phần cài đặt và kiến trúc.
+> Bản PDF để in hoặc gửi cho giáo viên, học sinh: [HUONG-DAN-SU-DUNG.pdf](HUONG-DAN-SU-DUNG.pdf).
 
 ## Mục lục
 
@@ -249,12 +250,22 @@ flowchart TD
 
 ### 8.1. Trước giờ thi
 1. Đăng nhập bằng tài khoản được phát.
-2. Trang **Bài thi của em** hiện các bài đang mở, sắp diễn ra (đếm ngược), đã làm.
+
+   ![Trang đăng nhập](images/01-dang-nhap.jpg)
+
+2. Trang **Bài thi của em** hiện các bài đang mở, sắp diễn ra (đếm ngược), đã làm; thông báo của nhà trường nằm ngay đầu trang.
+
+   ![Trang Bài thi của em](images/04-cong-hoc-sinh.jpg)
+
 3. Bấm **Vào phòng thi** → đọc **quy định phòng thi**, xem **Kiểm tra máy** (trình duyệt – có nạp thử bộ hiển thị đề, kết nối, đồng hồ) → nhập **mã vào phòng** (nếu có) → tick cam kết → **Bắt đầu làm bài**. Nếu mục *Trình duyệt hỗ trợ phòng thi* báo đỏ, hãy dùng **Chrome / Edge 109 trở lên** (hoặc Firefox, Safari bản mới).
 
-![Phòng chờ](images/05-phong-cho.jpg)
+   ![Phòng chờ](images/05-phong-cho.jpg)
 
 ### 8.2. Trong giờ thi
+
+![Phòng thi: đề PDF bên trái, phiếu trả lời bên phải](images/06-phong-thi.jpg)
+
+Màn hình phòng thi gồm **đề PDF** (trái) và **phiếu trả lời** (phải); đầu trang có đồng hồ đếm ngược theo giờ máy chủ, tiến độ làm bài, trạng thái lưu và nút **Nộp bài**.
 
 | Thao tác | Cách làm |
 |---|---|
@@ -263,9 +274,12 @@ flowchart TD
 | Phần III | Tô từ trái sang phải: dấu `−` chỉ ở cột đầu, dấu phẩy ở cột 2 hoặc 3; hoặc **bấm vào dãy ô kết quả để gõ** (ví dụ `-1,5`). Tô sai quy cách sẽ có cảnh báo đỏ – chi tiết ở [mục 8.4](#84-phần-iii--trắc-nghiệm-trả-lời-ngắn) |
 | Đánh dấu xem lại | Biểu tượng 🚩 hoặc phím `F`; lọc *Chưa làm* / 🚩 ở đầu phiếu |
 | Đổi độ rộng 2 cột | Kéo thanh chia giữa (phím `←` `→`), bấm đúp để về mặc định, nút `«` `»` để thu gọn |
-| Phóng to đề | `Ctrl` + lăn chuột trên đề, hoặc chọn tỉ lệ; nút 🌙 đọc nền tối |
+| Phóng to đề | `Ctrl` + lăn chuột trên đề, hoặc chọn tỉ lệ; nút 🌙 đọc đề nền tối |
+| Giao diện tối | Nút ☀️ góc trên phải đổi cả phòng thi sang nền tối, dịu mắt khi làm bài lâu |
 | Trạng thái lưu | Góc trên: *Đã lưu* · *Đang lưu* · *Mất mạng · đã lưu trên máy* |
 | Nộp bài | Nút **Nộp bài** → hệ thống liệt kê câu chưa làm, câu đánh dấu, câu tô sai quy cách → xác nhận |
+
+![Giao diện tối của phòng thi](images/06b-phong-thi-toi.jpg)
 
 ![Nộp bài](images/08-nop-bai.jpg)
 
@@ -366,10 +380,19 @@ Bấm vào số câu trong danh sách để quay lại sửa (*Làm tiếp*). N�
 - **Không rời khỏi màn hình làm bài** (chuyển tab, mở ứng dụng khác) – mọi lần rời đi đều bị ghi nhận.
 - Hết giờ, bài **tự động nộp**.
 
-![Mất mạng](images/12b-mat-mang.jpg)
+Khi vào bài từ một máy khác mà ca thi đang **khóa thiết bị**, màn hình báo *Bài thi đang được làm trên máy khác* kèm họ tên, SBD, mã bài để đọc cho giám thị. Giám thị bấm **Mở khóa thiết bị** là em làm tiếp được – hệ thống tự thử lại mỗi 6 giây, không cần tải lại trang:
+
+![Bài thi đang được làm trên máy khác](images/12a-khoa-thiet-bi.jpg)
+
+Khi mất mạng, thanh báo đỏ hiện ở đầu màn hình và trạng thái lưu đổi thành *Mất mạng · đã lưu trên máy*; em cứ làm tiếp, bài được lưu trên máy và tự gửi khi có mạng trở lại:
+
+![Mất mạng vẫn làm tiếp](images/12b-mat-mang.jpg)
 
 ### 8.7. Sau khi nộp
 - Trang **Kết quả**: điểm, xếp loại, điểm từng phần, số câu đúng (nếu ca thi cho xem).
+
+  ![Trang kết quả](images/09-ket-qua.jpg)
+
 - **Xem lại bài**: đề bên trái, phiếu bên phải tô **xanh** (đúng) / **đỏ** (sai), viền xanh là đáp án đúng, bấm 💡 để xem **lời giải chi tiết**.
 - **Luyện tập**: làm lại nhiều lần, hệ thống lưu điểm cao nhất; **Kết quả & lịch sử** lưu toàn bộ bài đã làm.
 
