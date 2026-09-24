@@ -16,6 +16,8 @@ Số phiên bản có dạng `MAJOR.MINOR.PATCH` và nằm trong tệp [`VERSION
 - **Bản PDF của hướng dẫn sử dụng** – [`docs/HUONG-DAN-SU-DUNG.pdf`](docs/HUONG-DAN-SU-DUNG.pdf): 52 trang A4, tông trắng – bạc – vàng kim; bìa trước / sau, trang thông tin tài liệu, mục lục và danh mục 44 hình / sơ đồ có số trang (bấm để chuyển trang), dấu trang (bookmark) theo chương; đầu / chân trang ghi tác giả **Trương Anh Tuấn – Trường THPT chuyên Lương Thế Vinh, TP. Đồng Nai**. Gồm phần giới thiệu, cài đặt & triển khai, 13 chương hướng dẫn theo công việc và 2 phụ lục kỹ thuật; sơ đồ vẽ dạng vector, chữ tìm và chép được.
 - Hướng dẫn sử dụng: thêm ảnh trang đăng nhập, trang *Bài thi của em*, phòng thi (sáng / tối), màn hình *Bài thi đang được làm trên máy khác*, trang kết quả; ghi chú nút giao diện tối của phòng thi.
 - Công cụ `tools/pdf-guide` (Node.js + Chromium của Playwright) dựng lại bản PDF từ `README.md` và `docs/HUONG-DAN-SU-DUNG.md` bằng `npm run build` – không cần cho việc chạy website.
+- **Bản PDF để gửi người dùng** – `docs/Huong-dan-su-dung-He-thong-thi-trac-nghiem.pdf` (`npm run build:share`): cùng nội dung nhưng không có liên kết ra ngoài và không nhắc tới kho mã nguồn trên GitHub (bước cài đặt, chạy thử trên máy được diễn đạt lại); công cụ tự rà lại chữ và liên kết trước khi lưu tệp.
+- Khối mã có dòng dài tự thu cỡ chữ theo đúng bề rộng khung (cả khi nằm trong hộp thông tin), không còn bị xuống dòng.
 - README và hướng dẫn sử dụng có liên kết tới bản PDF.
 
 ## 1.0.7 – 24/09/2026

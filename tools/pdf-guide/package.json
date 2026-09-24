@@ -4,7 +4,8 @@
   "description": "Tạo bản PDF của hướng dẫn sử dụng từ README.md + docs/HUONG-DAN-SU-DUNG.md (không cần cho việc chạy website)",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "build:share": "node build.mjs --share"
   },
   "dependencies": {
     "marked": "14.1.4",

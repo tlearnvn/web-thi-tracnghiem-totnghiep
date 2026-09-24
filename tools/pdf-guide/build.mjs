@@ -8,6 +8,7 @@
      npm install            # đặt PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 nếu máy đã có Chromium của Playwright
      npx playwright install chromium   # (chỉ lần đầu, nếu máy chưa có)
      npm run build          # -> docs/HUONG-DAN-SU-DUNG.pdf
+     npm run build:share    # -> bản gửi người dùng: không có liên kết / nhắc tới kho mã nguồn trên GitHub
    Phông chữ (OFL) được tải về .cache/fonts ở lần chạy đầu.
    ===================================================================== */
 import fs from 'node:fs';
@@ -21,8 +22,11 @@ import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '../..');
-const OUT = path.join(ROOT, 'docs/HUONG-DAN-SU-DUNG.pdf');
-const BUILD = path.join(HERE, 'build');
+// --share: bản để gửi cho người dùng – bỏ mọi liên kết ra ngoài và mọi chỗ nhắc tới kho mã nguồn trên GitHub
+const SHARE = process.argv.includes('--share');
+const OUT = path.join(ROOT, SHARE ? 'docs/Huong-dan-su-dung-He-thong-thi-trac-nghiem.pdf' : 'docs/HUONG-DAN-SU-DUNG.pdf');
+const BUILD = path.join(HERE, SHARE ? 'build/share' : 'build');
+const REPO_RE = /github|tlearnvn|web-thi-tracnghiem/i; // không được xuất hiện trong bản gửi
 const VERSION = fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf8').trim();
 const now = new Date();
 const MONTH = `Tháng ${now.getMonth() + 1} năm ${now.getFullYear()}`;
@@ -86,7 +90,17 @@ const slug = (t) => String(t).toLowerCase().trim().replace(/<[^>]+>/g, '').repla
 
 // Bỏ ký tự chọn kiểu emoji (U+FE0F): có nó Chromium lấy emoji màu dạng ảnh thay cho phông emoji vector
 const readMd = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\uFE0F/g, '');
-const readme = readMd('README.md');
+// Bản gửi: diễn đạt lại các chỗ gắn với GitHub (mỗi mẫu phải khớp – README đổi thì báo lỗi để sửa tại đây)
+const SHARE_EDITS = [
+  [/\*\*Tải mã nguồn\*\* \(nút \*Code → Download ZIP\*\) và giải nén/, '**Chép mã nguồn** của hệ thống lên hosting và giải nén'],
+  [/git clone \S+\ncd \S+\n/, 'cd thu-muc-ma-nguon          # thư mục đã giải nén mã nguồn\n'],
+  [/\n- Bản PDF của hướng dẫn \(`docs\/HUONG-DAN-SU-DUNG\.pdf`\)[^\n]*/, ''], // cách dựng tài liệu từ kho mã nguồn
+];
+const shareEdit = (md) => SHARE_EDITS.reduce((t, [re, to]) => {
+  if (!re.test(t)) throw new Error('Bản gửi: README không còn đoạn ' + re);
+  return t.replace(re, to);
+}, md);
+const readme = SHARE ? shareEdit(readMd('README.md')) : readMd('README.md');
 const guide = readMd('docs/HUONG-DAN-SU-DUNG.md');
 const R = Object.fromEntries(sections(readme).filter((s) => s.title).map((s) => [plain(s.title), s]));
 const G = sections(guide).filter((s) => s.title && /^\d+\./.test(s.title));
@@ -202,7 +216,7 @@ function mdToHtml(md, base) {
       },
       link({ href, tokens }) {
         const text = this.parser.parseInline(tokens);
-        if (/^(https?:|mailto:)/.test(href)) return `<a href="${esc(href)}">${text}</a>`;
+        if (/^(https?:|mailto:)/.test(href)) return SHARE ? text : `<a href="${esc(href)}">${text}</a>`;
         if (href.startsWith('#')) return `<a href="${esc(href)}">${text}</a>`;
         if (/\.(jpe?g|png)$/i.test(href)) return text; // ảnh bấm để phóng to trên GitHub
         const rel = path.relative(ROOT, path.resolve(base, decodeURIComponent(href)));
@@ -268,8 +282,7 @@ const info = `<section class="front">
 <div class="k">Tác giả</div><div><b>${esc(META.author)}</b></div>
 <div class="k">Đơn vị</div><div>${esc(META.org)}</div>
 <div class="k">Đối tượng</div><div>Quản trị viên, giáo viên, giám thị và học sinh</div>
-<div class="k">Mã nguồn</div><div><a href="${META.repo}">${esc(META.repo.replace('https://', ''))}</a></div>
-<div class="k">Múi giờ</div><div>Mọi thời gian trong hệ thống và tài liệu là <b>giờ Việt Nam (UTC+7)</b></div>
+${SHARE ? '' : `<div class="k">Mã nguồn</div><div><a href="${META.repo}">${esc(META.repo.replace('https://', ''))}</a></div>\n`}<div class="k">Múi giờ</div><div>Mọi thời gian trong hệ thống và tài liệu là <b>giờ Việt Nam (UTC+7)</b></div>
 </div>
 <div class="sub">Quy ước trình bày</div>
 <table><thead><tr><th style="width:38mm">Ký hiệu</th><th>Ý nghĩa</th></tr></thead><tbody>
@@ -282,7 +295,7 @@ const info = `<section class="front">
 <div class="sub">Về tài liệu này</div>
 <p>Tài liệu hướng dẫn cài đặt, cấu hình và sử dụng hệ thống thi trắc nghiệm trực tuyến theo định dạng đề thi tốt nghiệp THPT từ năm 2025, gồm: phần <b>Giới thiệu</b> và <b>Cài đặt & triển khai</b>; <b>13 chương</b> hướng dẫn theo từng công việc của quản trị viên, giáo viên, giám thị và học sinh; <b>2 phụ lục</b> kỹ thuật (kiến trúc, sơ đồ dữ liệu, bảo mật, cấu trúc mã nguồn).</p>
 <p>Ảnh minh họa được chụp trực tiếp từ phần mềm với <b>dữ liệu mẫu</b> – họ tên học sinh, giáo viên, trường học trong ảnh đều là giả định.</p>
-<p class="colophon">Tài liệu được dàn trang tự động từ <code>README.md</code> và <code>docs/HUONG-DAN-SU-DUNG.md</code> bằng công cụ <code>tools/pdf-guide</code> đi kèm mã nguồn. Phông chữ: Be Vietnam Pro, Playfair Display, JetBrains Mono, Noto Sans Math, Noto Emoji (giấy phép SIL Open Font License).</p>
+<p class="colophon">${SHARE ? '' : 'Tài liệu được dàn trang tự động từ <code>README.md</code> và <code>docs/HUONG-DAN-SU-DUNG.md</code> bằng công cụ <code>tools/pdf-guide</code> đi kèm mã nguồn. '}Phông chữ: Be Vietnam Pro, Playfair Display, JetBrains Mono, Noto Sans Math, Noto Emoji (giấy phép SIL Open Font License).</p>
 <aside class="callout tip"><p><b>Mẹo:</b> khung vàng nhạt là mẹo hoặc lưu ý hữu ích; khung đỏ nhạt là cảnh báo cần đọc kỹ. Bấm vào dòng trong mục lục hoặc bấm dấu trang (bookmark) của trình đọc PDF để đến ngay phần cần xem.</p></aside>
 </section>`;
 
@@ -306,7 +319,7 @@ function lofHtml(figs, pages) {
 const back = `<section class="cover back"><div class="arc"></div><div class="arc2"></div><div class="frame"></div><div class="inner">
 ${EMBLEM}<div class="ct">Hệ thống thi trắc nghiệm trực tuyến</div><div class="cs">Định dạng đề thi tốt nghiệp THPT từ năm 2025</div><div class="rule"></div>
 <div class="author" style="margin-top:0"><div class="lbl">Tác giả</div><div class="name">${esc(META.author)}</div><div class="org">${esc(META.org)}</div></div>
-<div class="repo">${esc(META.repo.replace('https://', ''))}</div><div class="meta">PHIÊN BẢN ${esc(VERSION)} · ${esc(MONTH.toUpperCase())}</div></div></section>`;
+${SHARE ? '' : `<div class="repo">${esc(META.repo.replace('https://', ''))}</div>`}<div class="meta">PHIÊN BẢN ${esc(VERSION)} · ${esc(MONTH.toUpperCase())}</div></div></section>`;
 
 // ---------------------------------------------------------------- Ghép trang & in
 const css = fontCss() + '\n' + fs.readFileSync(path.join(HERE, 'theme.css'), 'utf8');
@@ -371,12 +384,15 @@ async function prepare(p) {
       if (Math.max(...first.map((x) => x.length)) <= 12) t.classList.add('k1');
       t.querySelectorAll('td, th').forEach((c) => { if (c.textContent.trim().length <= 9) c.classList.add('nw'); });
     });
-    // Đoạn mã: ngắn thì không cắt ngang; dòng dài quá khổ (~104 ký tự ở cỡ 7,6pt) thì thu cỡ chữ cho khỏi xuống dòng
+    // Đoạn mã: ngắn thì không cắt ngang; dòng dài hơn bề rộng khung (tính cả khi nằm trong hộp thông tin)
+    // thì thu cỡ chữ – không nhỏ hơn 6,4pt – cho khỏi xuống dòng. JetBrains Mono: mỗi ký tự rộng 0,6em.
     document.querySelectorAll('pre.code').forEach((pre) => {
       const lines = pre.textContent.replace(/\n$/, '').split('\n');
       if (lines.length <= 16) pre.classList.add('keep');
       const L = Math.max(...lines.map((l) => l.length));
-      if (L > 102) pre.style.fontSize = Math.max(6.4, (7.6 * 102) / L).toFixed(2) + 'pt';
+      const cs = getComputedStyle(pre);
+      const w = pre.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (L * 0.6 * parseFloat(cs.fontSize) > w) pre.style.fontSize = Math.max(6.4 / 0.75, (w / (L * 0.6)) * 0.98).toFixed(2) + 'px';
     });
     window.mermaid.initialize({
       startOnLoad: false, securityLevel: 'loose', theme: 'base', fontFamily: 'BVP, SYM, NEM, sans-serif',
@@ -479,6 +495,19 @@ async function locate(pdfBytes, headingIds, figs) {
   return { pages, numPages: doc.numPages };
 }
 
+// Bản gửi: không còn chữ hay liên kết nào dẫn tới kho mã nguồn; không còn liên kết ra ngoài tài liệu
+async function checkShare(bytes) {
+  const doc = await pdfjs.getDocument({ data: new Uint8Array(bytes), useSystemFonts: false, disableFontFace: true, verbosity: 0 }).promise;
+  const hits = [];
+  for (let n = 1; n <= doc.numPages; n++) {
+    const pg = await doc.getPage(n);
+    const items = (await pg.getTextContent()).items.map((x) => x.str);
+    if (REPO_RE.test(items.join('')) || REPO_RE.test(items.join(' '))) hits.push(`trang ${n}: chữ`);
+    for (const a of await pg.getAnnotations()) if (a.url || a.unsafeUrl) hits.push(`trang ${n}: liên kết ${a.url || a.unsafeUrl}`);
+  }
+  if (hits.length) throw new Error('Bản gửi chưa sạch:\n  ' + hits.join('\n  '));
+}
+
 async function main() {
   ensureFonts();
   fs.mkdirSync(BUILD, { recursive: true });
@@ -502,6 +531,10 @@ async function main() {
       return out;
     });
     if (over.length) console.warn('Cảnh báo – phần tử tràn ngang:\n  ' + over.slice(0, 10).join('\n  '));
+    if (SHARE) {
+      const leak = await p.evaluate((src) => { const m = new RegExp('.{0,40}(' + src + ').{0,40}', 'i').exec(document.body.innerText); return m && m[0]; }, REPO_RE.source);
+      if (leak) throw new Error('Bản gửi còn nhắc tới kho mã nguồn: «' + leak + '»');
+    }
     const pdf = await p.pdf({ preferCSSPageSize: true, printBackground: true, outline: true, tagged: true });
     return { pdf, figs: f, ids, dom };
   };
@@ -543,7 +576,9 @@ async function main() {
   out.setCreationDate(now);
   out.setModificationDate(now);
   out.catalog.set(PDFName.of('PageMode'), PDFName.of('UseOutlines'));
-  fs.writeFileSync(OUT, await out.save());
+  const bytes = await out.save();
+  if (SHARE) await checkShare(bytes);
+  fs.writeFileSync(OUT, bytes);
   console.log(`Đã tạo ${path.relative(ROOT, OUT)} · ${chk.numPages} trang · ${(fs.statSync(OUT).size / 1048576).toFixed(1)} MB · ${r2.figs.length} hình/sơ đồ`);
 }
 main().catch((e) => { console.error(e); process.exit(1); });
