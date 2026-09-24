@@ -5,10 +5,28 @@ Mọi thay đổi đáng chú ý của dự án được ghi lại tại đây (
 Số phiên bản có dạng `MAJOR.MINOR.PATCH` và nằm trong tệp [`VERSION`](VERSION):
 
 - **PATCH** tự tăng mỗi lần commit có thay đổi mã nguồn (hook `.githooks/pre-commit`, bật bằng `git config core.hooksPath .githooks`).
-- **MINOR / MAJOR** tăng thủ công khi phát hành: `sh tools/bump-version.sh minor`.
+- **MINOR / MAJOR** tăng thủ công khi phát hành: `sh tools/bump-version.sh minor && git add VERSION`.
 - Cấu trúc CSDL có số phiên bản riêng (`Schema::VERSION`) và **tự nâng cấp** ở lần truy cập đầu tiên sau khi cập nhật mã nguồn.
 
 ---
+
+## 1.0.6 – 24/09/2026
+
+### Sửa lỗi
+- **Giám thị** được phân công nay mở được trang chi tiết ca thi, *Giám sát trực tiếp* và *Màn hình trình chiếu* (trước đây bị báo "không có quyền"). Người không có quyền xem kết quả sẽ không thấy điểm, nút *Kết quả* và liên kết *Chi tiết bài làm* trên bảng giám sát.
+- **Đề PDF không hiển thị trên trình duyệt đời cũ** như Chrome / Edge 109 (bản cuối cho Windows 7): thêm `assets/js/compat.js` bổ sung `Promise.withResolvers` và `ArrayBuffer.prototype.transfer` / `transferToFixedLength` cho cả luồng chính lẫn worker của PDF.js. Đã kiểm thử phòng thi (đề được bảo vệ, lưu bài, mất mạng, tải lại, nộp bài) và trang xem lại trên Chromium 109.
+- Mục *Kiểm tra máy* ở phòng chờ kiểm tra trình duyệt kỹ hơn và **nạp thử bộ hiển thị đề**; báo rõ khi trình duyệt quá cũ.
+- Thống kê: tỉ lệ "đạt từ 5 / từ 8 điểm" tính trên điểm thật (trước đây lấy theo phổ điểm làm tròn 0,5 nên bài 4,75 điểm bị tính là đạt).
+- Nhật ký bài làm ghi đúng **"Giám thị hủy bài – cho thi lại từ đầu"** (trước đây ghi nhầm là "Mở lại bài").
+- Trang chi tiết ca thi không còn báo lỗi quyền khi giáo viên xem ca của lớp mình dùng đề của giáo viên khác; tiêu đề đề thi chỉ có liên kết khi được xem đề.
+- Trang đề thi chỉ liệt kê các ca thi người dùng được xem; nút *Kết quả* / *Giám sát* trong danh sách hiện theo quyền của từng ca; số bài đã nộp không tính bài đã hủy.
+- Nhãn cài đặt "Số lần sai tối đa của một địa chỉ IP" ghi đúng khoảng thời gian tính (bằng *thời gian tạm khóa*, không phải cố định 15 phút).
+
+### Bảo mật
+- Chặn truy cập web vào thư mục `docs/` (tài liệu, đề & lời giải mẫu) trên Apache (`docs/.htaccess`), IIS (`web.config`) và mẫu cấu hình Nginx.
+
+### Tài liệu
+- Đối chiếu README và hướng dẫn sử dụng với mã nguồn: sửa mẫu cấu hình Nginx (bỏ khối `types {}` làm hỏng kiểu MIME), bổ sung yêu cầu `SimpleXML`, trình duyệt hỗ trợ, bảng vai trò có *Cán bộ quản lý*, cách đặt tên đăng nhập / mật khẩu khi nhập Excel, quy ước đáp án Phần II theo dòng (`1a`…`1d`), cách tính điểm (trừ điểm chỉ ở Phần I, các chế độ Phần II, chế độ theo tỉ lệ), ngưỡng đọc chỉ số phân tích câu hỏi, phạm vi áp dụng của cài đặt, sơ đồ trạng thái bài làm và quan hệ dữ liệu, tên nút trên giao diện.
 
 ## 1.0.5 – 24/09/2026
 
@@ -61,7 +79,7 @@ Số phiên bản có dạng `MAJOR.MINOR.PATCH` và nằm trong tệp [`VERSION
 ### Thêm mới
 - Quản lý học sinh / giáo viên / lớp / tài khoản / vai trò; nhập từ Excel có xem trước.
 - Quản lý môn thi, đề thi, mã đề; trình soạn đáp án kèm xem PDF.
-- Tạo ca thi; API phòng thi (lưu bài, khóa thiết bị, PDF mã hóa theo bài làm).
+- Tạo ca thi; API phòng thi (lưu bài, khóa thiết bị, PDF làm rối theo khóa riêng của bài làm).
 - Cổng học sinh bản đầu (danh sách ca thi, phòng chờ, kết quả, lịch sử).
 
 ## 1.0.0 – 24/09/2026

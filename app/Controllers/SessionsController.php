@@ -16,7 +16,11 @@ use App\Lib\Users;
 
 final class SessionsController extends Controller
 {
-    public static function sessionFor(int $id, string $need = 'results'): array
+    /**
+     * Lấy ca thi và kiểm tra quyền. $need: 'manage' | 'proctor' | 'results' hoặc mảng các mức
+     * (đủ một trong các mức là được; người quản lý ca thi luôn được phép).
+     */
+    public static function sessionFor(int $id, string|array $need = 'results'): array
     {
         $db = \App\Core\App::db();
         $s = $id > 0 ? $db->one('SELECT * FROM {exam_sessions} WHERE id = ?', [$id]) : null;
@@ -24,7 +28,11 @@ final class SessionsController extends Controller
             throw new HttpException(404, 'Không tìm thấy ca thi.');
         }
         $acc = Scope::sessionAccess($s);
-        if (!$acc[$need] && !$acc['manage']) {
+        $ok = $acc['manage'];
+        foreach ((array) $need as $n) {
+            $ok = $ok || !empty($acc[$n]);
+        }
+        if (!$ok) {
             throw new HttpException(403, 'Bạn không có quyền với ca thi này.');
         }
         $s['_access'] = $acc;
@@ -250,13 +258,19 @@ final class SessionsController extends Controller
 
     public function view(): void
     {
-        $s = self::sessionFor(Request::int('id'), 'results');
+        $s = self::sessionFor(Request::int('id'), ['proctor', 'results']);
         Attempts::finalizeExpired((int) $s['id']);
-        $exam = ExamsController::examFor((int) $s['exam_id']);
+        // Giám thị có thể không có quyền với đề thi -> đọc trực tiếp, chỉ hiện liên kết khi được xem đề
+        $exam = Attempts::exam((int) $s['exam_id']);
+        if (!$exam) {
+            throw new HttpException(404, 'Đề thi của ca này không còn tồn tại.');
+        }
         $students = Sessions::students((int) $s['id']);
         $stats = $this->db->one(
-            "SELECT COUNT(*) AS total, SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) AS doing, SUM(CASE WHEN status <> 'in_progress' THEN 1 ELSE 0 END) AS done,
-                    AVG(CASE WHEN status <> 'in_progress' THEN score END) AS avg_score, MAX(score) AS max_score
+            "SELECT COUNT(*) AS total, SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) AS doing,
+                    SUM(CASE WHEN status NOT IN ('in_progress', 'voided') THEN 1 ELSE 0 END) AS done,
+                    AVG(CASE WHEN status NOT IN ('in_progress', 'voided') THEN score END) AS avg_score, MAX(CASE WHEN status <> 'voided' THEN score END) AS max_score,
+                    COUNT(DISTINCT user_id) AS started
              FROM {attempts} WHERE session_id = ?",
             [(int) $s['id']]
         );
@@ -266,6 +280,7 @@ final class SessionsController extends Controller
             's' => $s,
             'o' => Sessions::options($s),
             'exam' => $exam,
+            'examLink' => Scope::examAccess($exam) !== 'none',
             'subject' => $exam['subject_id'] ? $this->db->one('SELECT * FROM {subjects} WHERE id = ?', [(int) $exam['subject_id']]) : null,
             'students' => $students,
             'stats' => $stats,

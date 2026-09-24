@@ -138,7 +138,7 @@ $color = $subject['color'] ?? '#2563eb';
   <div class="table-wrap"><table class="table compact">
     <thead><tr><th>Ca thi</th><th>Hình thức</th><th>Thời gian</th><th>Trạng thái</th><th class="center">Đã nộp</th><th class="col-actions"></th></tr></thead>
     <tbody><?php foreach ($sessions as $s): ?>
-      <tr><td><a class="row-link" href="<?= e(url('sessions/view', ['id' => $s['id']])) ?>"><?= e($s['name']) ?></a></td><td><?= e(Sessions::MODES[$s['mode']] ?? $s['mode']) ?></td><td class="text-sm"><?= e(fmt_dt($s['start_at'])) ?><?= $s['end_at'] ? ' → ' . e(fmt_dt($s['end_at'], 'H:i d/m')) : '' ?></td><td><?= Sessions::stateBadge($s) ?></td><td class="center"><?= (int) $s['done'] ?></td><td class="col-actions"><a class="btn btn-sm btn-ghost" href="<?= e(url('results/session', ['id' => $s['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a></td></tr>
+      <tr><td><a class="row-link" href="<?= e(url('sessions/view', ['id' => $s['id']])) ?>"><?= e($s['name']) ?></a></td><td><?= e(Sessions::MODES[$s['mode']] ?? $s['mode']) ?></td><td class="text-sm"><?= e(fmt_dt($s['start_at'])) ?><?= $s['end_at'] ? ' → ' . e(fmt_dt($s['end_at'], 'H:i d/m')) : '' ?></td><td><?= Sessions::stateBadge($s) ?></td><td class="center"><?= (int) $s['done'] ?></td><td class="col-actions"><?php if ($s['_access']['results']): ?><a class="btn btn-sm btn-ghost" href="<?= e(url('results/session', ['id' => $s['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a><?php endif; ?></td></tr>
     <?php endforeach; ?></tbody>
   </table></div>
   <?php endif; ?>

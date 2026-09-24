@@ -6,16 +6,8 @@ use App\Lib\Stats;
 use_charts();
 $n = (int) $desc['n'];
 $scale = $max ?: 10;
-$pass = 0;
-$good = 0;
-foreach ($hist as $b) {
-    if ($b['x'] * 10 / $scale >= 5) {
-        $pass += $b['n'];
-    }
-    if ($b['x'] * 10 / $scale >= 8) {
-        $good += $b['n'];
-    }
-}
+$pass = (int) $rate['pass'];
+$good = (int) $rate['good'];
 $alphas = array_values(array_filter(array_map(static fn($v) => $v['alpha'], $items), static fn($x) => $x !== null));
 $alpha = $alphas ? array_sum($alphas) / count($alphas) : null;
 $partNames = ['p1' => 'Phần I', 'p2' => 'Phần II', 'p3' => 'Phần III', 'essay' => 'Tự luận'];

@@ -23,21 +23,26 @@
 
 ## 1. Vai trò & quyền hạn
 
-| Chức năng | Quản trị | Giáo viên | Giám thị | Học sinh |
-|---|:---:|:---:|:---:|:---:|
-| Tổng quan, thông báo | ✅ | ✅ | ✅ | xem thông báo |
-| Học sinh, lớp | toàn trường | lớp được phân công | — | — |
-| Giáo viên, tài khoản, phân quyền | ✅ | — | — | — |
-| Môn thi & định dạng đề | ✅ | — | — | — |
-| Đề thi, mã đề, đáp án | tất cả | đề của mình + đề được chia sẻ | — | — |
-| Tạo ca thi | tất cả | ca của mình | — | — |
-| Giám sát, cộng giờ, mở khóa, thu bài | ✅ | ca của mình | ca được phân công | — |
-| Kết quả, chấm tự luận, chấm lại | ✅ | ca / lớp của mình | — | xem điểm của mình |
-| Thống kê, xuất Excel | ✅ | ✅ | — | — |
-| Cài đặt, sao lưu, nhật ký | ✅ | — | — | — |
-| Làm bài thi, luyện tập | — | — | — | ✅ |
+Hệ thống có sẵn 5 vai trò (quyền mặc định, quản trị có thể chỉnh):
 
-Quản trị viên có thể **tạo vai trò mới** (ví dụ *Tổ trưởng chuyên môn*, *Cán bộ khảo thí*) và tick từng quyền trong **Tài khoản & phân quyền → Vai trò & quyền**.
+| Chức năng | Quản trị | Cán bộ quản lý | Giáo viên | Giám thị | Học sinh |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Trang tổng quan | ✅ | ✅ | ✅ | ✅ | trang *Bài thi của em* |
+| Đăng thông báo | ✅ | ✅ | ✅ | — | xem thông báo |
+| Học sinh | toàn trường | xem toàn trường | lớp được phân công (thêm, sửa, nhập Excel, cấp lại mật khẩu) | — | — |
+| Lớp học | thêm, sửa, phân công | xem | xem | — | — |
+| Giáo viên, tài khoản, phân quyền | ✅ | xem giáo viên | — | — | — |
+| Môn thi & định dạng đề | ✅ | — | — | — | — |
+| Đề thi, mã đề, đáp án | tất cả | xem đề được chia sẻ | đề của mình; đề được chia sẻ chỉ **xem & dùng** | — | — |
+| Tạo / sửa ca thi | tất cả | tất cả | ca của mình | — | — |
+| Giám sát, cộng giờ, mở khóa, thu bài | ✅ | mọi ca | ca của mình / được phân công | ca được phân công (không thấy điểm) | — |
+| Kết quả, chấm tự luận, chấm lại | ✅ | xem mọi kết quả | ca / lớp của mình | — | xem điểm của mình |
+| Thống kê, xuất Excel | ✅ | ✅ | ca / lớp của mình | — | — |
+| Nhật ký hệ thống | ✅ | ✅ | — | — | — |
+| Cài đặt, sao lưu & phục hồi | ✅ | — | — | — | — |
+| Làm bài thi, luyện tập | — | — | — | — | ✅ |
+
+Quản trị viên có thể **tạo vai trò mới** (ví dụ *Tổ trưởng chuyên môn*, *Cán bộ khảo thí*) và tick từng quyền: **Tài khoản & phân quyền → Ma trận phân quyền** (trang *Phân quyền theo vai trò*) → **Thêm vai trò**.
 
 ---
 
@@ -56,7 +61,9 @@ flowchart TD
     S9 --> S10["10. Kết quả → Thống kê → Xuất Excel → Công bố điểm"]
 ```
 
-> 💡 Khi cài đặt, tick **Tạo dữ liệu mẫu** để có ngay 2 lớp, 20 học sinh, đề Toán minh họa (PDF + đáp án + lời giải) và một ca thi đang mở để thử toàn bộ quy trình.
+> 💡 Ở trình cài đặt, ô **Tạo dữ liệu mẫu để dùng thử** được chọn sẵn: có ngay 2 lớp, 20 học sinh, đề Toán minh họa (PDF + đáp án + lời giải), một ca thi đang mở và một ca luyện tập để thử toàn bộ quy trình. Bỏ chọn nếu cài để thi thật (hoặc sau này vào *Thông tin hệ thống → Xóa dữ liệu mẫu*).
+
+![Trang tổng quan của quản trị](images/03-tong-quan.jpg)
 
 ---
 
@@ -71,8 +78,8 @@ flowchart TD
 
 1. **Học sinh → Nhập từ Excel**. Tải *tệp mẫu* nếu cần ([mẫu tại đây](samples/mau-nhap-hoc-sinh.xlsx)).
 2. Chọn tệp `.xlsx` hoặc `.csv` → hệ thống **tự nhận dạng cột** (không cần đúng thứ tự) và hiển thị **bản xem trước**: dòng lỗi, trùng tài khoản, lớp mới sẽ được tạo.
-3. Chọn cách đặt **tên đăng nhập** (theo mã HS / họ tên + lớp / giữ nguyên trong tệp) và **mật khẩu** (ngẫu nhiên / theo ngày sinh / cố định).
-4. Bấm **Nhập** → tải **danh sách tài khoản** (Excel) hoặc **in phiếu tài khoản** để cắt phát cho học sinh.
+3. Chọn cách đặt **tên đăng nhập** (*Dùng Mã học sinh* hoặc *Tạo từ họ tên*, vd `annv`, `annv2`…; nếu tệp có cột *Tên đăng nhập* thì dùng cột đó) và **mật khẩu** (6 chữ số ngẫu nhiên / 8 ký tự chữ + số ngẫu nhiên / theo ngày sinh `ddmmyyyy` / giống tên đăng nhập / một mật khẩu chung); có thể bắt học sinh đổi mật khẩu khi đăng nhập lần đầu.
+4. Bấm **Xác nhận nhập N dòng** → **Xem & in N tài khoản vừa cấp** → **Tải Excel** hoặc **In phiếu tài khoản** để cắt phát cho học sinh. Danh sách mật khẩu chỉ lưu tạm **2 giờ** – hãy tải / in ngay.
 
 | Cột được nhận dạng | Tên cột có thể dùng |
 |---|---|
@@ -89,7 +96,7 @@ flowchart TD
 **Quản lý → Giáo viên**: thêm từng người hoặc nhập Excel ([mẫu](samples/mau-nhap-giao-vien.xlsx)) với các cột *Họ và tên, Mã GV, Môn, Lớp chủ nhiệm, Lớp dạy, Vai trò…*
 
 ### 3.4. Tài khoản
-- **Cấp lại mật khẩu**, **khóa / mở khóa**, **đăng xuất khỏi mọi thiết bị** ngay trong trang học sinh / tài khoản.
+- **Cấp lại mật khẩu**, **khóa / mở khóa tài khoản** ngay trong danh sách học sinh (từng em hoặc chọn nhiều em); **Buộc đăng xuất** khỏi mọi thiết bị ở *Tài khoản & phân quyền* (quản trị).
 - Có thể bắt học sinh **đổi mật khẩu lần đầu** đăng nhập.
 
 ---
@@ -104,17 +111,17 @@ flowchart TD
 | Vật lí, Hóa học, Sinh học, Địa lí | 18 câu | 4 câu | 6 câu × 0,25 đ | 50 phút |
 | Lịch sử, GDKT&PL, Tin học, Công nghệ | 24 câu | 4 câu | — | 50 phút |
 | Tiếng Anh, Pháp, Trung, Nhật, Hàn, Đức, Nga | 40 câu | — | — | 50 phút |
-| Ngữ văn | — | — | tự luận (Đọc hiểu 4 đ + Viết 6 đ) | 120 phút |
+| Ngữ văn | — | — | — (7 câu **tự luận**: Đọc hiểu 4 đ + Viết 6 đ, giáo viên chấm) | 120 phút |
 
 Có thể sửa số câu, thêm **câu tự luận**, đổi **độ dài ô trả lời ngắn** (mặc định 4 ký tự như phiếu của Bộ), và chọn **cách tính điểm**:
 
 | Cách tính | Mô tả |
 |---|---|
 | **Theo quy định Bộ GD&ĐT 2025** | Phần I 0,25 đ; Phần II đúng 1/2/3/4 ý = 0,1/0,25/0,5/1 đ; Phần III 0,5 đ (Toán) hoặc 0,25 đ |
-| **Tùy chỉnh** | Tự đặt điểm từng phần, trừ điểm câu sai, bảng điểm Phần II riêng hoặc tính theo từng ý, quy về thang điểm bất kỳ |
-| **Theo tỉ lệ** | Điểm = số câu/ý đúng ÷ tổng × thang điểm |
+| **Tùy chỉnh** | Tự đặt điểm từng phần, **trừ điểm câu sai Phần I**, Phần II theo bảng riêng / theo từng ý / chỉ tính khi đúng cả 4 ý, quy về thang điểm bất kỳ |
+| **Theo tỉ lệ** | Điểm = số câu/ý đúng ÷ tổng số câu/ý × (thang điểm − điểm tối đa phần tự luận) + điểm tự luận do giáo viên chấm |
 
-Tùy chọn chung: **làm tròn** (0,01 / 0,05 / 0,1 / 0,25 / 0,5 / 1), **không cho điểm âm**, so sánh Phần III **theo giá trị số** (`0,5` = `,5` = `0,50`) hoặc **đúng từng ký tự**.
+Tùy chọn chung: **làm tròn** (0,01 / 0,05 / 0,1 / 0,25 / 0,5 / 1), **không cho điểm âm**, so sánh Phần III **theo giá trị số** (`0,5` = `0,50`) hoặc **đúng từng ký tự**.
 
 ---
 
@@ -123,7 +130,7 @@ Tùy chọn chung: **làm tròn** (0,01 / 0,05 / 0,1 / 0,25 / 0,5 / 1), **không
 ![Trang đề thi](images/14-de-thi.jpg)
 
 ### 5.1. Tạo đề & tải PDF
-1. **Đề thi & đáp án → Tạo đề**: chọn môn (cấu trúc tự điền), tên đề, thời gian, có **chia sẻ** cho giáo viên khác không.
+1. **Đề thi & đáp án → Tạo đề thi**: chọn môn (cấu trúc tự điền), tên đề, thời gian, có **chia sẻ** cho giáo viên khác không.
 2. Thêm **mã đề** (`0101`, `0102`…) – hoặc nhập đáp án nhiều mã đề một lần, hệ thống tự tạo mã đề.
 3. Mỗi mã đề: **Tải PDF đề** và (tùy chọn) **PDF lời giải**. Tệp được tải theo từng khúc 512 KB nên **không vướng giới hạn tải lên của hosting**, và được **lưu trong CSDL**.
 
@@ -133,7 +140,7 @@ Tùy chọn chung: **làm tròn** (0,01 / 0,05 / 0,1 / 0,25 / 0,5 / 1), **không
 
 ![Soạn đáp án cạnh đề](images/13-nhap-dap-an.jpg)
 
-**Cách 1 – Soạn trực tiếp**: mở *Đáp án* của mã đề → màn hình 2 cột (đề PDF | phiếu) → bấm ô tròn để chọn đáp án đúng. Biểu tượng ✏️ ở mỗi câu để nhập **lời giải chi tiết, điểm riêng, mức độ, chủ đề, câu gốc** hoặc **hủy câu**. Nút **Nhập nhanh** cho phép gõ `ABCDBACDABCD` cho cả Phần I. Phím tắt `Ctrl + S` để lưu.
+**Cách 1 – Soạn trực tiếp**: bấm **Đề & đáp án** ở mã đề → màn hình 2 cột (đề PDF | phiếu) → bấm ô tròn để chọn đáp án đúng. Biểu tượng ✏️ ở mỗi câu để nhập **lời giải chi tiết, điểm riêng, mức độ, chủ đề, câu gốc** hoặc **hủy câu**. Nút **Nhập nhanh** cho phép gõ `ABCDBACDABCD` cho cả Phần I. Phím tắt `Ctrl + S` để lưu.
 
 **Cách 2 – Excel** ([mẫu](samples/mau-dap-an-toan.xlsx)). Hệ thống tự nhận dạng 3 kiểu bảng:
 
@@ -145,7 +152,7 @@ Tùy chọn chung: **làm tròn** (0,01 / 0,05 / 0,1 / 0,25 / 0,5 / 1), **không
 
 Quy ước đáp án:
 - **Phần I**: `A`/`B`/`C`/`D`; nhiều đáp án đúng: `AB`; hủy câu: `*`.
-- **Phần II**: 4 ký tự theo ý a–d: `Đ`/`D`/`1`/`T` = đúng, `S`/`0`/`F` = sai → ví dụ `ĐSĐĐ`, `1011`, `TFTT`. Hoặc 4 dòng a), b), c), d) riêng.
+- **Phần II**: 4 ký tự theo ý a–d: `Đ`/`D`/`1`/`T` = đúng, `S`/`0`/`F` = sai → ví dụ `ĐSĐĐ`, `1011`, `TFTT`. Hoặc 4 dòng riêng: cột *Câu* ghi `1a`, `1b`, `1c`, `1d`, đáp án `Đ` / `S`.
 - **Phần III**: số thập phân dùng dấu phẩy hoặc chấm (`-1,5`, `0.17`); nhiều đáp án chấp nhận: `1,5|1,50`.
 
 **Cách 3 – JSON** ([ví dụ đầy đủ](samples/dap-an-mau-toan.json)), dạng gọn:
@@ -184,7 +191,7 @@ Lời giải viết dạng văn bản có định dạng đơn giản: `**in đ�
 | Chống gian lận | Khóa thiết bị, tự nhận lại cùng máy, ghi nhận rời màn hình, bắt buộc toàn màn hình, số lần rời màn hình tối đa → *ghi nhận / tạm khóa / tự thu bài*, in chìm đề, chống tải PDF, nộp bài sớm nhất sau X phút |
 | Kết quả | Khi nào học sinh **xem điểm** (ngay / sau ca thi / khi công bố / không), khi nào **xem lại bài**, có hiện đáp án / lời giải / PDF lời giải không |
 
-Trong trang ca thi có các nút: **Bắt đầu ngay**, **Tạm dừng cả phòng**, **Cộng giờ cả phòng**, **Gửi thông báo**, **Kết thúc & thu bài**, **Công bố điểm**.
+Trong trang ca thi có các nút: **Bắt đầu ngay**, **Tạm dừng cả phòng** / **Tiếp tục ca thi**, **Cộng giờ cả phòng**, **Gửi thông báo**, **Kết thúc & thu bài**, **Công bố điểm**.
 
 ---
 
@@ -194,7 +201,8 @@ Trong trang ca thi có các nút: **Bắt đầu ngay**, **Tạm dừng cả ph�
 
 Mở **Ca thi → Giám sát** (tự cập nhật vài giây/lần):
 - Số học sinh **đang làm (có kết nối)**, **mất kết nối**, **chưa vào**, **đã nộp**, **có rời màn hình**.
-- Hộp **cảnh báo cần xử lý**: máy khác đang cố vào bài, bị khóa do vi phạm, mất kết nối lâu – có nút xử lý ngay.
+- Hộp **cảnh báo cần xử lý**: máy khác đang cố vào bài (nút *Mở khóa thiết bị*), bị khóa do vi phạm (nút *Mở khóa*), mất kết nối quá 2 phút.
+- **Giám thị được phân công** mở được trang này, điều khiển ca và xử lý sự cố; cột điểm chỉ hiện với người có quyền xem kết quả.
 - Mỗi học sinh: tiến độ, thời gian còn lại, số lần rời màn hình, thiết bị & IP, điểm (khi nộp); menu **⋮** để *cộng / bớt giờ, nhắn tin riêng, tạm dừng / tiếp tục, mở khóa thiết bị, mở khóa vi phạm, thu bài, mở lại bài, hủy bài cho thi lại*.
 - Chọn nhiều học sinh để thao tác hàng loạt; lọc *Cần xử lý*; tìm theo tên / SBD.
 - **Màn hình trình chiếu** (nút góc trên): đồng hồ giờ máy chủ, **mã vào phòng**, thời gian còn lại của ca – chiếu lên máy chiếu cho cả phòng.
@@ -208,10 +216,10 @@ flowchart TD
     Q{"Học sinh báo sự cố"} -->|"Máy treo / hỏng / mất điện"| A["Cho sang máy khác<br/>đăng nhập lại"]
     A --> A2{"Màn hình báo<br/>'đang làm trên máy khác'?"}
     A2 -->|Có| A3["Giám sát → ⋮ → <b>Mở khóa thiết bị</b><br/>(máy cũ bị thu hồi quyền)"]
-    A2 -->|Không| A4["Làm tiếp ngay – bài đã lưu"]
+    A2 -->|"Không (khóa thiết bị tắt, hoặc<br/>tự nhận lại: cùng IP + cùng trình duyệt)"| A4["Làm tiếp ngay – bài đã lưu"]
     A3 --> A4
     Q -->|"Mất mạng cả phòng"| B["<b>Tạm dừng cả phòng</b><br/>→ giờ của mọi em đứng yên"]
-    B --> B2["Có mạng lại → <b>Tiếp tục</b>"]
+    B --> B2["Có mạng lại → <b>Tiếp tục ca thi</b>"]
     Q -->|"Mất mạng 1 máy"| C["Cứ làm tiếp – bài lưu trên máy,<br/>tự gửi khi có mạng"]
     Q -->|"Bấm nộp nhầm"| D["⋮ → <b>Mở lại bài</b> (+ phút)"]
     Q -->|"Bị khóa do rời màn hình"| E["Xác minh → ⋮ → <b>Mở khóa vi phạm</b>"]
@@ -228,7 +236,7 @@ flowchart TD
 ### 8.1. Trước giờ thi
 1. Đăng nhập bằng tài khoản được phát.
 2. Trang **Bài thi của em** hiện các bài đang mở, sắp diễn ra (đếm ngược), đã làm.
-3. Bấm **Vào phòng thi** → đọc **quy định phòng thi**, xem **Kiểm tra máy** (trình duyệt, kết nối, đồng hồ) → nhập **mã vào phòng** (nếu có) → tick cam kết → **Bắt đầu làm bài**.
+3. Bấm **Vào phòng thi** → đọc **quy định phòng thi**, xem **Kiểm tra máy** (trình duyệt – có nạp thử bộ hiển thị đề, kết nối, đồng hồ) → nhập **mã vào phòng** (nếu có) → tick cam kết → **Bắt đầu làm bài**. Nếu mục *Trình duyệt hỗ trợ phòng thi* báo đỏ, hãy dùng **Chrome / Edge 109 trở lên** (hoặc Firefox, Safari bản mới).
 
 ![Phòng chờ](images/05-phong-cho.jpg)
 
@@ -254,7 +262,7 @@ Trên **điện thoại / máy tính bảng**, đề và phiếu chuyển thành
 ### 8.3. Khi có sự cố – em cần nhớ
 - **Mất mạng**: cứ làm tiếp, bài lưu trên máy và tự gửi khi có mạng.
 - **Máy treo, mất điện**: báo giám thị, đăng nhập lại (ở máy khác nếu cần) → vào lại bài thi → bài vẫn còn.
-- **Hiện hộp đăng nhập lại**: nhập mật khẩu là làm tiếp, thời gian không bị mất.
+- **Hiện hộp đăng nhập lại**: nhập mật khẩu là làm tiếp – bài làm vẫn còn nguyên, nhưng **đồng hồ vẫn chạy** trong lúc đăng nhập nên hãy nhập nhanh.
 - **Không rời khỏi màn hình làm bài** (chuyển tab, mở ứng dụng khác) – mọi lần rời đi đều bị ghi nhận.
 - Hết giờ, bài **tự động nộp**.
 
@@ -279,7 +287,7 @@ Trên **điện thoại / máy tính bảng**, đề và phiếu chuyển thành
 ![Chi tiết bài làm](images/24-chi-tiet-bai-lam.jpg)
 
 - **Chấm tự luận**: nhập điểm từng câu (có hướng dẫn chấm), nhận xét → **Lưu & chấm bài tiếp** để chuyển nhanh sang bài chờ chấm kế tiếp.
-- **Chấm lại** (toàn ca hoặc bài chọn): dùng sau khi sửa đáp án, hủy câu, đổi cách tính điểm.
+- **Chấm lại** (toàn ca hoặc bài chọn): khi lưu hoặc nhập lại đáp án, hệ thống **tự chấm lại** các bài đã nộp; dùng nút này sau khi đổi cách tính điểm hoặc muốn chắc chắn.
 - **In phiếu trả lời (bản lưu)**: mỗi học sinh 1 trang A4, có hoặc không tô đúng/sai – dùng lưu hồ sơ hoặc trả bài.
 
 ![In phiếu](images/21-in-phieu.jpg)
@@ -298,7 +306,7 @@ Trên **điện thoại / máy tính bảng**, đề và phiếu chuyển thành
 ![Thống kê](images/17-thong-ke.jpg)
 
 **Thống kê & phân tích → chọn ca thi** (lọc theo lớp):
-- Điểm trung bình, trung vị, độ lệch chuẩn, tỉ lệ ≥ 5 và ≥ 8, **độ tin cậy của đề (Cronbach α)**.
+- Điểm trung bình, trung vị, độ lệch chuẩn, tỉ lệ ≥ 5 và ≥ 8 (tính trên điểm thật), **độ tin cậy của đề (Cronbach α)** – tính riêng từng mã đề (cần ít nhất 5 bài), ô tổng hợp là trung bình các mã đề.
 - **Phổ điểm** theo mức 0,5 điểm (giống phổ điểm Bộ công bố), **xếp loại**, **so sánh lớp**, tỉ lệ điểm theo **từng phần**, theo **mức độ nhận thức** và **chủ đề** (nếu nhập kèm đáp án).
 - Danh sách **học sinh điểm cao** và **cần hỗ trợ thêm**.
 
@@ -308,11 +316,11 @@ Trên **điện thoại / máy tính bảng**, đề và phiếu chuyển thành
 
 | Chỉ số | Ý nghĩa | Cách đọc |
 |---|---|---|
-| **p** – độ khó | Tỉ lệ học sinh làm đúng (Phần II tính theo tỉ lệ ý đúng) | ≥ 0,8 dễ · 0,4–0,8 trung bình · ≤ 0,2 rất khó |
-| **D** – độ phân biệt | Tỉ lệ đúng của 27% học sinh điểm cao **trừ** 27% điểm thấp | ≥ 0,4 rất tốt · 0,3–0,4 tốt · 0,2–0,3 tạm · < 0,2 kém · **âm → nghi sai đáp án** |
+| **p** – độ khó | Tỉ lệ học sinh làm đúng (Phần II tính theo tỉ lệ ý đúng) | ≥ 0,8 dễ · 0,6–0,8 trung bình dễ · 0,4–0,6 trung bình · 0,2–0,4 khó · < 0,2 rất khó |
+| **D** – độ phân biệt | Tỉ lệ đúng của 27% học sinh điểm cao **trừ** 27% điểm thấp | ≥ 0,4 *phân biệt tốt* · 0,2–0,4 chấp nhận được · < 0,2 *phân biệt kém* · **âm → nghi sai đáp án** |
 | **r** – tương quan điểm câu | Câu làm đúng có đi cùng tổng điểm cao không | ≥ 0,3 tốt; gần 0 hoặc âm cần xem lại |
-| **Phân bố lựa chọn** | % học sinh chọn A/B/C/D/bỏ trống (ô xanh là đáp án) | Phương án nhiễu hút nhiều hơn đáp án → kiểm tra lại đáp án / đề |
-| **Cronbach α** | Độ nhất quán nội tại của cả đề | ≥ 0,8 cao · 0,7–0,8 chấp nhận được · < 0,6 thấp |
+| **Phân bố lựa chọn** | Phần I: % chọn A/B/C/D/bỏ trống (ô xanh là đáp án); Phần II: % đúng từng ý a–d; Phần III: các đáp số hay gặp kèm số lượt | Phương án nhiễu hút nhiều hơn đáp án → kiểm tra lại đáp án / đề |
+| **Cronbach α** | Độ nhất quán nội tại của đề (theo từng mã đề) | ≥ 0,9 rất cao · 0,8–0,9 cao · 0,7–0,8 chấp nhận được · 0,6–0,7 hơi thấp · < 0,6 thấp |
 
 ```mermaid
 flowchart LR
@@ -332,9 +340,9 @@ flowchart LR
 | Nhóm | Nội dung |
 |---|---|
 | Nhận diện & giao diện | Tên hệ thống, tên ngắn cạnh logo, tên đơn vị, cơ quan chủ quản, **chân trang / bản quyền** (dùng `{year}`, `{org}`, liên kết `[chữ](https://…)`), **màu chủ đạo**, tiêu đề & thông báo trang đăng nhập, **logo** và **favicon** (ảnh được thu nhỏ trên trình duyệt rồi lưu vào CSDL) |
-| Mặc định thi cử | Giá trị mặc định khi tạo ca thi mới: xem điểm, xem lại bài, khóa thiết bị, tự nhận lại cùng máy, toàn màn hình, số lần rời màn hình, in chìm, mã hóa PDF, thời gian ân hạn, độ trễ lưu, nhịp kiểm tra kết nối |
+| Mặc định thi cử | Giá trị mặc định **cho ca thi tạo mới** (ca đã tạo giữ cài đặt riêng, sửa trong từng ca): xem điểm, xem lại bài, khóa thiết bị, tự nhận lại cùng máy, toàn màn hình, số lần rời màn hình, in chìm, chống tải tệp đề, thời gian ân hạn. Riêng **độ trễ lưu tự động** và **nhịp kiểm tra kết nối** áp dụng ngay cho mọi ca |
 | Xếp loại | Ngưỡng Giỏi / Khá / Trung bình / Yếu (thang 10, tự quy đổi) |
-| Bảo mật | Số lần sai mật khẩu, thời gian khóa, giới hạn theo IP (phòng máy chung IP nên để cao), thời gian giữ phiên, độ dài mật khẩu tối thiểu, học sinh tự đổi mật khẩu |
+| Bảo mật | Số lần sai mật khẩu, thời gian tạm khóa, giới hạn sai theo IP trong cùng khoảng thời gian đó (phòng máy chung IP nên để cao), thời gian giữ phiên, độ dài mật khẩu tối thiểu, học sinh tự đổi mật khẩu |
 | Bảo trì | Bật chế độ bảo trì (chỉ quản trị đăng nhập được) và nội dung thông báo |
 
 **Quản lý → Thông báo**: đăng thông báo cho *mọi người / học sinh / giáo viên / một lớp*, ghim lên đầu, đặt thời gian hiển thị. Học sinh thấy ở trang chủ, giáo viên thấy ở trang tổng quan.
@@ -348,13 +356,13 @@ flowchart LR
 - **Sao lưu**: *Hệ thống → Sao lưu & phục hồi → Tải bản sao lưu (.tnbak)* – chứa **toàn bộ dữ liệu** (tài khoản, đề PDF, đáp án, bài làm, cài đặt, logo, tùy chọn kèm nhật ký). Nên tải sau mỗi đợt thi.
 - Với SQLite: **Tải tệp .sqlite** (mở được bằng *DB Browser for SQLite*).
 - **Phục hồi**: chọn tệp `.tnbak` → kiểm tra thông tin bản sao lưu → gõ `PHỤC HỒI` để xác nhận → theo dõi thanh tiến trình. Sau khi xong, mọi người phải đăng nhập lại.
-- **Chuyển SQLite ↔ MySQL / đổi hosting**: sao lưu ở hệ thống cũ → cài mới (chọn loại CSDL mong muốn) → phục hồi.
+- **Chuyển SQLite ↔ MySQL / đổi hosting**: sao lưu ở hệ thống cũ → cài mới (chọn loại CSDL mong muốn; nếu cài lại trên cùng hosting thì xóa `storage/config.php` trước để mở lại trình cài đặt) → phục hồi.
 
 **Hệ thống → Thông tin hệ thống**: kiểm tra phiên bản PHP, tiện ích, giới hạn của hosting, dung lượng CSDL, số người trực tuyến; các nút **Dọn dẹp** (tải lên dở dang, tệp không dùng, phiên hết hạn, nhật ký cũ), **Tối ưu CSDL**, **Xóa dữ liệu mẫu**; lệnh / đường dẫn **cron** (tùy chọn).
 
 ![Thông tin hệ thống](images/25-he-thong.jpg)
 
-**Hệ thống → Nhật ký**: hoạt động của người dùng (lọc theo loại, người, ngày; xuất Excel), lỗi hệ thống (có mã tra cứu hiển thị cho người dùng khi gặp lỗi), lịch sử đăng nhập.
+**Hệ thống → Nhật ký hệ thống**: hoạt động của người dùng (lọc theo loại, người, ngày; xuất Excel), lỗi hệ thống (có mã tra cứu hiển thị cho người dùng khi gặp lỗi), lịch sử đăng nhập.
 
 ---
 
@@ -381,13 +389,13 @@ Phụ thuộc hosting. Mỗi học sinh gửi 1 yêu cầu nhỏ khi tô (gom 1,
 <details>
 <summary><b>Phòng máy dùng chung một địa chỉ IP, có vấn đề gì không?</b></summary>
 
-Có 2 điểm cần chỉnh trong *Cài đặt*: tăng **giới hạn đăng nhập sai theo IP** (vì cả phòng dùng chung IP), và nếu muốn khóa thiết bị thật chặt thì **tắt “Tự nhận lại bài trên cùng máy”** (vì các máy trong phòng có cùng IP và cùng trình duyệt).
+Có 2 điểm cần chỉnh: tăng **giới hạn đăng nhập sai theo IP** trong *Cài đặt → Bảo mật* (vì cả phòng dùng chung IP); và nếu muốn khóa thiết bị thật chặt thì **tắt “Tự nhận lại cùng máy”** (vì các máy trong phòng cùng IP, cùng trình duyệt). Tùy chọn trong *Cài đặt → Mặc định thi cử* chỉ áp dụng cho ca tạo mới – với ca đã tạo, vào **Sửa ca thi** để tắt.
 </details>
 
 <details>
 <summary><b>Hosting giới hạn số tệp (inode) – hệ thống có tạo nhiều tệp không?</b></summary>
 
-Không. Đề PDF, logo, phiên đăng nhập, nhật ký, bản phục hồi tải lên… đều lưu **trong CSDL**. Thư mục `storage/` chỉ có `config.php` (và tệp SQLite nếu chọn SQLite). Trang *Thông tin hệ thống* hiển thị số tệp trong `storage/`.
+Không. Đề PDF, logo, phiên đăng nhập, nhật ký, bản phục hồi tải lên… đều lưu **trong CSDL**. Thư mục `storage/` chỉ có `config.php`, `.htaccess`, `index.html` (và tệp SQLite cùng 2 tệp tạm `-wal` / `-shm` nếu chọn SQLite) – số tệp không tăng theo dữ liệu. Trang *Thông tin hệ thống* hiển thị số tệp trong `storage/`.
 </details>
 
 <details>

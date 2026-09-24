@@ -2,10 +2,12 @@
    Trình xem đề PDF (PDF.js) – hiển thị bằng canvas, không có nút tải/in,
    có hình mờ (watermark) tên thí sinh, tải lười từng trang, tự vừa khung khi kéo cột.
    ===================================================================== */
+import './compat.js'; // bổ sung hàm còn thiếu trên trình duyệt cũ – phải nạp trước PDF.js
 import * as pdfjsLib from '../vendor/pdfjs/pdf.min.js';
 
 const ASSETS = new URL('../', import.meta.url);
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('vendor/pdfjs/pdf.worker.min.js', ASSETS).href;
+// Worker bọc: nạp compat.js rồi mới nạp worker gốc của PDF.js (giữ ?v= để làm mới bộ nhớ đệm khi nâng cấp)
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdf.worker.js' + new URL(import.meta.url).search, import.meta.url).href;
 
 const ZOOMS = [0.5, 0.67, 0.75, 0.9, 1, 1.1, 1.25, 1.5, 1.75, 2, 2.5, 3];
 const ic = (n, c) => (window.TNIcon ? window.TNIcon(n, c) : '');

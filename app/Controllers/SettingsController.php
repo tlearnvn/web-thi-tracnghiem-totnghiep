@@ -52,7 +52,7 @@ final class SettingsController extends Controller
             'security' => [
                 'login_max_attempts' => ['int', 'Số lần nhập sai mật khẩu tối đa', 'Vượt quá sẽ tạm khóa đăng nhập tài khoản đó.', 'min' => 3, 'max' => 50],
                 'login_lock_minutes' => ['int', 'Thời gian tạm khóa (phút)', '', 'min' => 1, 'max' => 120],
-                'login_ip_max_attempts' => ['int', 'Số lần sai tối đa của một địa chỉ IP / 15 phút', 'Phòng máy dùng chung IP nên đặt cao (≥ 100).', 'min' => 10, 'max' => 5000],
+                'login_ip_max_attempts' => ['int', 'Số lần sai tối đa của một địa chỉ IP', 'Tính trong khoảng "thời gian tạm khóa" ở trên. Phòng máy dùng chung IP nên đặt cao (≥ 100).', 'min' => 10, 'max' => 5000],
                 'session_lifetime_hours' => ['int', 'Phiên đăng nhập tồn tại (giờ)', 'Tính từ lần hoạt động cuối. Nên ≥ thời gian ca thi dài nhất.', 'min' => 1, 'max' => 72],
                 'password_min_length' => ['int', 'Độ dài mật khẩu tối thiểu', '', 'min' => 4, 'max' => 32],
                 'student_can_change_password' => ['bool', 'Học sinh được tự đổi mật khẩu', ''],

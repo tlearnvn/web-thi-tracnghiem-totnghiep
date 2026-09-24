@@ -1,0 +1,8 @@
+# Tài liệu & tệp mẫu (đề/lời giải mẫu) – chỉ để đọc trên GitHub, không phục vụ qua web
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

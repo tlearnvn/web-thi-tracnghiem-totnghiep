@@ -30,6 +30,7 @@ $state = $_GET['state'] ?? '';
     <tbody>
     <?php foreach ($rows as $r):
         $st = Sessions::state($r);
+        $acc = \App\Core\Scope::sessionAccess($r);
         $tg = max(1, (int) $r['_targets']); ?>
       <tr>
         <td>
@@ -46,8 +47,8 @@ $state = $_GET['state'] ?? '';
         </td>
         <td class="col-actions">
           <div class="table-actions">
-            <?php if (in_array($st, ['running', 'paused', 'upcoming'], true)): ?><a class="btn btn-sm btn-soft" href="<?= e(url('monitor', ['id' => $r['id']])) ?>"><?= icon('monitor') ?> Giám sát</a><?php endif; ?>
-            <a class="btn btn-sm btn-ghost" href="<?= e(url('results/session', ['id' => $r['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a>
+            <?php if (($acc['proctor'] || $acc['results']) && in_array($st, ['running', 'paused', 'upcoming'], true)): ?><a class="btn btn-sm btn-soft" href="<?= e(url('monitor', ['id' => $r['id']])) ?>"><?= icon('monitor') ?> Giám sát</a><?php endif; ?>
+            <?php if ($acc['results']): ?><a class="btn btn-sm btn-ghost" href="<?= e(url('results/session', ['id' => $r['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a><?php endif; ?>
           </div>
         </td>
       </tr>

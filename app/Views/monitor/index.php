@@ -9,6 +9,7 @@ $cfg = [
     'attemptUrl' => url('results/attempt'),
     'canAct' => (bool) $canAct,
     'canManage' => (bool) $canManage,
+    'canResults' => (bool) $canResults,
     'total' => (int) $total,
     'maxViol' => (int) $o['max_violations'],
     'deviceLock' => (int) $o['device_lock'],
@@ -23,7 +24,7 @@ $cfg = [
   </div>
   <div class="actions">
     <a class="btn" href="<?= e(url('monitor/board', ['id' => $s['id']])) ?>" target="_blank" rel="noopener"><?= icon('monitor') ?> Màn hình trình chiếu</a>
-    <a class="btn" href="<?= e(url('results/session', ['id' => $s['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a>
+    <?php if ($canResults): ?><a class="btn" href="<?= e(url('results/session', ['id' => $s['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a><?php endif; ?>
   </div>
 </div>
 
@@ -82,9 +83,9 @@ $cfg = [
     <div class="table-wrap" style="max-height:calc(100vh - 250px)"><table class="table table-monitor">
       <thead><tr>
         <?php if ($canAct): ?><th style="width:34px"><input type="checkbox" id="chk-all" aria-label="Chọn tất cả"></th><?php endif; ?>
-        <th>Học sinh</th><th>Trạng thái</th><th style="min-width:130px">Tiến độ</th><th class="text-right">Còn lại</th><th class="text-center" title="Số lần rời màn hình">Rời MH</th><th class="hide-sm">Thiết bị</th><th class="text-right">Điểm</th><th class="col-actions"></th>
+        <th>Học sinh</th><th>Trạng thái</th><th style="min-width:130px">Tiến độ</th><th class="text-right">Còn lại</th><th class="text-center" title="Số lần rời màn hình">Rời MH</th><th class="hide-sm">Thiết bị</th><?php if ($canResults): ?><th class="text-right">Điểm</th><?php endif; ?><th class="col-actions"></th>
       </tr></thead>
-      <tbody id="rows"><tr><td colspan="9"><div class="empty" style="padding:30px"><span class="spinner"></span></div></td></tr></tbody>
+      <tbody id="rows"><tr><td colspan="<?= 7 + ($canAct ? 1 : 0) + ($canResults ? 1 : 0) ?>"><div class="empty" style="padding:30px"><span class="spinner"></span></div></td></tr></tbody>
     </table></div>
   </div>
   <div class="stack" style="gap:20px">

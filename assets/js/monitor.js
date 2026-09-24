@@ -119,15 +119,16 @@
       (r.blocked ? '<div class="text-xs text-danger fw-600">' + ic('shield-alert', 'sm') + ' Máy khác đang cố vào bài</div>' : '') +
       (r.free && r.status === 'in_progress' ? '<div class="text-xs text-success">' + ic('lock-open', 'sm') + ' Đã mở khóa, chờ đăng nhập</div>' : '') : '';
     var score = r.st === 'done' ? (r.score !== null ? '<span class="score-pill ' + scoreCls(r.score) + '">' + TN.fmtScore(r.score) + '</span>' + (r.pending ? '<div class="text-xs text-warning">chờ chấm TL</div>' : '') : '–') : '';
-    return {
+    var out = {
       person: '<div class="person"><div style="min-width:0"><div class="fw-600">' + esc(r.name) + (r.extra ? ' <span class="badge" title="Không còn trong danh sách dự thi">ngoài DS</span>' : '') + '</div><div class="sub">' + esc(r.code) + (r.cls ? ' · ' + esc(r.cls) : '') + (r.n > 1 ? ' · lần ' + r.no : '') + '</div></div></div>',
       status: '<span class="badge badge-' + stInfo[1] + '">' + dot + esc(stInfo[0]) + '</span>' + (sub ? '<div class="text-xs text-muted mt-1">' + esc(sub) + '</div>' : ''),
       prog: r.aid ? '<div class="progress-label"><span>' + (r.answered || 0) + '/' + total + ' câu</span><span>' + pct + '%</span></div><div class="progress progress-sm"><span style="width:' + pct + '%"></span></div>' : '',
       rem: remTxt,
       viol: viol,
-      dev: dev,
-      score: score
+      dev: dev
     };
+    if (C.canResults) out.score = score;
+    return out;
   }
   function scoreCls(v) { var x = +v; return x >= 8 ? 'score-hi' : x >= 6.5 ? 'score-mid' : x >= 5 ? 'score-lo' : 'score-fail'; }
 
@@ -150,7 +151,7 @@
       it('void', 'rotate-ccw', 'Hủy bài & cho thi lại từ đầu', 'danger');
       if (C.canManage) it('delete', 'trash-2', 'Xóa hẳn bài làm', 'danger');
     }
-    items.push('<hr><a href="' + esc(C.attemptUrl + '&id=' + r.aid) + '">' + ic('eye') + ' Chi tiết bài làm & nhật ký</a>');
+    if (C.canResults) items.push('<hr><a href="' + esc(C.attemptUrl + '&id=' + r.aid) + '">' + ic('eye') + ' Chi tiết bài làm & nhật ký</a>');
     return '<div class="dropdown"><button type="button" class="btn btn-sm btn-ghost btn-icon" data-dropdown aria-label="Thao tác">' + ic('ellipsis-vertical') + '</button><div class="dropdown-menu">' + items.join('') + '</div></div>';
   }
 
@@ -166,7 +167,7 @@
         tr = d.createElement('tr');
         tr.dataset.uid = r.uid;
         tr.innerHTML = (C.canAct ? '<td><input type="checkbox" data-chk></td>' : '') +
-          '<td data-k="person"></td><td data-k="status"></td><td data-k="prog"></td><td class="text-right nowrap" data-k="rem"></td><td class="text-center" data-k="viol"></td><td class="hide-sm" data-k="dev"></td><td class="text-right" data-k="score"></td><td class="col-actions" data-k="menu"></td>';
+          '<td data-k="person"></td><td data-k="status"></td><td data-k="prog"></td><td class="text-right nowrap" data-k="rem"></td><td class="text-center" data-k="viol"></td><td class="hide-sm" data-k="dev"></td>' + (C.canResults ? '<td class="text-right" data-k="score"></td>' : '') + '<td class="col-actions" data-k="menu"></td>';
         S.rows[r.uid] = tr;
         tr._c = {};
       }
@@ -189,7 +190,7 @@
     Object.keys(S.rows).forEach(function (uid) { if (!seen[uid]) { S.rows[uid].remove(); delete S.rows[uid]; } });
     var empty = d.getElementById('rows-empty');
     if (!shown) {
-      if (!empty) { empty = d.createElement('tr'); empty.id = 'rows-empty'; empty.innerHTML = '<td colspan="9" class="text-center text-muted" style="padding:28px">Không có học sinh phù hợp bộ lọc.</td>'; }
+      if (!empty) { empty = d.createElement('tr'); empty.id = 'rows-empty'; empty.innerHTML = '<td colspan="' + (7 + (C.canAct ? 1 : 0) + (C.canResults ? 1 : 0)) + '" class="text-center text-muted" style="padding:28px">Không có học sinh phù hợp bộ lọc.</td>'; }
       tbody.appendChild(empty);
     } else if (empty) empty.remove();
     syncBulk();

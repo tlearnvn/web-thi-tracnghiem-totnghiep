@@ -46,6 +46,7 @@ final class Attempts
         'resume_time' => ['Tiếp tục tính giờ', 'circle-play'],
         'force_submit' => ['Giám thị thu bài', 'hourglass'],
         'reopen' => ['Mở lại bài để làm tiếp', 'lock-open'],
+        'void' => ['Giám thị hủy bài – cho thi lại từ đầu', 'rotate-ccw'],
         'violation_lock' => ['Bị tạm khóa do vi phạm', 'lock'],
         'violation_unlock' => ['Giám thị mở khóa vi phạm', 'lock-open'],
         'multi_tab' => ['Mở bài thi ở nhiều tab', 'layers'],

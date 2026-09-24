@@ -28,16 +28,16 @@ Viết bằng PHP thuần, chạy được trên shared hosting, lưu toàn bộ
 |---|---|---|
 | 📝 | **Đúng định dạng 2025** | Phần I (nhiều lựa chọn A/B/C/D), Phần II (đúng/sai 4 ý a–d), Phần III (trả lời ngắn tô số, dấu “−”, dấu phẩy), tự luận tùy chọn. Có sẵn cấu trúc 18 môn: Toán, Văn, Lí, Hóa, Sinh, Sử, Địa, GDKT&PL, Tin, Công nghệ (Công nghiệp / Nông nghiệp), 7 ngoại ngữ. |
 | 🖥️ | **Phòng thi 2 cột** | Đề PDF (trái) + phiếu trả lời mẫu của Bộ (phải), **kéo thanh chia mượt**, thu gọn từng bên; trên điện thoại tự chuyển thành 2 tab. Phím tắt A/B/C/D, đánh dấu câu (F), gõ trực tiếp đáp số Phần III. |
-| 🔒 | **Đề xem được – không tải được** | PDF hiển thị bằng canvas (PDF.js), **mã hóa theo từng bài làm**, không mở được đường dẫn trực tiếp, chặn in / lưu / chuột phải, **in chìm họ tên + SBD** lên trang đề. |
+| 🔒 | **Đề xem được – không tải được** | PDF hiển thị bằng canvas (PDF.js), dữ liệu **làm rối theo khóa riêng của từng bài làm**, không mở được đường dẫn trực tiếp, chặn in / lưu / chuột phải, **in chìm họ tên + SBD** lên trang đề. |
 | 💾 | **Không mất bài** | Lưu tự động sau mỗi lần tô (có số thứ tự chống ghi đè), bản dự phòng trên máy, **làm tiếp khi mất mạng**, tự đồng bộ khi có mạng, đồng hồ theo giờ máy chủ, tự thu bài khi hết giờ (có thời gian ân hạn). |
 | 🛟 | **Xử lý sự cố** | Máy hỏng → đăng nhập máy khác + giám thị *mở khóa thiết bị*; hết phiên đăng nhập → đăng nhập lại ngay trong phòng thi; mở nhiều tab → chặn ghi đè; tạm dừng cả phòng / từng em; cộng giờ; mở lại bài nộp nhầm; hủy bài cho thi lại. |
 | 👀 | **Giám sát trực tiếp** | Bảng theo dõi từng học sinh (đang làm, mất kết nối, số câu, thời gian còn lại, rời màn hình…), cảnh báo cần xử lý, nhắn tin cả phòng / riêng, màn hình trình chiếu mã phòng thi. |
-| 🧮 | **Chấm điểm linh hoạt** | Theo quy định của Bộ 2025 (Phần II: 0,1 / 0,25 / 0,5 / 1 điểm), tùy chỉnh điểm từng phần, trừ điểm câu sai, quy đổi thang điểm, theo tỉ lệ; điểm riêng từng câu, hủy câu, nhiều đáp án chấp nhận; chấm lại hàng loạt; chấm tự luận. |
+| 🧮 | **Chấm điểm linh hoạt** | Theo quy định của Bộ 2025 (Phần II: 0,1 / 0,25 / 0,5 / 1 điểm), tùy chỉnh điểm từng phần (Phần II theo bảng / theo từng ý / chỉ khi đúng cả 4 ý), trừ điểm câu sai Phần I, quy đổi thang điểm, theo tỉ lệ; điểm riêng từng câu, hủy câu, nhiều đáp án chấp nhận; chấm lại hàng loạt; chấm tự luận. |
 | 📊 | **Thống kê & phân tích** | Phổ điểm, xếp loại, so sánh lớp, theo phần / mức độ / chủ đề; **phân tích câu hỏi** (độ khó p, độ phân biệt D, tương quan r, phương án nhiễu, Cronbach α). Xuất **Excel 4 trang**. |
 | 📥 | **Nhập dữ liệu** | Học sinh, giáo viên từ **Excel** (tự nhận cột, xem trước, chuẩn hóa họ tên, tạo tài khoản & in phiếu); đáp án, mã đề, lời giải từ **Excel hoặc JSON** (3 kiểu bảng thường gặp). Lời giải hỗ trợ công thức toán (KaTeX). |
-| 👥 | **Phân quyền đầy đủ** | Quản trị, giáo viên (chỉ thấy lớp/đề của mình), giám thị, học sinh + vai trò tùy chỉnh với ma trận quyền. |
+| 👥 | **Phân quyền đầy đủ** | Quản trị, cán bộ quản lý, giáo viên (chỉ thấy lớp/đề của mình), giám thị (chỉ ca được phân công), học sinh + vai trò tùy chỉnh với ma trận quyền. |
 | 🗄️ | **1 tệp SQLite hoặc MySQL** | Chọn lúc cài đặt. **Mọi thứ nằm trong CSDL**: đề PDF, logo, phiên đăng nhập, nhật ký → **không tăng inode** trên hosting. Sao lưu `.tnbak` chuyển đổi qua lại SQLite ↔ MySQL. |
-| 🎨 | **Tùy biến** | Tên hệ thống, logo, favicon, chân trang (copyright), màu chủ đạo, giao diện sáng/tối. Phiên bản **tự tăng** mỗi lần sửa mã. |
+| 🎨 | **Tùy biến** | Tên hệ thống, logo, favicon, chân trang (copyright), màu chủ đạo, giao diện sáng/tối. Phiên bản **tự tăng** mỗi lần commit mã nguồn (git hook). |
 | 🕖 | **UTC+7 & shared hosting** | Giờ Việt Nam ở mọi nơi, cấu hình sẵn thời gian chạy dài (không bị ngắt khi nhập/xuất), tải tệp theo từng khúc 512 KB (vượt giới hạn upload của hosting), không cần cron. |
 
 ## 📸 Ảnh minh họa
@@ -62,10 +62,10 @@ Viết bằng PHP thuần, chạy được trên shared hosting, lưu toàn bộ
 
 | Thành phần | Yêu cầu |
 |---|---|
-| PHP | **8.0 trở lên** (khuyên dùng 8.1+; đã kiểm thử trên PHP 8.4), tiện ích `pdo_sqlite` hoặc `pdo_mysql`, `mbstring`, `zlib`, `json` (khuyên có `intl`, `opcache`) |
+| PHP | **8.0 trở lên** (khuyên dùng 8.1+; đã kiểm thử trên PHP 8.4), tiện ích `pdo` + `pdo_sqlite` hoặc `pdo_mysql`, `mbstring`, `zlib`, `SimpleXML` (khuyên có `intl`, `opcache`) – trình cài đặt tự kiểm tra |
 | CSDL | **SQLite 3** (1 tệp, không cần cấu hình) **hoặc** MySQL 5.7+ / MariaDB 10.3+ (đã kiểm thử SQLite 3.45 và MariaDB 10.11) |
 | Máy chủ web | Apache / LiteSpeed (có sẵn `.htaccess`), Nginx (xem mẫu bên dưới), IIS (có sẵn `web.config`) |
-| Trình duyệt | Chrome / Edge / Firefox / Safari bản mới; giao diện tránh cú pháp quá mới để chạy được cả trên Chrome 109 (bản cuối cho Windows 7) |
+| Trình duyệt | **Chrome / Edge 109 trở lên** (đã kiểm thử trên Chromium 109 – bản cuối cho Windows 7 – và Chromium 141), Firefox, Safari bản mới. Trang *phòng chờ* tự kiểm tra trình duyệt và nạp thử bộ hiển thị đề trước khi vào thi |
 
 ### Các bước (shared hosting / cPanel)
 
@@ -74,8 +74,15 @@ Viết bằng PHP thuần, chạy được trên shared hosting, lưu toàn bộ
 3. Trình cài đặt tự **kiểm tra máy chủ**, sau đó chọn loại CSDL:
    - **SQLite** – để mặc định là xong (tệp được đặt trong `storage/` với tên ngẫu nhiên, đã chặn truy cập từ web);
    - **MySQL** – nhập máy chủ, tên CSDL, tài khoản (bấm *Kiểm tra kết nối*), có thể đặt tiền tố bảng.
-4. Nhập **tên đơn vị**, tài khoản **quản trị**; có thể tick **tạo dữ liệu mẫu** để dùng thử ngay (2 lớp, 20 học sinh, đề Toán minh họa có PDF + đáp án + lời giải).
+4. Nhập **tên đơn vị**, tài khoản **quản trị**. Ô **Tạo dữ liệu mẫu để dùng thử** được chọn sẵn (2 lớp, 20 học sinh, đề Toán minh họa có PDF + đáp án + lời giải) – bỏ chọn nếu cài để thi thật.
 5. Bấm **Cài đặt** → đăng nhập. Sau khi dùng thử, vào *Thông tin hệ thống → Xóa dữ liệu mẫu*.
+
+<details>
+<summary><b>Ảnh màn hình trình cài đặt</b></summary>
+
+<img src="docs/images/02-cai-dat.jpg" width="640" alt="Trình cài đặt: kiểm tra máy chủ, chọn SQLite hoặc MySQL, thông tin đơn vị và tài khoản quản trị">
+
+</details>
 
 <details>
 <summary><b>Tài khoản mẫu</b> (khi chọn tạo dữ liệu mẫu)</summary>
@@ -83,7 +90,7 @@ Viết bằng PHP thuần, chạy được trên shared hosting, lưu toàn bộ
 | Vai trò | Tài khoản | Mật khẩu |
 |---|---|---|
 | Giáo viên | `gv.toan` | `123456` |
-| Giám thị | `giamthi` | `123456` |
+| Giám thị (được phân công ca thi mẫu) | `giamthi` | `123456` |
 | Học sinh | `hs12a101` … `hs12a110`, `hs12a201` … `hs12a210` | `123456` |
 
 </details>
@@ -99,8 +106,8 @@ server {
     index index.php;
     client_max_body_size 64m;
 
-    # Chặn thư mục & tệp nhạy cảm (CSDL SQLite, cấu hình, mã nguồn)
-    location ~ ^/(app|storage|tools|docs/samples/.*\.json)(/|$) { deny all; return 404; }
+    # Chặn thư mục & tệp nhạy cảm (CSDL SQLite, cấu hình, mã nguồn, tài liệu)
+    location ~ ^/(app|storage|tools|docs)(/|$) { return 404; }
     location ~ /\.(?!well-known) { deny all; }
     location ~* \.(sqlite|sqlite3|db|log|ini|sh|md|lock|bak|sql)$ { deny all; }
 
@@ -113,10 +120,10 @@ server {
         fastcgi_read_timeout 300;
     }
 
-    location ~* \.(css|js|mjs|woff2|svg|png|jpg|webp|wasm)$ { expires 30d; add_header Cache-Control "public"; }
-    types { application/javascript mjs; application/wasm wasm; }
+    location ~* \.(css|js|woff2|svg|png|jpg|webp|wasm)$ { expires 30d; add_header Cache-Control "public"; }
 }
 ```
+Không khai báo khối `types { … }` bên trong `server` – nó **thay thế toàn bộ** `mime.types` (CSS/JS sẽ sai kiểu và trang hỏng). Nếu Nginx đời cũ chưa có dòng `application/wasm wasm;`, hãy thêm vào `/etc/nginx/mime.types`.
 </details>
 
 <details>
@@ -131,7 +138,7 @@ php -S 127.0.0.1:8080 -t .
 Máy chủ tích hợp của PHP chỉ dùng để thử nghiệm; khi thi thật hãy dùng Apache / Nginx / LiteSpeed.
 </details>
 
-> **Cron là tùy chọn.** Bài quá giờ được tự thu khi có bất kỳ ai truy cập. Nếu hosting có cron, đặt `php /duong-dan/cron.php` mỗi 5 phút (hoặc gọi URL có mã bí mật hiển thị ở *Thông tin hệ thống*).
+> **Cron là tùy chọn.** Bài quá giờ được tự thu mỗi khi có người mở các trang liên quan (phòng thi, cổng học sinh, tổng quan, ca thi, giám sát, kết quả, thống kê). Nếu hosting có cron, đặt `php /duong-dan/cron.php` mỗi 5 phút (hoặc gọi URL có mã bí mật hiển thị ở *Thông tin hệ thống*).
 
 ## 🧭 Quy trình tổ chức một kỳ thi
 
@@ -165,22 +172,22 @@ flowchart TB
         MY[("🐬 MySQL / MariaDB")]
     end
     HS -- "JSON: state · save · ping · event · submit" --> FC
-    HS -- "PDF đã mã hóa theo bài làm" --> FC
+    HS -- "PDF làm rối theo khóa của bài làm" --> FC
     GV -- "HTML + JSON" --> FC
     CORE --> SQ
     CORE -.-> MY
 ```
 
-**Mọi thứ trong một CSDL** – kể cả tệp: tệp PDF / logo được chia thành khối 512 KB lưu trong bảng `file_chunks`, phiên đăng nhập trong `web_sessions`, nhật ký trong `audit_logs` / `error_logs`. Thư mục `storage/` chỉ có tệp cấu hình (và tệp SQLite nếu dùng SQLite).
+**Mọi thứ trong một CSDL** – kể cả tệp: tệp PDF / logo được chia thành khối 512 KB lưu trong bảng `file_chunks`, phiên đăng nhập trong `web_sessions`, nhật ký trong `audit_logs` / `error_logs`. Thư mục `storage/` chỉ chứa `config.php` (cùng tệp SQLite và 2 tệp tạm `-wal` / `-shm` khi dùng SQLite) – **số tệp không tăng theo dữ liệu**.
 
 ### Mô hình dữ liệu chính
 
 ```mermaid
 erDiagram
-    CLASSES ||--o{ USERS : "có học sinh"
+    CLASSES |o--o{ USERS : "có học sinh"
     USERS ||--o{ CLASS_TEACHERS : "dạy"
     CLASSES ||--o{ CLASS_TEACHERS : ""
-    SUBJECTS ||--o{ EXAMS : "môn"
+    SUBJECTS |o--o{ EXAMS : "môn"
     EXAMS ||--o{ EXAM_VARIANTS : "mã đề"
     EXAM_VARIANTS ||--o{ EXAM_KEYS : "đáp án từng câu"
     EXAM_VARIANTS }o--o| FILES : "PDF đề / lời giải"
@@ -217,7 +224,7 @@ sequenceDiagram
     SV->>DB: Tạo bài làm, chọn mã đề, tính hạn nộp, cấp mã thiết bị
     JS->>SV: GET state (đáp án đã lưu, giờ máy chủ, cấu hình)
     SV-->>JS: answers · deadline · PDF key
-    JS->>SV: Tải PDF (mã hóa riêng bài này) → vẽ canvas + in chìm
+    JS->>SV: Tải PDF (làm rối riêng cho bài này) → vẽ canvas + in chìm
     loop Mỗi lần tô / đổi đáp án
         HS->>JS: Tô ô tròn
         JS->>LS: Ghi bản dự phòng (seq + 1)
@@ -243,18 +250,27 @@ sequenceDiagram
 
 ```mermaid
 stateDiagram-v2
-    [*] --> DangLam: Bắt đầu
+    direction LR
     DangLam: Đang làm (in_progress)
-    DangLam --> TamDung: Giám thị tạm dừng / vi phạm → khóa
-    TamDung --> DangLam: Tiếp tục / mở khóa (giờ được giữ nguyên)
+    TamDung: Tạm dừng / bị khóa (giờ đứng yên)
+    DaNop: Đã nộp (submitted)
+    HetGio: Hết giờ – tự thu (expired)
+    BiThu: Bị thu bài (forced)
+    Huy: Đã hủy – cho thi lại (voided)
+    [*] --> DangLam: Bắt đầu
+    DangLam --> TamDung: Tạm dừng / vi phạm
+    TamDung --> DangLam: Tiếp tục / mở khóa
     DangLam --> DaNop: Học sinh nộp
-    DangLam --> HetGio: Hết giờ – tự thu
-    DangLam --> BiThu: Giám thị thu / vi phạm / kết thúc ca
-    DaNop --> DangLam: Mở lại bài (nộp nhầm)
+    DangLam --> HetGio: Hết giờ + ân hạn
+    DangLam --> BiThu: Thu bài / vi phạm / kết thúc ca
+    TamDung --> BiThu: Thu bài / kết thúc ca
+    DaNop --> DangLam: Mở lại (nộp nhầm)
     HetGio --> DangLam: Mở lại + cộng giờ
     BiThu --> DangLam: Mở lại
-    DaNop --> Huy: Hủy bài cho thi lại
-    BiThu --> Huy
+    DangLam --> Huy: Hủy bài
+    DaNop --> Huy: Hủy bài
+    HetGio --> Huy: Hủy bài
+    BiThu --> Huy: Hủy bài
     Huy --> [*]
 ```
 
@@ -264,9 +280,9 @@ stateDiagram-v2
 |---|---|---|
 | **Mất mạng** giữa giờ | Học sinh vẫn tô bình thường, bài lưu vào máy, báo “Mất mạng · đã lưu trên máy”, tự gửi khi có mạng | Không cần; nếu kéo dài, xem cảnh báo “mất kết nối” trên bảng giám sát |
 | **Tải lại trang / tắt nhầm trình duyệt** | Vào lại là thấy nguyên bài; câu chưa kịp gửi được khôi phục từ bản dự phòng | Không cần |
-| **Máy hỏng, mất điện** | Bài đã lưu trên máy chủ; máy mới bị chặn cho đến khi được mở khóa | Cho học sinh sang máy khác đăng nhập → bấm **Mở khóa thiết bị** (máy cũ bị thu hồi quyền) |
-| **Mất điện cả phòng / sự cố chung** | — | **Tạm dừng cả phòng**: thời gian của mọi học sinh đứng yên; khi ổn định bấm **Tiếp tục** |
-| **Hết phiên đăng nhập** (mạng chập chờn lâu) | Hộp đăng nhập lại hiện ngay trong phòng thi, bài và giờ giữ nguyên | Không cần |
+| **Máy hỏng, mất điện** | Bài đã lưu trên máy chủ; máy mới bị chặn cho đến khi được mở khóa (trừ khi ca thi bật *Tự nhận lại cùng máy* và máy mới cùng IP + cùng loại trình duyệt/hệ điều hành – khi đó bài tự chuyển sang) | Cho học sinh sang máy khác đăng nhập → bấm **Mở khóa thiết bị** (máy cũ bị thu hồi quyền) |
+| **Mất điện cả phòng / sự cố chung** | — | **Tạm dừng cả phòng**: thời gian của mọi học sinh đứng yên; khi ổn định bấm **Tiếp tục ca thi** |
+| **Hết phiên đăng nhập** (mạng chập chờn lâu) | Hộp đăng nhập lại hiện ngay trong phòng thi; bài làm giữ nguyên, đồng hồ vẫn chạy trong lúc đăng nhập lại | Không cần |
 | **Mở bài thi ở 2 tab** | Tab cũ tự dừng để không ghi đè | Không cần (có ghi nhật ký) |
 | **Hết giờ đúng lúc mất mạng** | Chờ thêm thời gian ân hạn (mặc định 90 giây) rồi tự thu bằng bản lưu gần nhất | Có thể **Mở lại bài** + cộng phút nếu cần |
 | **Nộp nhầm** | — | **Mở lại bài** (có thể cộng thêm phút) |
@@ -283,15 +299,15 @@ Mọi thao tác đều được ghi vào **nhật ký bài làm** (thời gian, 
 | **II** – đúng/sai | đúng 1 ý 0,1 đ · 2 ý 0,25 đ · 3 ý 0,5 đ · 4 ý 1 đ | 4 câu = 4 đ | 4 câu = 4 đ | 4 câu = 4 đ | — |
 | **III** – trả lời ngắn | Toán 0,5 đ/câu, môn khác 0,25 đ/câu | 6 câu = 3 đ | 6 câu = 1,5 đ | — | — |
 
-Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đúng cho mọi thí sinh), chấp nhận **nhiều đáp án** (`1,5|1,50`), so sánh Phần III theo giá trị số (`0,5` = `,5`) hoặc đúng từng ký tự, trừ điểm câu sai, quy về thang điểm bất kỳ, làm tròn theo bước.
+Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đúng cho mọi thí sinh), chấp nhận **nhiều đáp án** (`1,5|1,50`), so sánh Phần III theo giá trị số (`0,5` = `0,50`) hoặc đúng từng ký tự, trừ điểm câu sai Phần I, Phần II tính theo từng ý hoặc chỉ khi đúng cả 4 ý, quy về thang điểm bất kỳ, làm tròn theo bước.
 
 ## 🔐 Bảo mật
 
 - Mật khẩu băm **bcrypt**; chống dò mật khẩu theo tài khoản và theo IP; bắt đổi mật khẩu lần đầu (tùy chọn).
 - Mọi yêu cầu POST kiểm tra **CSRF**; cookie `HttpOnly`, `SameSite`; tự bật `Secure` khi chạy HTTPS.
 - Truy vấn dùng tham số (PDO prepared statements); giao diện thoát ký tự HTML ở mọi nơi.
-- Thư mục `app/`, `storage/`, `tools/` và tệp CSDL bị chặn truy cập từ web (`.htaccess`, `web.config`, mẫu Nginx).
-- Giáo viên chỉ thấy **lớp được phân công** và **đề của mình / được chia sẻ**; giám thị chỉ điều khiển **ca được phân công**.
+- Thư mục `app/`, `storage/`, `tools/`, `docs/` và tệp CSDL bị chặn truy cập từ web (`.htaccess`, `web.config`, mẫu Nginx).
+- Giáo viên chỉ thấy **lớp được phân công** và **đề của mình / được chia sẻ**; giám thị chỉ xem & điều khiển **ca được phân công** (không thấy điểm nếu vai trò không có quyền xem kết quả).
 - Đề thi PDF: không có đường dẫn tải trực tiếp, dữ liệu được làm rối riêng cho từng bài làm, in chìm tên & SBD.
 
 > ⚠️ Không hệ thống web nào chặn tuyệt đối việc chụp màn hình hoặc dùng thiết bị khác. Hệ thống **hạn chế và ghi nhận** (in chìm, rời màn hình, nhiều tab, đổi máy) để giám thị xử lý.
@@ -300,7 +316,7 @@ Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đ
 
 - **Sao lưu** → tệp `.tnbak` (toàn bộ dữ liệu, gồm cả PDF, logo), tải thẳng về máy, không lưu trên hosting.
 - **Phục hồi** → tải lên theo từng khúc, chạy nhiều bước ngắn (không vướng giới hạn thời gian của hosting).
-- **SQLite ↔ MySQL**: sao lưu ở hệ thống cũ → cài mới với loại CSDL kia → phục hồi. Đã kiểm thử khớp 100% số bản ghi và mã băm tệp.
+- **SQLite ↔ MySQL**: sao lưu ở hệ thống cũ → cài mới với loại CSDL kia (trên cùng hosting: xóa `storage/config.php` trước để mở lại trình cài đặt) → phục hồi. Đã kiểm thử khớp 100% số bản ghi và mã băm tệp.
 - Với SQLite còn có thể tải nguyên tệp `.sqlite` (ảnh chụp nhất quán bằng `VACUUM INTO`).
 
 ## 🗂 Cấu trúc mã nguồn
@@ -317,9 +333,9 @@ Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đ
 │   └── Views/           # Giao diện PHP (layout quản trị, cổng học sinh, phòng thi)
 ├── assets/
 │   ├── css/             # app.css (hệ thống thiết kế), exam.css (phòng thi & phiếu trả lời)
-│   ├── js/              # app.js, exam.js, answersheet.js, pdfviewer.js, monitor.js, charts.js…
+│   ├── js/              # app.js, exam.js, answersheet.js, pdfviewer.js (+ compat.js cho trình duyệt cũ), monitor.js…
 │   └── vendor/          # PDF.js, Chart.js, KaTeX, phông Be Vietnam Pro (tự lưu trữ, không CDN)
-├── docs/                # Hướng dẫn sử dụng, ảnh minh họa, tệp mẫu (Excel, JSON, PDF)
+├── docs/                # Hướng dẫn sử dụng, ảnh minh họa, tệp mẫu (Excel, JSON, PDF) – không phục vụ qua web
 ├── storage/             # config.php + tệp SQLite (bị chặn truy cập từ web)
 └── tools/               # bump-version.sh
 ```
@@ -328,7 +344,7 @@ Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đ
 
 ```bash
 git config core.hooksPath .githooks     # bật hook tự tăng phiên bản (PATCH) mỗi lần commit mã nguồn
-sh tools/bump-version.sh minor          # tăng MINOR/MAJOR thủ công khi phát hành
+sh tools/bump-version.sh minor && git add VERSION   # tăng MINOR/MAJOR thủ công khi phát hành
 ```
 
 - Không dùng framework, Composer hay bước build: sửa tệp PHP/CSS/JS là chạy ngay.

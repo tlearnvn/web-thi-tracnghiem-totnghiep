@@ -238,10 +238,16 @@ final class ExamsController extends Controller
              WHERE v.exam_id = ? ORDER BY v.sort_order, v.code',
             [(int) $e['id']]
         );
+        $sp = [(int) $e['id']];
+        $sw = Scope::sessionListSql($sp);
         $sessions = $this->db->all(
-            "SELECT s.*, (SELECT COUNT(*) FROM {attempts} a WHERE a.session_id = s.id AND a.status <> 'in_progress') AS done FROM {exam_sessions} s WHERE s.exam_id = ? ORDER BY s.created_at DESC",
-            [(int) $e['id']]
+            "SELECT s.*, (SELECT COUNT(*) FROM {attempts} a WHERE a.session_id = s.id AND a.status NOT IN ('in_progress', 'voided')) AS done FROM {exam_sessions} s WHERE s.exam_id = ? AND " . $sw . ' ORDER BY s.created_at DESC',
+            $sp
         );
+        foreach ($sessions as &$row) {
+            $row['_access'] = Scope::sessionAccess($row);
+        }
+        unset($row);
         $this->render('exams/view', [
             'title' => $e['title'],
             'crumbs' => ['Đề thi' => url('exams'), $e['title'] => null],

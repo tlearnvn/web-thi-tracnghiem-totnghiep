@@ -12,11 +12,11 @@ $ctl = static fn(string $action, string $label, string $icon, string $cls = 'btn
   <div>
     <div class="eyebrow"><?= e($subject['name'] ?? '') ?> · <?= e(Sessions::MODES[$s['mode']]) ?></div>
     <h1><?= e($s['name']) ?></h1>
-    <div class="sub row gap-sm"><?= Sessions::stateBadge($s) ?><?= (int) $s['released'] ? badge('Đã công bố điểm', 'success', 'badge-check') : '' ?><span>Đề: <a href="<?= e(url('exams/view', ['id' => $exam['id']])) ?>"><?= e($exam['title']) ?></a></span></div>
+    <div class="sub row gap-sm"><?= Sessions::stateBadge($s) ?><?= (int) $s['released'] ? badge('Đã công bố điểm', 'success', 'badge-check') : '' ?><span>Đề: <?= $examLink ? '<a href="' . e(url('exams/view', ['id' => $exam['id']])) . '">' . e($exam['title']) . '</a>' : e($exam['title']) ?></span></div>
   </div>
   <div class="actions">
     <?php if ($acc['proctor'] && in_array($state, ['running', 'paused', 'upcoming'], true)): ?><a class="btn btn-primary" href="<?= e(url('monitor', ['id' => $s['id']])) ?>"><?= icon('monitor') ?> Giám sát trực tiếp</a><?php endif; ?>
-    <a class="btn" href="<?= e(url('results/session', ['id' => $s['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a>
+    <?php if ($acc['results']): ?><a class="btn" href="<?= e(url('results/session', ['id' => $s['id']])) ?>"><?= icon('clipboard-check') ?> Kết quả</a><?php endif; ?>
     <?php if ($acc['manage']): ?>
     <div class="dropdown">
       <button class="btn" data-dropdown><?= icon('ellipsis') ?></button>
@@ -35,7 +35,11 @@ $ctl = static fn(string $action, string $label, string $icon, string $cls = 'btn
   <div class="stat"><div class="stat-icon"><?= icon('users') ?></div><div><div class="stat-value"><?= count($students) ?></div><div class="stat-label">Học sinh dự thi</div></div></div>
   <div class="stat"><div class="stat-icon info"><?= icon('activity') ?></div><div><div class="stat-value"><?= (int) $stats['doing'] ?></div><div class="stat-label">Đang làm bài</div></div></div>
   <div class="stat"><div class="stat-icon success"><?= icon('circle-check') ?></div><div><div class="stat-value"><?= (int) $stats['done'] ?></div><div class="stat-label">Bài đã nộp</div></div></div>
+  <?php if ($acc['results']): ?>
   <div class="stat"><div class="stat-icon warning"><?= icon('award') ?></div><div><div class="stat-value"><?= $stats['avg_score'] !== null ? e(fmt_num($stats['avg_score'], 2)) : '–' ?></div><div class="stat-label">Điểm trung bình</div></div></div>
+  <?php else: ?>
+  <div class="stat"><div class="stat-icon warning"><?= icon('user-x') ?></div><div><div class="stat-value"><?= max(0, count($students) - (int) $stats['started']) ?></div><div class="stat-label">Chưa vào thi</div></div></div>
+  <?php endif; ?>
 </div>
 
 <div class="grid grid-sidebar mt-3">

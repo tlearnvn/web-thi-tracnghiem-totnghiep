@@ -59,6 +59,12 @@ final class StatsController extends Controller
                 $allItems[] = $it;
             }
         }
+        // Tỉ lệ đạt tính trên điểm thật (phổ điểm làm tròn theo mốc 0,5 nên không dùng để đếm)
+        $graded = array_values(array_filter($scores, static fn($x) => $x !== null));
+        $rate = [
+            'pass' => count(array_filter($graded, static fn($x) => $x * 10 / $max >= 5 - 1e-9)),
+            'good' => count(array_filter($graded, static fn($x) => $x * 10 / $max >= 8 - 1e-9)),
+        ];
         $ranked = array_values(array_filter($att, static fn($a) => $a['score'] !== null));
         usort($ranked, static fn($x, $y) => (float) $y['score'] <=> (float) $x['score']);
         $this->render('stats/session', [
@@ -70,6 +76,7 @@ final class StatsController extends Controller
             'targets' => count(Sessions::students((int) $s['id'], $classId)),
             'desc' => Stats::describe($scores),
             'hist' => Stats::histogram($scores, $max),
+            'rate' => $rate,
             'cls' => Stats::classification($att),
             'byClass' => Stats::byClass($att),
             'parts' => Stats::parts($att),

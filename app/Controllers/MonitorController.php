@@ -22,7 +22,8 @@ final class MonitorController extends Controller
 
     public function index(): void
     {
-        $s = SessionsController::sessionFor(Request::int('id'), 'results');
+        // Giám thị được phân công (không cần quyền xem kết quả) hoặc người xem được kết quả ca thi
+        $s = SessionsController::sessionFor(Request::int('id'), ['proctor', 'results']);
         Attempts::finalizeExpired((int) $s['id']);
         $exam = Attempts::exam((int) $s['exam_id']);
         $classes = $this->db->all('SELECT c.id, c.name FROM {session_targets} t JOIN {classes} c ON c.id = t.class_id WHERE t.session_id = ? ORDER BY c.sort_key, c.name', [(int) $s['id']]);
@@ -35,6 +36,7 @@ final class MonitorController extends Controller
             'classes' => $classes,
             'canAct' => $s['_access']['proctor'],
             'canManage' => $s['_access']['manage'],
+            'canResults' => $s['_access']['results'],
             'total' => ExamFormat::totalQuestions($exam['_structure']),
         ]);
     }
@@ -42,8 +44,9 @@ final class MonitorController extends Controller
     /** Dữ liệu trực tiếp (gọi định kỳ vài giây/lần). */
     public function data(): void
     {
-        $s = SessionsController::sessionFor(Request::int('id'), 'results');
+        $s = SessionsController::sessionFor(Request::int('id'), ['proctor', 'results']);
         Session::release();
+        $showScore = $s['_access']['results'];
         $sid = (int) $s['id'];
         Attempts::finalizeExpired($sid);
         $s = $this->db->one('SELECT * FROM {exam_sessions} WHERE id = ?', [$sid]);
@@ -153,8 +156,8 @@ final class MonitorController extends Controller
                     'started' => (int) $a['started_at'],
                     'sub' => $a['submitted_at'] ? (int) $a['submitted_at'] : null,
                     'reason' => $a['submit_reason'],
-                    'score' => $a['score'] !== null ? (float) $a['score'] : null,
-                    'pending' => $a['grading_status'] === 'pending',
+                    'score' => $showScore && $a['score'] !== null ? (float) $a['score'] : null,
+                    'pending' => $showScore && $a['grading_status'] === 'pending',
                     'dev' => (string) $a['device_info'],
                     'ip' => (string) $a['ip'],
                     'free' => $a['device_token'] === null || $a['device_token'] === '',
@@ -180,7 +183,7 @@ final class MonitorController extends Controller
             $ev['icon'] = $info[1];
             $ev['level'] = in_array($ev['type'], ['leave', 'fullscreen_exit', 'device_blocked', 'violation_lock', 'multi_tab', 'print', 'copy', 'offline'], true) ? 'warning'
                 : (in_array($ev['type'], ['submit', 'timeout', 'force_submit'], true) ? 'success' : 'info');
-            $ev['detail'] = self::eventDetail($ev['type'], json_dec($ev['data'], []));
+            $ev['detail'] = self::eventDetail($ev['type'], json_dec($ev['data'], []), $showScore);
             unset($ev['data']);
         }
         unset($ev);
@@ -202,7 +205,7 @@ final class MonitorController extends Controller
         ]);
     }
 
-    private static function eventDetail(string $type, array $d): string
+    private static function eventDetail(string $type, array $d, bool $showScore = true): string
     {
         switch ($type) {
             case 'leave':
@@ -213,7 +216,7 @@ final class MonitorController extends Controller
             case 'submit':
             case 'timeout':
             case 'force_submit':
-                return isset($d['score']) ? 'Điểm ' . fmt_score($d['score']) : '';
+                return $showScore && isset($d['score']) ? 'Điểm ' . fmt_score($d['score']) : '';
             case 'reopen':
                 return !empty($d['extra']) ? '+' . $d['extra'] . ' phút' : '';
             case 'resume_time':
@@ -317,7 +320,7 @@ final class MonitorController extends Controller
                 case 'void':
                     // Hủy bài để học sinh thi lại từ đầu (bài cũ vẫn lưu để đối chiếu)
                     $this->db->update('attempts', ['status' => 'voided', 'paused_at' => null, 'locked' => 0, 'submitted_at' => $a['submitted_at'] ?: time(), 'submit_reason' => $a['submit_reason'] ?: 'proctor', 'updated_at' => time()], 'id = ?', [(int) $a['id']]);
-                    Attempts::event((int) $a['id'], 'reopen', ['void' => true]);
+                    Attempts::event((int) $a['id'], 'void');
                     break;
                 case 'delete':
                     if (!$s['_access']['manage']) {
@@ -360,7 +363,7 @@ final class MonitorController extends Controller
     /** Màn hình trình chiếu mã vào phòng + đồng hồ cho cả phòng thi (máy chiếu). */
     public function board(): void
     {
-        $s = SessionsController::sessionFor(Request::int('id'), 'results');
+        $s = SessionsController::sessionFor(Request::int('id'), ['proctor', 'results']);
         $exam = Attempts::exam((int) $s['exam_id']);
         echo \App\Core\View::render('monitor/board', [
             'title' => $s['name'],

@@ -180,6 +180,7 @@ $rules[] = ['award', 'ok', 'Xem điểm: ' . ($s['mode'] === 'practice' ? 'ngay 
   </div>
 </div>
 
+<?php \App\Core\View::push('scripts', '<script>window.TN_VIEWER = ' . js_json(asset('js/pdfviewer.js')) . ';</script>'); ?>
 <?php \App\Core\View::push('scripts', <<<'JS'
 <script>
 TN.ready(function () {
@@ -192,8 +193,10 @@ TN.ready(function () {
   }
   function run() {
     var out = [];
-    var modern = !!(window.fetch && window.Promise && window.IntersectionObserver && window.ResizeObserver && 'noModule' in document.createElement('script'));
-    out.push(item(modern ? 'ok' : 'bad', 'Trình duyệt hỗ trợ phòng thi', modern ? '' : 'Hãy dùng Chrome/Edge/Firefox bản mới'));
+    // Tương đương Chrome/Edge 98+, Firefox 94+, Safari 15.4+; sau đó nạp thử bộ hiển thị đề PDF cho chắc
+    var modern = !!(window.fetch && window.Promise && window.IntersectionObserver && window.ResizeObserver && 'noModule' in document.createElement('script') &&
+      typeof window.structuredClone === 'function' && typeof [].at === 'function' && typeof Object.hasOwn === 'function');
+    out.push('<div id="br-check">' + item(modern ? 'wait' : 'bad', 'Trình duyệt hỗ trợ phòng thi', modern ? 'Đang kiểm tra bộ hiển thị đề…' : 'Trình duyệt quá cũ – hãy dùng Chrome/Edge 109 trở lên, Firefox hoặc Safari bản mới') + '</div>');
     var ls = false; try { localStorage.setItem('tn-test', '1'); localStorage.removeItem('tn-test'); ls = true; } catch (e) {}
     out.push(item(ls ? 'ok' : 'warn', 'Lưu dự phòng trên máy', ls ? '' : 'Không dùng được (chế độ ẩn danh?)'));
     out.push(item(navigator.cookieEnabled ? 'ok' : 'bad', 'Cookie', navigator.cookieEnabled ? '' : 'Cần bật cookie'));
@@ -205,6 +208,17 @@ TN.ready(function () {
     out.push(item(Math.abs(off) < 120 ? 'ok' : 'warn', 'Đồng hồ máy tính', Math.abs(off) < 120 ? 'Khớp giờ máy chủ' : 'Lệch ' + Math.abs(off) + ' giây – không sao, bài thi dùng giờ máy chủ'));
     out.push('<div id="net-check">' + item('wait', 'Kết nối máy chủ', 'Đang đo…') + '</div>');
     box.innerHTML = out.join('');
+    if (modern) {
+      var setBr = function (ok) {
+        var el = document.getElementById('br-check');
+        if (el) el.innerHTML = item(ok ? 'ok' : 'bad', 'Trình duyệt hỗ trợ phòng thi', ok ? '' : 'Không nạp được bộ hiển thị đề PDF – hãy cập nhật trình duyệt (Chrome/Edge 109 trở lên)');
+      };
+      var imp = null;
+      try { imp = new Function('u', 'return import(u)'); } catch (e) { imp = null; }
+      if (!imp) setBr(false);
+      else if (!window.TN_VIEWER) setBr(true);
+      else imp(window.TN_VIEWER).then(function () { setBr(true); }, function () { setBr(false); }); // cũng nạp sẵn vào bộ nhớ đệm cho phòng thi
+    }
     var t0 = performance.now(), n = 0, sum = 0;
     function ping() {
       var s = performance.now();
