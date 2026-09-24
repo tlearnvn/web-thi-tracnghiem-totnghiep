@@ -22,7 +22,7 @@ $nOk = count(array_filter($items, static fn($it) => !empty($it['ok'])));
     <div class="xr-brand">
       <div class="xr-title">
         <strong>Xem lại: <?= e($h['exam']) ?></strong>
-        <small><?= e($h['name']) ?> – <?= e($h['code']) ?> · Mã đề <b><?= e($h['variant']) ?></b> · <?= Attempts::STATUS[$a['status']][0] ?? '' ?> <?= e(fmt_dt($a['submitted_at'], 'H:i d/m/Y')) ?></small>
+        <small><?= e($h['name']) ?> – <?= e($h['code']) ?> · Mã đề <b><?= e($h['variant']) ?></b> · <?= e(Attempts::REASONS[$a['submit_reason']] ?? (Attempts::STATUS[$a['status']][0] ?? '')) ?> lúc <?= e(fmt_dt($a['submitted_at'], 'H:i d/m/Y')) ?></small>
       </div>
     </div>
     <div class="xr-mid">

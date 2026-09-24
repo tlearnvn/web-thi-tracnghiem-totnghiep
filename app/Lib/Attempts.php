@@ -14,7 +14,7 @@ final class Attempts
         'in_progress' => ['Đang làm', 'primary'],
         'submitted' => ['Đã nộp', 'success'],
         'expired' => ['Hết giờ – tự thu', 'warning'],
-        'forced' => ['Giám thị thu bài', 'warning'],
+        'forced' => ['Bị thu bài', 'warning'],
         'voided' => ['Hủy bài', 'danger'],
     ];
 

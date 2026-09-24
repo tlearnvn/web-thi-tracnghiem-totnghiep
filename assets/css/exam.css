@@ -295,6 +295,27 @@
   .bub.sm { width: 22px; height: 22px; }
 }
 
+@media (max-width: 600px) {
+  .xr-top { gap: 6px 8px; padding: 6px 10px; }
+  .xr-brand img { display: none; }
+  .xr-title strong { font-size: 13.5px; max-width: calc(100vw - 170px); }
+  .xr-title small { font-size: 11px; max-width: calc(100vw - 170px); }
+  .xr-right-tools { margin-left: auto; gap: 2px; }
+  .xr-right-tools [data-theme-toggle] { display: none; }
+  .xr-right-tools .btn { padding: 7px 12px; font-size: 13.5px; }
+  .xr-mid { gap: 8px; }
+  .timer { min-width: 0; padding: 4px 10px 4px 8px; gap: 6px; }
+  .timer-val { font-size: 18px; }
+  .timer small { display: none; }
+  .save-chip { padding: 4px 9px; font-size: 12px; }
+  .save-chip .chip-time { display: none; }
+  .prog-ring { width: 30px; height: 30px; }
+  .prog-ring::after { width: 23px; height: 23px; font-size: 9px; }
+  .xr-tabs button { padding: 8px; }
+  .xr-nav { padding: 8px 10px; }
+  .sheet-end { padding: 12px; }
+}
+
 /* ---------- In phiếu trả lời ---------- */
 .print-sheet { max-width: 860px; margin: 0 auto; padding: 20px; }
 .print-sheet .sheet { font-size: 12.5px; }

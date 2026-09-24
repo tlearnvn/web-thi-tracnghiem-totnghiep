@@ -115,7 +115,7 @@
   function chip(state) {
     if (!chipEl) return;
     var map = {
-      saved: ['', 'circle-check', 'Đã lưu ' + TN.fmtTime(Math.floor(serverNow() / 1000), true)],
+      saved: ['', 'circle-check', 'Đã lưu', TN.fmtTime(Math.floor(serverNow() / 1000), true)],
       saving: ['saving', null, 'Đang lưu…'],
       pending: ['pending', 'pencil', 'Chưa lưu'],
       offline: ['offline', 'wifi-off', 'Mất mạng · đã lưu trên máy'],
@@ -124,7 +124,7 @@
     };
     var m = map[state] || map.saved;
     chipEl.className = 'save-chip' + (m[0] ? ' ' + m[0] : '');
-    chipEl.innerHTML = (m[1] ? ic(m[1]) : '<span class="spinner" style="width:13px;height:13px;border-width:2px"></span>') + ' ' + esc(m[2]);
+    chipEl.innerHTML = (m[1] ? ic(m[1]) : '<span class="spinner" style="width:13px;height:13px;border-width:2px"></span>') + ' ' + esc(m[2]) + (m[3] ? '<span class="chip-time"> ' + esc(m[3]) + '</span>' : '');
   }
 
   // ------------------------------------------------------------------ Bản sao dự phòng trên máy
