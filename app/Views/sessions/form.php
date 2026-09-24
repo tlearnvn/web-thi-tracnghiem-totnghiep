@@ -70,7 +70,7 @@ $sw = static function (string $key, string $title, string $desc) use ($opts): st
         <?= $sw('require_fullscreen', 'Bắt buộc toàn màn hình', 'Thoát toàn màn hình tính là vi phạm') ?>
         <?= $sw('watermark', 'Hình mờ trên đề', 'In họ tên, SBD lên trang đề để hạn chế chụp màn hình phát tán') ?>
         <?= $sw('protect_pdf', 'Chống tải tệp đề', 'Làm rối dữ liệu PDF, chặn chuột phải / in / lưu trang') ?>
-        <div class="form-grid mt-2">
+        <div class="form-grid cols-1 mt-2">
           <div class="field"><label>Số lần vi phạm tối đa</label><input class="input" type="number" name="opt_max_violations" min="0" value="<?= (int) $opts['max_violations'] ?>"><div class="help">0 = không giới hạn</div></div>
           <div class="field"><label>Khi vượt quá</label><select class="select" name="opt_violation_action"><?php foreach (Sessions::VIOLATION_ACTIONS as $k => $v): ?><option value="<?= e($k) ?>"<?= selected($opts['violation_action'], $k) ?>><?= e($v) ?></option><?php endforeach; ?></select></div>
           <div class="field span-2"><label>Tính giờ</label><select class="select" name="opt_time_policy"><?php foreach (Sessions::TIME_POLICIES as $k => $v): ?><option value="<?= e($k) ?>"<?= selected($opts['time_policy'], $k) ?>><?= e($v) ?></option><?php endforeach; ?></select></div>

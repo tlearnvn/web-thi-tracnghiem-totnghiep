@@ -466,7 +466,7 @@
     var body = '<div class="exp-meta">' + (key ? 'Đáp án đúng: <b>' + esc(AnswerSheet.keyLabel(qid, key)) + '</b>' : '') +
       (it ? ' · Em chọn: <b>' + esc(AnswerSheet.keyLabel(qid, it.given) || '(bỏ trống)') + '</b> ' + (it.ok ? '<span class="badge badge-success">Đúng</span>' : '<span class="badge badge-danger">Chưa đúng</span>') : '') + '</div>' +
       '<div class="md-body exp-body">' + AnswerSheet.md(text) + '</div>';
-    var m = w.TN.modal({ title: 'Lời giải – ' + this.label(qid), icon: 'lightbulb', body: body, size: 'lg' });
+    var m = w.TN.modal({ title: 'Lời giải – ' + this.label(qid), icon: 'lightbulb', body: body, size: 'lg', foot: '<button type="button" class="btn btn-primary" data-close>Đã hiểu</button>' });
     AnswerSheet.math(m.body);
   };
 

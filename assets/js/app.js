@@ -148,7 +148,7 @@
     bd.innerHTML = '<div class="modal ' + (o.size || '') + '" role="dialog" aria-modal="true">' +
       '<div class="modal-head">' + (o.icon ? '<div class="modal-icon ' + (o.iconClass || '') + '">' + TN.icon(o.icon) + '</div>' : '') +
       '<h3>' + TN.esc(o.title || '') + '</h3><button class="icon-btn" data-close aria-label="Đóng">' + TN.icon('x') + '</button></div>' +
-      '<div class="modal-body"></div>' + (o.foot !== false ? '<div class="modal-foot"></div>' : '') + '</div>';
+      '<div class="modal-body"></div>' + (o.foot ? '<div class="modal-foot"></div>' : '') + '</div>';
     var body = bd.querySelector('.modal-body');
     if (typeof o.body === 'string') body.innerHTML = o.body; else if (o.body) body.appendChild(o.body);
     var foot = bd.querySelector('.modal-foot');

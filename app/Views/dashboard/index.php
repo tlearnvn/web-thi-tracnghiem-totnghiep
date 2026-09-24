@@ -22,7 +22,7 @@ use_charts();
   <div class="stat rise"><div class="stat-icon"><?= icon('graduation-cap') ?></div><div><div class="stat-value" data-count-to="<?= (int) $stats['students'] ?>">0</div><div class="stat-label">Học sinh<?= \App\Core\Scope::classIds() !== null ? ' (lớp phụ trách)' : '' ?></div></div></div>
   <div class="stat rise rise-1"><div class="stat-icon purple"><?= icon('school') ?></div><div><div class="stat-value" data-count-to="<?= (int) $stats['classes'] ?>">0</div><div class="stat-label">Lớp học</div></div></div>
   <div class="stat rise rise-2"><div class="stat-icon info"><?= icon('file-text') ?></div><div><div class="stat-value" data-count-to="<?= (int) $stats['exams'] ?>">0</div><div class="stat-label">Đề thi</div></div></div>
-  <div class="stat rise rise-3"><div class="stat-icon success"><?= icon('activity') ?></div><div><div class="stat-value" data-count-to="<?= (int) $stats['doingNow'] ?>">0</div><div class="stat-label">Đang làm bài · <?= (int) $stats['submittedToday'] ?> bài nộp hôm nay</div></div></div>
+  <div class="stat rise rise-3"><div class="stat-icon success"><?= icon('activity') ?></div><div><div class="stat-value" data-count-to="<?= (int) $stats['doingNow'] ?>">0</div><div class="stat-label">Đang làm, có kết nối · <?= (int) $stats['submittedToday'] ?> bài nộp hôm nay</div></div></div>
 </div>
 
 <div class="grid grid-sidebar mt-3">

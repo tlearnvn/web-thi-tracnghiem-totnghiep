@@ -1,6 +1,6 @@
 <?php
 /**
- * Bộ biểu tượng SVG (Lucide – giấy phép ISC, https://lucide.dev).
+ * Bộ biểu tượng SVG (Lucide – giấy phép ISC, https://lucide.dev; xem assets/vendor/lucide/LICENSE).
  * Nhúng trực tiếp vào HTML để không tốn thêm file / request.
  */
 
