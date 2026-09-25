@@ -1,5 +1,6 @@
 <?php
 use App\Lib\ExamFormat;
+use App\Lib\Seb;
 use App\Lib\Sessions;
 
 $state = Sessions::state($s);
@@ -78,7 +79,7 @@ $ctl = static fn(string $action, string $label, string $icon, string $cls = 'btn
           <dt>Phòng thi</dt><dd><?= e($s['room'] ?: '—') ?></dd>
           <dt>Xem điểm</dt><dd><?= e(Sessions::SCORE_POLICIES[$o['show_score']]) ?></dd>
           <dt>Xem lại bài</dt><dd><?= e(Sessions::REVIEW_POLICIES[$o['allow_review']]) ?><?= $o['show_explanations'] ? ' · có lời giải' : '' ?></dd>
-          <dt>Chống gian lận</dt><dd class="row gap-sm"><?= $o['device_lock'] ? badge('Khóa thiết bị', 'primary') : '' ?><?= $o['track_focus'] ? badge('Ghi nhận rời màn hình', 'primary') : '' ?><?= $o['require_fullscreen'] ? badge('Toàn màn hình', 'primary') : '' ?><?= $o['watermark'] ? badge('Hình mờ', 'primary') : '' ?><?= $o['max_violations'] ? badge('Tối đa ' . $o['max_violations'] . ' vi phạm → ' . Sessions::VIOLATION_ACTIONS[$o['violation_action']], 'warning') : '' ?></dd>
+          <dt>Chống gian lận</dt><dd class="row gap-sm"><?= $o['device_lock'] ? badge('Khóa thiết bị', 'primary') : '' ?><?= $o['track_focus'] ? badge('Ghi nhận rời màn hình', 'primary') : '' ?><?= $o['require_fullscreen'] ? badge('Toàn màn hình', 'primary') : '' ?><?= $o['watermark'] ? badge('Hình mờ', 'primary') : '' ?><?= $o['seb'] !== 'off' ? badge('Safe Exam Browser', 'success') : '' ?><?= $o['max_violations'] ? badge('Tối đa ' . $o['max_violations'] . ' vi phạm → ' . Sessions::VIOLATION_ACTIONS[$o['violation_action']], 'warning') : '' ?></dd>
           <dt>Người tạo</dt><dd><?= e($owner ?? '—') ?></dd>
         </dl>
       </div>
@@ -96,6 +97,33 @@ $ctl = static fn(string $action, string $label, string $icon, string $cls = 'btn
       <div class="card-head"><h3><?= icon('user-check') ?> Giám thị</h3></div>
       <div class="card-body"><?php if (!$proctors): ?><span class="text-muted">Chưa phân công (người tạo ca thi có quyền giám sát).</span><?php endif; ?><ul class="list-plain"><?php foreach ($proctors as $p): ?><li><?= e($p['full_name']) ?></li><?php endforeach; ?></ul></div>
     </div>
+    <?php if ($o['seb'] !== 'off'): $sebKeys = Seb::validKeys($s, $o); ?>
+    <div class="card" id="seb-info">
+      <div class="card-head"><h3><?= icon('lock') ?> Safe Exam Browser</h3><?= badge('Bắt buộc', 'success') ?></div>
+      <div class="card-body text-sm">
+        <p class="mt-0"><?= e(Seb::MODE_INFO[$o['seb']]) ?>.</p>
+        <?php if (in_array($o['seb'], ['config', 'browser'], true)): ?>
+          <div class="text-muted mb-1">Liên kết mở thẳng SEB (dán vào trình duyệt, tạo lối tắt trên máy phòng thi):</div>
+          <div class="copy-box mb-2"><span class="grow truncate"><?= e(Seb::configUrl($s, true)) ?></span><button type="button" class="btn btn-xs btn-ghost" data-copy="<?= e(Seb::configUrl($s, true)) ?>" title="Sao chép"><?= icon('copy') ?></button></div>
+          <a class="btn btn-sm" href="<?= e(Seb::configUrl($s)) ?>"><?= icon('download') ?> Tải tệp cấu hình .seb</a>
+          <?php if ($o['seb'] === 'config'): ?>
+            <dl class="dl mt-2">
+              <dt>Mật khẩu thoát</dt><dd><?= $o['seb_quit_hash'] ? 'Đã đặt' : 'Không đặt' ?></dd>
+              <dt>Config Key</dt><dd class="mono text-xs" style="word-break:break-all"><?= e(Seb::configKey(Seb::settings($s, $o))) ?></dd>
+            </dl>
+            <div class="help">Máy chủ so khóa này với mã băm SEB gửi kèm mỗi thao tác làm bài.</div>
+          <?php endif; ?>
+        <?php else: ?>
+          <dl class="dl mt-0">
+            <dt>Start URL</dt><dd class="mono text-xs" style="word-break:break-all"><?= e(absolute_url('student/lobby', ['sid' => $s['id']])) ?></dd>
+            <dt>Quit URL</dt><dd class="mono text-xs" style="word-break:break-all"><?= e(Seb::quitUrl()) ?></dd>
+            <dt>Khóa chấp nhận</dt><dd><?= count($sebKeys) ?> khóa</dd>
+          </dl>
+          <div class="help">Đặt hai địa chỉ trên vào tệp .seb của trường (SEB Config Tool) và bật <i>Use Browser Exam Key and Config Key</i>.</div>
+        <?php endif; ?>
+      </div>
+    </div>
+    <?php endif; ?>
     <div class="card">
       <div class="card-head"><h3><?= icon('lightbulb') ?> Hướng dẫn học sinh</h3></div>
       <div class="card-body text-sm">
@@ -103,6 +131,7 @@ $ctl = static fn(string $action, string $label, string $icon, string $cls = 'btn
           <li>Truy cập <code><?= e(absolute_url('login')) ?></code></li>
           <li>Đăng nhập bằng tài khoản được cấp</li>
           <li>Chọn ca thi <b><?= e($s['name']) ?></b> → <b>Vào phòng thi</b><?= $s['access_code'] ? ' → nhập mã phòng' : '' ?></li>
+          <?php if ($o['seb'] !== 'off'): ?><li>Bấm <b>Mở bằng Safe Exam Browser</b> (máy cần cài sẵn SEB), đăng nhập lại trong SEB rồi bắt đầu làm bài</li><?php endif; ?>
         </ol>
       </div>
     </div>

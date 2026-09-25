@@ -10,6 +10,22 @@ Số phiên bản có dạng `MAJOR.MINOR.PATCH` và nằm trong tệp [`VERSION
 
 ---
 
+## 1.0.9 – 25/09/2026
+
+### Thêm mới
+- **Bắt buộc làm bài bằng Safe Exam Browser (SEB)** – tùy chọn theo từng ca thi (thẻ *Safe Exam Browser* khi tạo / sửa ca thi):
+  - *Tệp .seb của hệ thống* (khuyên dùng): hệ thống tự tạo tệp cấu hình cho ca thi (liên kết `sebs://` / `seb://` mở thẳng SEB, hoặc tải tệp `.seb`), tính **Config Key** và kiểm tra mã băm `X-SafeExamBrowser-ConfigKeyHash` ở phòng chờ, phòng thi, mỗi lần lưu và nộp bài. SEB trên macOS / iPad (không gửi được header) được xác minh qua JavaScript API `SafeExamBrowser.security` với mã dùng một lần.
+  - *Tệp .seb riêng của trường*: nhập Config Key / Browser Exam Key lấy từ SEB Config Tool.
+  - *Chỉ nhận diện SEB*: kiểm tra dấu hiệu SEB trong User-Agent (phương án dự phòng).
+  - Mật khẩu thoát SEB (chỉ lưu mã băm SHA-256); trang kết quả có nút **Thoát Safe Exam Browser**.
+- Phòng chờ: hướng dẫn mở bằng SEB thay cho nút bắt đầu; *Kiểm tra máy* và *Quy định phòng thi* có mục Safe Exam Browser; thẻ bài thi của học sinh ghi nhãn *Safe Exam Browser*.
+- Phòng thi mở ngoài SEB (hoặc SEB dùng sai tệp cấu hình) bị chặn, hiện lớp phủ hướng dẫn, bài làm dở giữ nguyên; nhật ký ghi sự kiện *Mở bài thi ngoài Safe Exam Browser – đã chặn* (hiện cả trên bảng giám sát).
+- Trang chi tiết ca thi có thẻ Safe Exam Browser: liên kết mở SEB, tải tệp `.seb`, Config Key; với tệp riêng của trường hiện Start URL / Quit URL cần đặt.
+- Bảng giám sát và nhật ký nhận diện thiết bị *Safe Exam Browser 3.x*.
+
+### Tài liệu
+- Hướng dẫn sử dụng: mục **6.1 Bắt buộc làm bài bằng Safe Exam Browser** (các chế độ, mật khẩu thoát, chuẩn bị phòng máy), hướng dẫn cho học sinh và giám thị, sơ đồ xử lý sự cố, câu hỏi thường gặp; 4 ảnh minh họa mới. README: tính năng, bảo mật, bảng xử lý sự cố. Dựng lại hai bản PDF.
+
 ## 1.0.8 – 24/09/2026
 
 ### Tài liệu

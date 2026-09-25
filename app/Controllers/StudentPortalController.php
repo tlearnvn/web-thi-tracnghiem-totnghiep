@@ -9,6 +9,7 @@ use App\Core\Request;
 use App\Lib\Attempts;
 use App\Lib\ExamFormat;
 use App\Lib\Scoring;
+use App\Lib\Seb;
 use App\Lib\Sessions;
 
 /** Cổng học sinh: danh sách bài thi, phòng chờ, kết quả, xem lại, lịch sử. */
@@ -98,6 +99,19 @@ final class StudentPortalController extends Controller
     {
         $u = $this->guard();
         $s = $this->sessionForStudent(Request::int('sid'), $u);
+        $o = Sessions::options($s);
+        $seb = Seb::status($s, $o);
+        $sebJs = null;
+        if ($seb['required'] && !$seb['ok'] && $seb['version'] !== null && in_array($o['seb'], ['config', 'keys'], true)) {
+            // Đang ở trong SEB nhưng chưa xác minh được qua header (macOS / iOS): xác minh bằng JavaScript API
+            // trên chính URL trang có gắn mã dùng một lần của phiên đăng nhập
+            $n = Seb::nonce();
+            if (Request::str('sebn') !== $n) {
+                $this->redirect('student/lobby', ['sid' => $s['id'], 'sebn' => $n]);
+                return;
+            }
+            $sebJs = ['url' => url('seb/verify'), 'sid' => (int) $s['id'], 'back' => url('student/lobby', ['sid' => $s['id']])];
+        }
         Attempts::finalizeExpired((int) $s['id']);
         $exam = Attempts::exam((int) $s['exam_id']);
         $subject = $exam['subject_id'] ? $this->db->one('SELECT * FROM {subjects} WHERE id = ?', [(int) $exam['subject_id']]) : null;
@@ -110,7 +124,9 @@ final class StudentPortalController extends Controller
         $this->render('student/lobby', [
             'title' => $s['name'],
             's' => $s2,
-            'o' => Sessions::options($s),
+            'o' => $o,
+            'seb' => $seb,
+            'sebJs' => $sebJs,
             'exam' => $exam,
             'subject' => $subject,
             'duration' => Sessions::durationSec($s, $exam),
@@ -124,6 +140,12 @@ final class StudentPortalController extends Controller
         $this->authorize('exam.take');
         $this->requirePost();
         $s = $this->sessionForStudent(Request::int('sid'), $u);
+        $seb = Seb::status($s, Sessions::options($s));
+        if (!$seb['ok']) {
+            $this->flash('danger', Seb::reasonText($seb['reason']));
+            $this->redirect('student/lobby', ['sid' => $s['id']]);
+            return;
+        }
         $existing = $this->db->one("SELECT id FROM {attempts} WHERE session_id = ? AND user_id = ? AND status = 'in_progress'", [(int) $s['id'], (int) $u['id']]);
         if (!$existing && $s['access_code'] && !hash_equals(mb_strtolower(trim((string) $s['access_code'])), mb_strtolower(Request::str('access_code')))) {
             $this->flash('danger', 'Mã vào phòng không đúng. Hỏi giám thị để lấy mã.');

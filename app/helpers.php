@@ -343,7 +343,9 @@ function describe_ua(?string $ua): string
         return '';
     }
     $browser = 'Trình duyệt';
-    if (preg_match('/Edg\/([\d]+)/', $ua, $m)) {
+    if (preg_match('/\bSEB(?:\/(\d+(?:\.\d+)?)|\b)/', $ua, $m)) {
+        $browser = 'Safe Exam Browser' . (isset($m[1]) ? ' ' . $m[1] : '');
+    } elseif (preg_match('/Edg\/([\d]+)/', $ua, $m)) {
         $browser = 'Edge ' . $m[1];
     } elseif (preg_match('/OPR\/([\d]+)/', $ua, $m)) {
         $browser = 'Opera ' . $m[1];

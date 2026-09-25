@@ -109,6 +109,7 @@ $reviewPolicy = ['after_end' => 'sau khi ca thi kết thúc', 'manual' => 'khi g
       <?php if ($canRetry): ?><a class="btn btn-primary" href="<?= e(url('student/lobby', ['sid' => $s['id']])) ?>"><?= icon('rotate-ccw') ?> Làm lại</a><?php endif; ?>
       <a class="btn" href="<?= e(url('student/history')) ?>"><?= icon('history') ?> Lịch sử làm bài</a>
       <a class="btn btn-ghost" href="<?= e(url('student')) ?>"><?= icon('house') ?> Trang chủ</a>
+      <?php if (\App\Lib\Seb::version() !== null && $o['seb'] === 'config'): ?><a class="btn btn-danger" href="<?= e(\App\Lib\Seb::quitUrl()) ?>"><?= icon('door-open') ?> Thoát Safe Exam Browser</a><?php endif; ?>
     </div>
   </div>
 </div>

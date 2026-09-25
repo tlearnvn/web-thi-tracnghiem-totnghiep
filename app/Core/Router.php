@@ -31,6 +31,7 @@ final class Router
         'backup' => \App\Controllers\BackupController::class,
         'logs' => \App\Controllers\LogsController::class,
         'system' => \App\Controllers\SystemController::class,
+        'seb' => \App\Controllers\SebController::class,
     ];
 
     private const ALIASES = [

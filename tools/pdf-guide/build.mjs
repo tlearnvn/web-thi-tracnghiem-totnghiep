@@ -354,6 +354,7 @@ async function prepare(p) {
       (only ? p : img).replaceWith(fig);
       fig.appendChild(img);
       fig.appendChild(document.createElement('figcaption'));
+      if (img.naturalHeight > img.naturalWidth * 1.15) fig.classList.add('portrait'); // ảnh dọc (một thẻ giao diện) -> thu nhỏ hơn
     });
     let nShot = 0, nDia = 0;
     document.querySelectorAll('.chapter figure').forEach((f) => {

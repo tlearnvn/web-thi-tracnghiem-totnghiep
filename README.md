@@ -29,6 +29,7 @@ Viết bằng PHP thuần, chạy được trên shared hosting, lưu toàn bộ
 | 📝 | **Đúng định dạng 2025** | Phần I (nhiều lựa chọn A/B/C/D), Phần II (đúng/sai 4 ý a–d), Phần III (trả lời ngắn tô số, dấu “−”, dấu phẩy), tự luận tùy chọn. Có sẵn cấu trúc 18 môn: Toán, Văn, Lí, Hóa, Sinh, Sử, Địa, GDKT&PL, Tin, Công nghệ (Công nghiệp / Nông nghiệp), 7 ngoại ngữ. |
 | 🖥️ | **Phòng thi 2 cột** | Đề PDF (trái) + phiếu trả lời mẫu của Bộ (phải), **kéo thanh chia mượt**, thu gọn từng bên; trên điện thoại tự chuyển thành 2 tab. Phím tắt A/B/C/D, đánh dấu câu (F), gõ trực tiếp đáp số Phần III. |
 | 🔒 | **Đề xem được – không tải được** | PDF hiển thị bằng canvas (PDF.js), dữ liệu **làm rối theo khóa riêng của từng bài làm**, không mở được đường dẫn trực tiếp, chặn in / lưu / chuột phải, **in chìm họ tên + SBD** lên trang đề. |
+| 🔐 | **Safe Exam Browser** | Tùy chọn **bắt buộc làm bài bằng [Safe Exam Browser](https://safeexambrowser.org/)** (Windows, macOS, iPad) – trình duyệt khóa máy trong giờ thi. Hệ thống **tự tạo tệp cấu hình `.seb`** cho từng ca thi, học sinh bấm *Mở bằng Safe Exam Browser* ở phòng chờ; máy chủ kiểm tra **Config Key** ở mọi thao tác làm bài, trình duyệt thường bị chặn và ghi nhật ký. Có mật khẩu thoát SEB, hỗ trợ tệp `.seb` riêng của trường (nhập Config Key / Browser Exam Key). |
 | 💾 | **Không mất bài** | Lưu tự động sau mỗi lần tô (có số thứ tự chống ghi đè), bản dự phòng trên máy, **làm tiếp khi mất mạng**, tự đồng bộ khi có mạng, đồng hồ theo giờ máy chủ, tự thu bài khi hết giờ (có thời gian ân hạn). |
 | 🛟 | **Xử lý sự cố** | Máy hỏng → đăng nhập máy khác + giám thị *mở khóa thiết bị*; hết phiên đăng nhập → đăng nhập lại ngay trong phòng thi; mở nhiều tab → chặn ghi đè; tạm dừng cả phòng / từng em; cộng giờ; mở lại bài nộp nhầm; hủy bài cho thi lại. |
 | 👀 | **Giám sát trực tiếp** | Bảng theo dõi từng học sinh (đang làm, mất kết nối, số câu, thời gian còn lại, rời màn hình…), cảnh báo cần xử lý, nhắn tin cả phòng / riêng, màn hình trình chiếu mã phòng thi. |
@@ -287,6 +288,9 @@ stateDiagram-v2
 | **Hết giờ đúng lúc mất mạng** | Chờ thêm thời gian ân hạn (mặc định 90 giây) rồi tự thu bằng bản lưu gần nhất | Có thể **Mở lại bài** + cộng phút nếu cần |
 | **Nộp nhầm** | — | **Mở lại bài** (có thể cộng thêm phút) |
 | **Rời màn hình nhiều lần** | Cảnh báo, ghi nhận; tùy cấu hình: chỉ ghi nhận / tạm khóa / tự thu bài | Xác minh rồi **Mở khóa vi phạm** |
+| **Mở bài bằng trình duyệt thường** (ca thi bắt buộc Safe Exam Browser) | Chặn phòng thi và mọi lệnh lưu / nộp bài, phòng chờ hiện nút *Mở bằng Safe Exam Browser*; ghi sự kiện “Mở bài thi ngoài Safe Exam Browser” | Nhắc học sinh mở bằng SEB – bài làm dở vẫn còn nguyên |
+| **SEB báo “chưa đúng cấu hình”** | — | Cho học sinh thoát SEB rồi mở lại bằng nút / tệp `.seb` của **đúng ca thi**; nếu cả phòng cùng bị, tạm chuyển ca thi sang chế độ *chỉ nhận diện SEB* |
+| **Cần thoát SEB giữa giờ** | — | Bấm nút thoát trên thanh công cụ SEB và nhập **mật khẩu thoát** (nếu ca thi có đặt) |
 | **Học sinh cần làm lại từ đầu** | — | **Hủy bài & cho thi lại** (bài cũ vẫn lưu để đối chiếu) |
 
 Mọi thao tác đều được ghi vào **nhật ký bài làm** (thời gian, IP, thiết bị, từng lần tô) để giải quyết khiếu nại.
@@ -309,6 +313,7 @@ Ngoài ra có thể: đặt điểm riêng từng câu, **hủy câu** (tính đ
 - Thư mục `app/`, `storage/`, `tools/`, `docs/` và tệp CSDL bị chặn truy cập từ web (`.htaccess`, `web.config`, mẫu Nginx).
 - Giáo viên chỉ thấy **lớp được phân công** và **đề của mình / được chia sẻ**; giám thị chỉ xem & điều khiển **ca được phân công** (không thấy điểm nếu vai trò không có quyền xem kết quả).
 - Đề thi PDF: không có đường dẫn tải trực tiếp, dữ liệu được làm rối riêng cho từng bài làm, in chìm tên & SBD.
+- **Safe Exam Browser** (tùy chọn theo ca thi): phòng chờ, phòng thi và mọi lệnh lưu / nộp bài chỉ chấp nhận yêu cầu có mã băm `X-SafeExamBrowser-ConfigKeyHash` khớp tệp cấu hình của ca thi (SEB trên macOS / iPad: xác minh qua `SafeExamBrowser.security` với mã dùng một lần); liên kết tải tệp `.seb` được ký bằng khóa bí mật của hệ thống.
 
 > ⚠️ Không hệ thống web nào chặn tuyệt đối việc chụp màn hình hoặc dùng thiết bị khác. Hệ thống **hạn chế và ghi nhận** (in chìm, rời màn hình, nhiều tab, đổi máy) để giám thị xử lý.
 

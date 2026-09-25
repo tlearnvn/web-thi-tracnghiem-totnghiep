@@ -663,6 +663,10 @@ dl { margin: 0; }
 .tile.is-doing { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(var(--primary-rgb), .15); }
 .tile-note { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 6px; line-height: 1.4; }
 .tile-note .ic { width: 15px; height: 15px; flex: none; }
+/* Hướng dẫn mở Safe Exam Browser ở phòng chờ */
+.seb-steps { margin: 14px 0 0; padding-left: 20px; font-size: 13px; line-height: 1.5; color: var(--text-2); }
+.seb-steps li { margin: 5px 0; }
+.seb-steps li::marker { color: var(--primary); font-weight: 700; }
 .tile-state { font-size: 13px; color: var(--text-2); display: flex; align-items: center; gap: 4px 7px; flex-wrap: wrap; }
 .tile-state .countdown { white-space: nowrap; }
 .rule-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }

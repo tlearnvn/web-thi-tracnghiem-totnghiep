@@ -26,6 +26,7 @@ $cls = $doing ? ' is-doing' : (in_array($group, ['now', 'practice'], true) && $s
         <span><?= icon('calendar-clock') ?><?= $s['start_at'] ? e(fmt_dt($s['start_at'], 'H:i d/m')) : 'Mở ngay' ?><?= $s['end_at'] ? ' → ' . e(fmt_dt($s['end_at'], 'H:i d/m')) : '' ?></span>
       <?php endif; ?>
       <?php if ($s['room']): ?><span><?= icon('door-open') ?><?= e($s['room']) ?></span><?php endif; ?>
+      <?php if (Sessions::options($s)['seb'] !== 'off'): ?><span title="Làm bài bằng Safe Exam Browser"><?= icon('lock') ?>Safe Exam Browser</span><?php endif; ?>
       <?php if ((int) $s['max_attempts'] !== 1): ?><span><?= icon('repeat') ?><?= (int) $s['max_attempts'] === 0 ? 'Không giới hạn lượt' : count($s['_done']) . '/' . (int) $s['max_attempts'] . ' lượt' ?></span><?php endif; ?>
     </div>
     <?php if ($doing): ?>

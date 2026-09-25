@@ -2,6 +2,7 @@
 use App\Lib\Attempts;
 use App\Lib\ExamFormat;
 use App\Lib\Scoring;
+use App\Lib\Seb;
 use App\Lib\Sessions;
 
 $st = $s['_state'];
@@ -14,9 +15,16 @@ $usedUp = !$doing && $max > 0 && count($s['_done']) >= $max;
 $lateUntil = ((int) $s['late_join'] > 0 && $s['start_at']) ? (int) $s['start_at'] + (int) $s['late_join'] * 60 : 0;
 // Giờ kết thúc ca chỉ đáng nhắc khi nó cắt ngắn thời gian làm bài của em
 $capEnd = $o['time_policy'] === 'cap' && $s['end_at'] && ($duration <= 0 || (int) $s['end_at'] < max(time(), (int) $s['start_at']) + $duration + 60) ? (int) $s['end_at'] : 0;
+// Ca thi bắt buộc Safe Exam Browser mà yêu cầu này chưa đạt -> thay nút bắt đầu bằng hướng dẫn mở SEB
+$sebGate = $seb['required'] && !$seb['ok'] && !$usedUp && !in_array($st, ['ended', 'closed'], true);
+$sebOwnFile = in_array($o['seb'], ['config', 'browser'], true);
 $resultPolicy = ['best' => 'lần cao điểm nhất', 'latest' => 'lần làm gần nhất', 'first' => 'lần làm đầu tiên'][$o['result_policy']] ?? '';
 
 $rules = [];
+if ($seb['required']) {
+    $rules[] = ['lock', 'warn', 'Làm bài bằng Safe Exam Browser',
+        'Bài thi chỉ mở được trong Safe Exam Browser (SEB) – trình duyệt khóa máy trong giờ thi. Mở trình duyệt thường sẽ bị chặn và được ghi lại.'];
+}
 $rules[] = ['timer', '', 'Thời gian làm bài: ' . ($duration > 0 ? fmt_duration($duration) : 'không giới hạn'),
     'Đồng hồ tính theo giờ máy chủ (UTC+7) – máy tính của em có sai giờ cũng không ảnh hưởng.' . ($capEnd ? ' Bài thi tự thu chậm nhất lúc ' . fmt_dt($capEnd, 'H:i') . ' (giờ kết thúc ca thi), kể cả khi em vào muộn.' : '')];
 $rules[] = ['cloud-upload', 'ok', 'Bài làm được lưu tự động liên tục',
@@ -120,7 +128,30 @@ $rules[] = ['award', 'ok', 'Xem điểm: ' . ($s['mode'] === 'practice' ? 'ngay 
   <div class="stack lobby-cta" style="gap:20px">
     <div class="card card-accent rise">
       <div class="card-body">
-        <?php if ($doing): ?>
+        <?php if ($sebGate): ?>
+          <div class="eyebrow"><?= icon('lock', 'sm') ?> Cần Safe Exam Browser</div>
+          <?php if ($sebJs): ?>
+            <div id="seb-verify">
+              <h3 class="mb-1">Đang xác minh Safe Exam Browser…</h3>
+              <p class="text-muted text-sm mb-0"><span class="spinner" style="width:14px;height:14px;border-width:2px;vertical-align:-2px"></span> Vui lòng chờ trong giây lát.</p>
+            </div>
+          <?php endif; ?>
+          <div id="seb-fallback"<?= $sebJs ? ' hidden' : '' ?>>
+            <h3 class="mb-1"><?= $seb['version'] !== null ? 'Safe Exam Browser chưa đúng cấu hình' : 'Mở bài thi bằng Safe Exam Browser' ?></h3>
+            <p class="text-muted text-sm" data-seb-msg><?= e(Seb::reasonText($seb['version'] !== null ? 'bad_key' : $seb['reason'])) ?></p>
+            <?php if ($sebOwnFile): ?>
+              <a class="btn btn-primary btn-lg btn-block" id="seb-open" href="<?= e(Seb::configUrl($s, true)) ?>"><?= icon('lock') ?> Mở bằng Safe Exam Browser</a>
+              <a class="btn btn-block mt-2" href="<?= e(Seb::configUrl($s)) ?>"><?= icon('download') ?> Tải tệp cấu hình (.seb)</a>
+            <?php else: ?>
+              <p class="text-sm mb-0">Mở Safe Exam Browser bằng tệp cấu hình mà giáo viên / nhà trường cung cấp cho ca thi này.</p>
+            <?php endif; ?>
+            <ol class="seb-steps">
+              <?php if ($seb['version'] === null): ?><li>Máy cần cài sẵn <b>Safe Exam Browser</b> (Windows, macOS) hoặc ứng dụng SEB trên iPad – <a href="<?= e(Seb::DOWNLOAD_URL) ?>" target="_blank" rel="noopener">tải tại đây <?= icon('external-link', 'sm') ?></a>.</li><?php endif; ?>
+              <?php if ($sebOwnFile): ?><li>Bấm <b>Mở bằng Safe Exam Browser</b> và cho phép mở ứng dụng. Nếu không mở được, bấm <b>Tải tệp cấu hình</b> rồi bấm đúp vào tệp vừa tải.</li><?php endif; ?>
+              <li>Trong SEB, đăng nhập lại bằng tài khoản của em, vào phòng thi và bắt đầu làm bài<?= $doing ? ' (bài đang làm dở vẫn còn nguyên)' : '' ?>.</li>
+            </ol>
+          </div>
+        <?php elseif ($doing): ?>
           <div class="eyebrow"><?= icon('circle-play', 'sm') ?> Em đang làm dở</div>
           <h3 class="mb-1">Tiếp tục bài làm</h3>
           <p class="text-muted text-sm">Em đã làm <b><?= (int) $doing['answered'] ?></b> câu. Thời gian làm bài vẫn đang được tính, hãy vào lại ngay.</p>
@@ -180,7 +211,9 @@ $rules[] = ['award', 'ok', 'Xem điểm: ' . ($s['mode'] === 'practice' ? 'ngay 
   </div>
 </div>
 
-<?php \App\Core\View::push('scripts', '<script>window.TN_VIEWER = ' . js_json(asset('js/pdfviewer.js')) . ';</script>'); ?>
+<?php \App\Core\View::push('scripts', '<script>window.TN_VIEWER = ' . js_json(asset('js/pdfviewer.js')) . ';'
+    . ($seb['required'] ? 'window.TN_SEBSTATE = ' . js_json(['ok' => $seb['ok'], 'inSeb' => $seb['version'] !== null, 'version' => $seb['version']]) . ';' : '')
+    . ($sebJs ? 'window.TN_SEB = ' . js_json($sebJs) . ';' : '') . '</script>'); ?>
 <?php \App\Core\View::push('scripts', <<<'JS'
 <script>
 TN.ready(function () {
@@ -193,6 +226,9 @@ TN.ready(function () {
   }
   function run() {
     var out = [];
+    var sb = window.TN_SEBSTATE;
+    if (sb) out.push(item(sb.ok ? 'ok' : 'bad', 'Safe Exam Browser' + (sb.inSeb && sb.version ? ' ' + sb.version : ''),
+      sb.ok ? 'Đã xác minh' : sb.inSeb ? 'Chưa đúng tệp cấu hình của ca thi' : 'Chưa mở bằng Safe Exam Browser'));
     // Tương đương Chrome/Edge 98+, Firefox 94+, Safari 15.4+; sau đó nạp thử bộ hiển thị đề PDF cho chắc
     var modern = !!(window.fetch && window.Promise && window.IntersectionObserver && window.ResizeObserver && 'noModule' in document.createElement('script') &&
       typeof window.structuredClone === 'function' && typeof [].at === 'function' && typeof Object.hasOwn === 'function');
@@ -233,6 +269,28 @@ TN.ready(function () {
   }
   run();
   document.getElementById('recheck').addEventListener('click', run);
+
+  // Xác minh Safe Exam Browser qua JavaScript API (SEB trên macOS / iOS không gửi được header)
+  var cfg = window.TN_SEB;
+  if (cfg) {
+    var fb = document.getElementById('seb-fallback'), wait = document.getElementById('seb-verify');
+    var fail = function (msg) {
+      if (wait) wait.hidden = true;
+      if (fb) { fb.hidden = false; var m = fb.querySelector('[data-seb-msg]'); if (m && msg) m.textContent = msg; }
+    };
+    var api = window.SafeExamBrowser && window.SafeExamBrowser.security;
+    if (!api) { fail(); return; }
+    var sent = false;
+    var send = function () {
+      if (sent) return;
+      sent = true;
+      TN.api(cfg.url, { data: { sid: cfg.sid, url: location.href.split('#')[0], ck: api.configKey || '', bek: api.browserExamKey || '' } })
+        .then(function () { location.replace(cfg.back); }, function (e) { fail(e && e.message); });
+    };
+    try {
+      if (typeof api.updateKeys === 'function') { api.updateKeys(send); setTimeout(send, 2500); } else send();
+    } catch (e) { send(); }
+  }
 });
 </script>
 JS); ?>

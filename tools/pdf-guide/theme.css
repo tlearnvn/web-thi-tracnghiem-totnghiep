@@ -180,6 +180,7 @@ pre.code[data-lang]::after { content: attr(data-lang); position: absolute; top: 
 figure { margin: 3mm 0 4.6mm; break-inside: avoid; text-align: center; }
 figure.shot img { display: block; margin: 0 auto; width: auto; max-width: 100%; max-height: 132mm; border-radius: 2mm; border: .6pt solid var(--silver-300); box-shadow: 0 .9mm 0 0 #e6e8eb; }
 li figure.shot img { max-height: 105mm; }
+figure.shot.portrait img { max-height: 108mm; }
 figcaption { margin-top: 2.2mm; font-size: 7.8pt; color: var(--silver-700); font-style: italic; line-height: 1.4; padding: 0 8mm; }
 figcaption b { font-style: normal; color: var(--gold-800); margin-right: 1mm; }
 figcaption.long { font-style: normal; text-align: left; padding: 0 4mm; }

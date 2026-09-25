@@ -12,6 +12,7 @@
 4. [Môn thi & định dạng đề](#4-môn-thi--định-dạng-đề)
 5. [Đề thi, mã đề, đáp án & lời giải](#5-đề-thi-mã-đề-đáp-án--lời-giải)
 6. [Tạo ca thi](#6-tạo-ca-thi)
+   - [Bắt buộc làm bài bằng Safe Exam Browser](#61-bắt-buộc-làm-bài-bằng-safe-exam-browser)
 7. [Giám sát trong giờ thi & xử lý sự cố](#7-giám-sát-trong-giờ-thi--xử-lý-sự-cố)
 8. [Dành cho học sinh: làm bài thi](#8-dành-cho-học-sinh-làm-bài-thi)
    - [Phần II – Trắc nghiệm đúng / sai](#83-phần-ii--trắc-nghiệm-đúng--sai)
@@ -204,9 +205,38 @@ Lời giải viết dạng văn bản có định dạng đơn giản: `**in đ�
 | Mã đề | Ngẫu nhiên cân bằng số lượng / lần lượt / cố định một mã |
 | Lượt làm | Số lượt tối đa (0 = không giới hạn), lấy điểm lần **cao nhất / mới nhất / đầu tiên** |
 | Chống gian lận | Khóa thiết bị, tự nhận lại cùng máy, ghi nhận rời màn hình, bắt buộc toàn màn hình, số lần rời màn hình tối đa → *ghi nhận / tạm khóa / tự thu bài*, in chìm đề, chống tải PDF, nộp bài sớm nhất sau X phút |
+| Safe Exam Browser | **Bắt buộc làm bài bằng Safe Exam Browser** (tệp `.seb` của hệ thống / tệp riêng của trường / chỉ nhận diện), mật khẩu thoát SEB – xem [mục 6.1](#61-bắt-buộc-làm-bài-bằng-safe-exam-browser) |
 | Kết quả | Khi nào học sinh **xem điểm** (ngay / sau ca thi / khi công bố / không), khi nào **xem lại bài**, có hiện đáp án / lời giải / PDF lời giải không |
 
 Trong trang ca thi có các nút: **Bắt đầu ngay**, **Tạm dừng cả phòng** / **Tiếp tục ca thi**, **Cộng giờ cả phòng**, **Gửi thông báo**, **Kết thúc & thu bài**, **Công bố điểm**.
+
+### 6.1. Bắt buộc làm bài bằng Safe Exam Browser
+
+[Safe Exam Browser](https://safeexambrowser.org/) (SEB) là trình duyệt thi miễn phí, mã nguồn mở, chạy trên **Windows, macOS và iPad**. Trong lúc làm bài bằng SEB, máy bị khóa: không mở được ứng dụng hay trang web khác, không chuyển cửa sổ, không sao chép, chụp màn hình; chỉ thoát được khi nộp bài xong hoặc khi giám thị nhập mật khẩu.
+
+![Thẻ Safe Exam Browser khi tạo / sửa ca thi](images/35-seb-thiet-lap.jpg)
+
+Trong thẻ **Safe Exam Browser** của biểu mẫu ca thi, chọn chế độ:
+
+| Chế độ | Dùng khi | Hệ thống kiểm tra |
+|---|---|---|
+| **Không yêu cầu** (mặc định) | Thi bằng trình duyệt thường | — |
+| **Bắt buộc – tệp .seb của hệ thống** *(khuyên dùng)* | Hầu hết trường hợp | Hệ thống tự tạo tệp cấu hình `.seb` cho ca thi và so **Config Key** mà SEB gửi kèm ở phòng chờ, phòng thi, mỗi lần lưu và nộp bài |
+| **Bắt buộc – tệp .seb riêng của trường** | Nhà trường tự soạn tệp `.seb` bằng *SEB Config Tool* (lọc trang web, tắt phím tắt…) | So với **Config Key / Browser Exam Key** dán vào ô khóa (mỗi dòng một khóa 64 ký tự) |
+| **Bắt buộc – chỉ nhận diện SEB** | Dự phòng khi SEB của máy trường không gửi được khóa | Chỉ xem dấu hiệu "SEB" trong thông tin trình duyệt – học sinh rành máy tính có thể giả mạo |
+
+**Mật khẩu thoát SEB** (tùy chọn, ở chế độ khuyên dùng): có mật khẩu thì học sinh không tự thoát SEB giữa giờ được – giám thị bấm nút thoát trên thanh công cụ của SEB rồi nhập mật khẩu. Nộp bài xong, trang kết quả có nút **Thoát Safe Exam Browser** (không cần mật khẩu). Hệ thống chỉ lưu mã băm của mật khẩu; để trống khi sửa ca thi là giữ nguyên mật khẩu cũ.
+
+![Thẻ Safe Exam Browser ở trang chi tiết ca thi](images/36-seb-ca-thi.jpg)
+
+**Chuẩn bị phòng máy:**
+1. Cài SEB trên các máy thi (bản Windows / macOS tải tại safeexambrowser.org; trên iPad cài ứng dụng *SEB* từ App Store).
+2. Mở trang chi tiết ca thi, thẻ **Safe Exam Browser**: bấm **Tải tệp cấu hình .seb**, hoặc **sao chép liên kết** dạng `sebs://…` (`seb://…` nếu trang web chưa có HTTPS) để tạo lối tắt trên màn hình máy thi. Học sinh cũng có thể tự bấm **Mở bằng Safe Exam Browser** ngay ở phòng chờ.
+3. Thử trước trên một máy: mở bằng SEB → đăng nhập tài khoản học sinh → phòng chờ hiện nút **Bắt đầu làm bài** là được.
+
+Với **tệp .seb riêng của trường**: trong *SEB Config Tool* đặt *Start URL* và *Quit URL* đúng như thẻ Safe Exam Browser ở trang ca thi hiển thị, bật *Use Browser Exam Key and Config Key*, rồi chép Config Key (thẻ *Exam*) vào ô khóa của ca thi.
+
+> ⚠️ SEB chưa có cho Chromebook, Android hay Linux – học sinh dùng các máy này thì để ca thi ở chế độ *Không yêu cầu*. Học sinh đang làm bài không bị ảnh hưởng khi đổi chế độ hay mật khẩu thoát; em nào chưa vào phòng thi thì phải mở lại SEB bằng tệp cấu hình mới.
 
 ---
 
@@ -220,6 +250,7 @@ Mở **Ca thi → Giám sát** (tự cập nhật vài giây/lần):
 - **Giám thị được phân công** mở được trang này, điều khiển ca và xử lý sự cố; cột điểm chỉ hiện với người có quyền xem kết quả.
 - Mỗi học sinh: tiến độ, thời gian còn lại, số lần rời màn hình, thiết bị & IP, điểm (khi nộp); menu **⋮** để *cộng / bớt giờ, nhắn tin riêng, tạm dừng / tiếp tục, mở khóa thiết bị, mở khóa vi phạm, thu bài, mở lại bài, hủy bài cho thi lại*.
 - Chọn nhiều học sinh để thao tác hàng loạt; lọc *Cần xử lý*; tìm theo tên / SBD.
+- Ca thi **bắt buộc Safe Exam Browser**: cột thiết bị ghi *Safe Exam Browser 3.x*; em nào mở bài bằng trình duyệt thường bị chặn ngay và nhật ký ghi *Mở bài thi ngoài Safe Exam Browser – đã chặn*.
 - **Màn hình trình chiếu** (nút góc trên): đồng hồ giờ máy chủ, **mã vào phòng**, thời gian còn lại của ca – chiếu lên máy chiếu cho cả phòng.
 
 ![Màn hình trình chiếu](images/22-trinh-chieu.jpg)
@@ -240,6 +271,7 @@ flowchart TD
     Q -->|"Bị khóa do rời màn hình"| E["Xác minh → ⋮ → <b>Mở khóa vi phạm</b>"]
     Q -->|"Mất thời gian do sự cố"| F["⋮ → <b>Cộng giờ</b> cho em đó"]
     Q -->|"Cần thi lại từ đầu"| G["⋮ → <b>Hủy bài & cho thi lại</b>"]
+    Q -->|"Không vào được bằng SEB"| H["Thoát SEB → mở lại bằng nút<br/><b>Mở bằng Safe Exam Browser</b> của đúng ca thi"]
 ```
 
 > 🔎 Mọi thao tác của học sinh và giám thị đều nằm trong **nhật ký bài làm** (*Kết quả → Chi tiết bài làm*): lúc vào thi, từng lần tô / đổi đáp án, rời màn hình, đổi máy, được cộng giờ… dùng khi giải quyết khiếu nại.
@@ -260,6 +292,10 @@ flowchart TD
 3. Bấm **Vào phòng thi** → đọc **quy định phòng thi**, xem **Kiểm tra máy** (trình duyệt – có nạp thử bộ hiển thị đề, kết nối, đồng hồ) → nhập **mã vào phòng** (nếu có) → tick cam kết → **Bắt đầu làm bài**. Nếu mục *Trình duyệt hỗ trợ phòng thi* báo đỏ, hãy dùng **Chrome / Edge 109 trở lên** (hoặc Firefox, Safari bản mới).
 
    ![Phòng chờ](images/05-phong-cho.jpg)
+
+4. Nếu ca thi **bắt buộc Safe Exam Browser**, phòng chờ hiện nút **Mở bằng Safe Exam Browser** thay cho nút bắt đầu. Bấm nút và cho phép trình duyệt mở ứng dụng (hoặc bấm **Tải tệp cấu hình** rồi bấm đúp vào tệp vừa tải) → trong cửa sổ SEB, đăng nhập lại bằng tài khoản của em → vào phòng thi và bắt đầu làm bài. Mở bài bằng trình duyệt thường sẽ bị chặn (bài làm dở vẫn giữ nguyên).
+
+   ![Phòng chờ của ca thi bắt buộc Safe Exam Browser](images/37-seb-phong-cho.jpg)
 
 ### 8.2. Trong giờ thi
 
@@ -379,6 +415,9 @@ Bấm vào số câu trong danh sách để quay lại sửa (*Làm tiếp*). N�
 - **Hiện hộp đăng nhập lại**: nhập mật khẩu là làm tiếp – bài làm vẫn còn nguyên, nhưng **đồng hồ vẫn chạy** trong lúc đăng nhập nên hãy nhập nhanh.
 - **Không rời khỏi màn hình làm bài** (chuyển tab, mở ứng dụng khác) – mọi lần rời đi đều bị ghi nhận.
 - Hết giờ, bài **tự động nộp**.
+- Ca thi **bắt buộc Safe Exam Browser** mà em lỡ thoát SEB hoặc mở bằng trình duyệt thường: màn hình báo *Cần làm bài bằng Safe Exam Browser* – bấm **Về phòng chờ** rồi mở lại bằng SEB, bài làm dở vẫn còn nguyên.
+
+  ![Mở bài thi ngoài Safe Exam Browser](images/38-seb-chan.jpg)
 
 Khi vào bài từ một máy khác mà ca thi đang **khóa thiết bị**, màn hình báo *Bài thi đang được làm trên máy khác* kèm họ tên, SBD, mã bài để đọc cho giám thị. Giám thị bấm **Mở khóa thiết bị** là em làm tiếp được – hệ thống tự thử lại mỗi 6 giây, không cần tải lại trang:
 
@@ -395,6 +434,7 @@ Khi mất mạng, thanh báo đỏ hiện ở đầu màn hình và trạng thá
 
 - **Xem lại bài**: đề bên trái, phiếu bên phải tô **xanh** (đúng) / **đỏ** (sai), viền xanh là đáp án đúng, bấm 💡 để xem **lời giải chi tiết**.
 - **Luyện tập**: làm lại nhiều lần, hệ thống lưu điểm cao nhất; **Kết quả & lịch sử** lưu toàn bộ bài đã làm.
+- Làm bài bằng **Safe Exam Browser**: nộp xong, bấm **Thoát Safe Exam Browser** ở trang kết quả để đóng SEB.
 
 ![Xem lại bài](images/10-xem-lai.jpg)
 
@@ -527,6 +567,18 @@ Có 2 điểm cần chỉnh: tăng **giới hạn đăng nhập sai theo IP** tr
 <summary><b>Hosting giới hạn số tệp (inode) – hệ thống có tạo nhiều tệp không?</b></summary>
 
 Không. Đề PDF, logo, phiên đăng nhập, nhật ký, bản phục hồi tải lên… đều lưu **trong CSDL**. Thư mục `storage/` chỉ có `config.php`, `.htaccess`, `index.html` (và tệp SQLite cùng 2 tệp tạm `-wal` / `-shm` nếu chọn SQLite) – số tệp không tăng theo dữ liệu. Trang *Thông tin hệ thống* hiển thị số tệp trong `storage/`.
+</details>
+
+<details>
+<summary><b>Safe Exam Browser là gì, máy nào dùng được?</b></summary>
+
+Safe Exam Browser (SEB) là trình duyệt thi miễn phí, mã nguồn mở của ETH Zürich, có cho **Windows 10/11, macOS và iPad**; chưa có cho Chromebook, Android, Linux. Ca thi bật *Bắt buộc Safe Exam Browser* thì chỉ làm bài được trong SEB: máy chủ kiểm tra khóa cấu hình SEB gửi kèm ở mọi thao tác làm bài. Không trang web nào chặn được việc chụp ảnh bằng điện thoại – SEB giúp khóa chính chiếc máy đang làm bài.
+</details>
+
+<details>
+<summary><b>Học sinh đã mở SEB mà vẫn báo “chưa đúng cấu hình”?</b></summary>
+
+Em đang mở SEB bằng tệp của ca thi khác, tệp cũ (trước khi giáo viên đổi chế độ / mật khẩu thoát) hoặc SEB tự mở trang chủ. Thoát SEB rồi bấm lại **Mở bằng Safe Exam Browser** ở phòng chờ của đúng ca thi. Nếu cả phòng cùng bị (SEB bản cũ không gửi khóa), tạm chuyển ca thi sang chế độ *Bắt buộc – chỉ nhận diện SEB*.
 </details>
 
 <details>

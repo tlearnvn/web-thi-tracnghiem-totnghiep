@@ -11,6 +11,7 @@ use App\Core\Request;
 use App\Core\Scope;
 use App\Lib\Attempts;
 use App\Lib\ExamFormat;
+use App\Lib\Seb;
 use App\Lib\Sessions;
 use App\Lib\Users;
 
@@ -198,8 +199,11 @@ final class SessionsController extends Controller
         if (!$classIds && !$extra) {
             $errors[] = 'Chọn ít nhất một lớp hoặc học sinh dự thi.';
         }
+        if (Request::str('opt_seb') === 'keys' && !Seb::parseKeys(Request::str('opt_seb_keys'))) {
+            $errors[] = 'Chế độ Safe Exam Browser dùng tệp cấu hình riêng cần ít nhất một Config Key hoặc Browser Exam Key (64 ký tự hex).';
+        }
         if ($errors) {
-            \App\Core\Session::setOld($_POST);
+            \App\Core\Session::setOld(array_diff_key($_POST, ['seb_quit_password' => 1]));
             $this->flash('danger', implode(' ', $errors));
             $this->back('sessions');
             return;
@@ -213,6 +217,9 @@ final class SessionsController extends Controller
                 $opts[$k] = Request::input('opt_' . $k, $def);
             }
         }
+        // Mật khẩu thoát SEB: chỉ lưu mã băm SHA-256 (ghi vào tệp .seb); để trống = giữ mật khẩu cũ
+        $pw = (string) Request::post('seb_quit_password', '');
+        $opts['seb_quit_hash'] = Request::bool('seb_quit_clear') ? '' : ($pw !== '' ? hash('sha256', $pw) : ($cur ? Sessions::options($cur)['seb_quit_hash'] : ''));
         $opts = Sessions::options(['mode' => $mode, 'opts' => json_enc($opts)]);
         $dur = Request::str('duration');
         $data = [

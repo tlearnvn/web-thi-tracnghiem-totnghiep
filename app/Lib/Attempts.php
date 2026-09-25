@@ -55,6 +55,7 @@ final class Attempts
         'rescore' => ['Chấm lại', 'rotate-ccw'],
         'timeout' => ['Hết giờ – tự thu bài', 'alarm-clock'],
         'message' => ['Tin nhắn riêng từ giám thị', 'message-square'],
+        'seb_blocked' => ['Mở bài thi ngoài Safe Exam Browser – đã chặn', 'shield-alert'],
     ];
 
     private static array $keyCache = [];

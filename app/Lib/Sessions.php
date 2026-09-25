@@ -73,6 +73,10 @@ final class Sessions
             'result_policy' => 'best',
             'confirm_submit' => 1,
             'min_submit_minutes' => 0,
+            // Safe Exam Browser: chế độ (Seb::MODES), mật khẩu thoát (SHA-256) cho tệp của hệ thống, khóa nhập tay
+            'seb' => 'off',
+            'seb_quit_hash' => '',
+            'seb_keys' => '',
         ];
     }
 
@@ -86,9 +90,11 @@ final class Sessions
             $o[$k] = (int) !empty($o[$k]);
         }
         $o['min_submit_minutes'] = max(0, min(600, (int) $o['min_submit_minutes']));
+        $o['seb_quit_hash'] = preg_match('/^[0-9a-f]{64}$/', strtolower((string) $o['seb_quit_hash'])) ? strtolower((string) $o['seb_quit_hash']) : '';
+        $o['seb_keys'] = implode("\n", Seb::parseKeys((string) $o['seb_keys']));
         $enum = [
             'show_score' => self::SCORE_POLICIES, 'allow_review' => self::REVIEW_POLICIES, 'violation_action' => self::VIOLATION_ACTIONS,
-            'time_policy' => self::TIME_POLICIES, 'result_policy' => ['best' => 1, 'latest' => 1, 'first' => 1],
+            'time_policy' => self::TIME_POLICIES, 'result_policy' => ['best' => 1, 'latest' => 1, 'first' => 1], 'seb' => Seb::MODES,
         ];
         foreach ($enum as $k => $allowed) {
             if (!isset($allowed[(string) $o[$k]])) {

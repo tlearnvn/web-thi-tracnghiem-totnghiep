@@ -12,6 +12,7 @@ use App\Core\Response;
 use App\Core\Session;
 use App\Lib\Attempts;
 use App\Lib\ExamFormat;
+use App\Lib\Seb;
 use App\Lib\Sessions;
 
 /**
@@ -20,8 +21,11 @@ use App\Lib\Sessions;
  */
 final class ExamRoomController extends Controller
 {
-    /** @return array{0: array, 1: array, 2: array} [attempt, session, options] */
-    private function context(bool $requireDevice = true): array
+    /**
+     * @param bool $page true với trang làm bài (chưa đạt yêu cầu SEB thì chuyển về phòng chờ thay vì trả lỗi JSON)
+     * @return array{0: array, 1: array, 2: array} [attempt, session, options]
+     */
+    private function context(bool $page = false): array
     {
         $u = $this->user();
         $aid = Request::int('aid');
@@ -34,7 +38,30 @@ final class ExamRoomController extends Controller
             throw new HttpException(404, 'Ca thi không còn tồn tại.');
         }
         $o = Sessions::options($s);
+        if ($a['status'] === 'in_progress' && Seb::required($o)) {
+            $this->requireSeb($a, $s, $o, $page);
+        }
         return [$a, $s, $o];
+    }
+
+    /** Bài đang làm của ca thi bắt buộc Safe Exam Browser: chặn mọi yêu cầu không đến từ SEB đúng cấu hình. */
+    private function requireSeb(array $a, array $s, array $o, bool $page): void
+    {
+        $st = Seb::status($s, $o);
+        if ($st['ok']) {
+            return;
+        }
+        $last = (int) $this->db->value("SELECT MAX(created_at) FROM {attempt_events} WHERE attempt_id = ? AND type = 'seb_blocked'", [(int) $a['id']]);
+        if ($last < time() - 60) {
+            Attempts::event((int) $a['id'], 'seb_blocked', ['device' => describe_ua(user_agent()), 'reason' => $st['reason']]);
+        }
+        $lobby = url('student/lobby', ['sid' => $s['id']]);
+        if ($page) {
+            Session::flash('danger', Seb::reasonText($st['reason']));
+            $this->redirect('student/lobby', ['sid' => $s['id']]);
+            exit;
+        }
+        throw new HttpException(403, Seb::reasonText($st['reason']), ['code' => 'seb_required', 'redirect' => $lobby]);
     }
 
     private static function cookieName(int $aid): string
@@ -134,7 +161,7 @@ final class ExamRoomController extends Controller
     public function room(): void
     {
         $this->authorize('exam.take');
-        [$a, $s, $o] = $this->context();
+        [$a, $s, $o] = $this->context(true);
         $this->enforceTime($a, $s, $o);
         if ($a['status'] !== 'in_progress') {
             $this->redirect('student/result', ['aid' => $a['id']]);

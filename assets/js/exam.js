@@ -68,12 +68,17 @@
       if (err.network || st === 0 || st === 502 || st === 503 || st === 504) setOnline(false, st);
       else setOnline(true);
       if (st === 401 || st === 419) needLogin();
+      else if (isSeb(err)) sebRequired(err);
       else if (st === 423) deviceLocked(err.message);
       else if (st === 409 && err.data && err.data.code === 'closed') finished(err.data.redirect);
       else if (st === 404) gone(err.message);
       throw err;
     });
   }
+
+  /** Lỗi đã có lớp phủ xử lý riêng (đăng nhập lại, máy khác, đã nộp, không còn bài, cần Safe Exam Browser). */
+  function handled(err) { return [401, 404, 409, 419, 423].indexOf(err.status) >= 0 || isSeb(err); }
+  function isSeb(err) { return err.status === 403 && !!err.data && err.data.code === 'seb_required'; }
 
   // ------------------------------------------------------------------ Lớp phủ (tạm dừng, khóa, mất kết nối…)
   var overlays = {};
@@ -182,7 +187,7 @@
       if (S.dirty) scheduleSave(250); else chip('saved');
     }, function (err) {
       S.inFlight = false;
-      if ([401, 404, 409, 419, 423].indexOf(err.status) >= 0) { chip('pending'); return; }
+      if (handled(err)) { chip('pending'); return; }
       S.retryDelay = Math.min(15000, S.retryDelay ? S.retryDelay * 2 : 1500);
       chip(S.online ? 'pending' : 'offline');
       if (S.online && err.status >= 400 && err.status < 500 && !S.warnedSave) { S.warnedSave = true; TN.toast(err.message, 'error', 'Chưa lưu được bài'); }
@@ -309,7 +314,7 @@
       if (!S.submitted && remainingSec() <= 0 && !S.paused && !S.locked) submit(true);
     }, function (err) {
       S.timeUpBusy = false;
-      if ([401, 409, 419, 423, 404].indexOf(err.status) < 0) submit(true);
+      if (!handled(err)) submit(true);
     });
   }
 
@@ -354,7 +359,7 @@
           TN.toast(err.message, 'warning', 'Chưa nộp được bài');
           return;
         }
-        if ([401, 419, 423, 409, 404].indexOf(err.status) >= 0) { S.retrySubmit = go; hideOverlay('finish'); return; }
+        if (handled(err)) { S.retrySubmit = go; hideOverlay('finish'); return; }
         var wait = Math.min(20, 2 + tries * 2);
         overlay('finish', {
           cls: 'warning', icon: 'wifi-off', title: 'Chưa gửi được bài làm',
@@ -391,6 +396,22 @@
     stopAll();
     hideBoot();
     overlay('gone', { cls: 'danger', icon: 'circle-x', title: 'Không mở được bài làm', text: msg || 'Bài làm không còn tồn tại.', buttons: [{ label: 'Về trang chủ', icon: 'house', primary: true, fn: function () { location.href = C.urls.home; } }] });
+  }
+
+  /** Ca thi bắt buộc Safe Exam Browser mà trang đang mở ngoài SEB (hoặc SEB sai tệp cấu hình). */
+  function sebRequired(err) {
+    if (S.submitted || S.gone) return;
+    S.gone = true;
+    stopAll();
+    writeBackup();
+    hideBoot();
+    var back = (err.data && err.data.redirect) || C.urls.home;
+    overlay('seb', {
+      cls: 'danger', icon: 'lock', title: 'Cần làm bài bằng Safe Exam Browser',
+      text: err.message || 'Bài thi này chỉ làm được bằng Safe Exam Browser.',
+      buttons: [{ label: 'Về phòng chờ', icon: 'arrow-left', primary: true, fn: function () { location.href = back; } }],
+      note: 'Bài làm của em vẫn được giữ nguyên. Mở lại bài thi bằng Safe Exam Browser (nút ở phòng chờ) để làm tiếp.'
+    });
   }
 
   function confirmSubmit() {
@@ -838,7 +859,7 @@
       S.bootDelay = 0;
       start(r);
     }, function (err) {
-      if ([401, 404, 409, 419, 423].indexOf(err.status) >= 0) return; // đã có lớp phủ xử lý riêng
+      if (handled(err)) return; // đã có lớp phủ xử lý riêng
       var b = readBackup();
       if (!S.started && b && b.answers && !b.closed && (err.network || err.status >= 500)) startOffline(b);
       S.bootDelay = Math.min(10000, S.bootDelay ? S.bootDelay * 2 : 1500);

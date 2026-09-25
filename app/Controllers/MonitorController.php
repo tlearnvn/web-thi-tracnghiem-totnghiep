@@ -181,7 +181,7 @@ final class MonitorController extends Controller
             $info = Attempts::EVENTS[$ev['type']] ?? [$ev['type'], 'circle'];
             $ev['label'] = $info[0];
             $ev['icon'] = $info[1];
-            $ev['level'] = in_array($ev['type'], ['leave', 'fullscreen_exit', 'device_blocked', 'violation_lock', 'multi_tab', 'print', 'copy', 'offline'], true) ? 'warning'
+            $ev['level'] = in_array($ev['type'], ['leave', 'fullscreen_exit', 'device_blocked', 'violation_lock', 'multi_tab', 'print', 'copy', 'offline', 'seb_blocked'], true) ? 'warning'
                 : (in_array($ev['type'], ['submit', 'timeout', 'force_submit'], true) ? 'success' : 'info');
             $ev['detail'] = self::eventDetail($ev['type'], json_dec($ev['data'], []), $showScore);
             unset($ev['data']);
@@ -226,6 +226,8 @@ final class MonitorController extends Controller
             case 'reclaim':
             case 'device_blocked':
                 return (string) ($d['device'] ?? '');
+            case 'seb_blocked':
+                return trim(($d['device'] ?? '') . (($d['reason'] ?? '') === 'bad_key' ? ' · sai tệp cấu hình SEB' : ''), ' ·');
             default:
                 return (string) ($d['detail'] ?? '');
         }
